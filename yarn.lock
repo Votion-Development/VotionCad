@@ -374,6 +374,13 @@ fastify-error@^0.3.0:
   resolved "https://registry.yarnpkg.com/fastify-error/-/fastify-error-0.3.1.tgz#8eb993e15e3cf57f0357fc452af9290f1c1278d2"
   integrity sha512-oCfpcsDndgnDVgiI7bwFKAun2dO+4h84vBlkWsWnz/OUK9Reff5UFoFl241xTiLeHWX/vU9zkDVXqYUxjOwHcQ==
 
+fastify-formbody@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/fastify-formbody/-/fastify-formbody-5.2.0.tgz#942f0847f106888cad419812590cfff7ffb61f92"
+  integrity sha512-d8Y5hCL82akPyoFiXh2wYOm3es0pV9jqoPo3pO9OV2cNF0cQx39J5WAVXzCh4MSt9Z2qF4Fy5gHlvlyESwjtvg==
+  dependencies:
+    fastify-plugin "^3.0.0"
+
 fastify-plugin@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/fastify-plugin/-/fastify-plugin-3.0.1.tgz#79e84c29f401020f38b524f59f2402103fd21ed2"

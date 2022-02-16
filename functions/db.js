@@ -1,7 +1,6 @@
 const { MongoClient } = require('mongodb');
 const log = require('./logger');
 const functions = require('.');
-const { resolveCaa } = require('dns');
 
 const webconfig = functions.loadWebconfig();
 

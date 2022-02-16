@@ -7,6 +7,8 @@
         <%= settings.name %> - Login
     </title>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
 
@@ -81,15 +83,12 @@
     </div>
     <div class="max-w-md w-full space-y-8" id="not-background">
         <div>
-            <%if(error === "emailorpass"){%>
-                <div role="alert">
-                    <div class="border border-red-400 rounded-b rounded-t bg-red-100 px-4 py-3 text-red-700">
-                        <p>Email or password not correct.</p>
-                    </div>
+            <div role="alert" style="display:none;">
+                <div class="border border-red-400 rounded-b rounded-t bg-red-100 px-4 py-3 text-red-700">
+                    <p>Email or password not correct.</p>
                 </div>
-                <br>
-            <% } else { %>
-            <%}%>
+            </div>
+            <br>
             <img class="mx-auto h-12 w-auto" src="/static/logo.svg" alt="Workflow">
             <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
                 Sign in to your account
@@ -99,8 +98,7 @@
                 <a href="/signup" class="font-medium text-indigo-600 hover:text-indigo-500"> sign up </a>
             </p>
         </div>
-        <form class="mt-8 space-y-6" action="/" method="POST">
-            <input type="hidden" name="remember" value="true">
+        <form class="mt-8 space-y-6" id="loginForm">
             <div class="rounded-md shadow-sm -space-y-px">
                 <div>
                     <label for="email-address" class="sr-only">Email address</label>
@@ -138,3 +136,11 @@
         </form>
     </div>
 </body>
+
+<script>
+    $('#loginForm').submit(function (e) {
+        e.preventDefault();
+        const values = $(this).serialize();
+        console.log(values)
+    });
+</script>

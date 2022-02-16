@@ -43,6 +43,8 @@ app.register(require('fastify-static'), {
     prefix: '/static/', // optional: default '/'
 })
 
+app.register(require('fastify-formbody'))
+
 app.register(router, {
     prefix: '/'
 })
