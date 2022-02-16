@@ -1,0 +1,1 @@
+This folder is if you are going to use SSL. If you are, please place your certificate files in here and enable it in webconfig.yml.
