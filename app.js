@@ -8,8 +8,6 @@ const path = require('path')
 
 const webconfig = loadWebconfig();
 
-const router = require('./routes')
-
 const app = fastify();
 
 app.register(require('fastify-cookie'), {
@@ -45,7 +43,11 @@ app.register(require('fastify-static'), {
 
 app.register(require('fastify-formbody'))
 
-app.register(router, {
+app.register(require('./router/index'), {
+    prefix: '/'
+})
+
+app.register(require('./router/authenticated'), {
     prefix: '/'
 })
 
