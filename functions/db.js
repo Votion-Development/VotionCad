@@ -1,6 +1,8 @@
 const { MongoClient } = require('mongodb');
 const log = require('./logger');
 const functions = require('.');
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const webconfig = functions.loadWebconfig();
 
@@ -19,6 +21,20 @@ if (!webconfig.connection_uri) {
 (async () => {
     await client.connect();
     log.database('Connected to the database.');
+
+    /*
+    const collection = db.collection("users");
+    const password = "123456";
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+        bcrypt.hash(password, salt, async function (err, hash) {
+            await collection.insertOne({
+                username: "jamie",
+                email: "volcanomonster07@gmail.com",
+                password: hash
+            });
+        });
+    });
+    */
 
     const COLLECTIONS = [
         'users', 'sessions', 'departments', 'vehicles', 'characters', 'settings'
@@ -49,7 +65,7 @@ if (!webconfig.connection_uri) {
 })();
 
 module.exports = {
-    getSettings: async () => {
+    getSettings: async function () {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("settings");
             const res = await collection.find({}).toArray();
@@ -57,7 +73,7 @@ module.exports = {
             resolve(settings);
         });
     },
-    getUser: async (email) => {
+    getUser: async function (email) {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("users");
             const filteredDocs = await collection.findOne({
@@ -66,4 +82,44 @@ module.exports = {
             resolve(filteredDocs);
         });
     },
-}
+    verifyPassword: async function (email, password) {
+        return new Promise(async (resolve, reject) => {
+            const user = this.getUser(email);
+            bcrypt.compare(password, user.password, async function (err, result) {
+                if (result) {
+                    resolve(true);
+                } else {
+                    resolve(false)
+                }
+            });
+        });
+    },
+
+    createUser: async function (username, email, password) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("users");
+            const filteredDocs = await collection.findOne({
+                email: email,
+            });
+            if (filteredDocs) reject("emailexists")
+            const filteredDocs2 = await collection.findOne({
+                username: username,
+            });
+            if (filteredDocs2) reject("usernameexists")
+            bcrypt.genSalt(saltRounds, function (err, salt) {
+                bcrypt.hash(password, salt, async function (err, hash) {
+                    if (err) reject(err)
+                    await collection.insertOne({
+                        username: username,
+                        email: email,
+                        password: hash,
+                        dateadded: Date(),
+                    });
+                    resolve(true)
+                });
+            });
+            
+            resolve(true);
+        });
+    },
+};

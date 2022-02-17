@@ -3,16 +3,19 @@ const fs = require('fs')
 const db = require('../functions/db');
 
 async function router(app, opts) {
-    app.use('*', async (req, res, next) => {
-        if (!request.session.authenticated || request.session.authenticated != true) return res.redirect('/')
-
-        next()
+    app.addHook('preHandler', (request, reply, done) => {
+        let account = request.session.get('account');
+        console.log(account)
+        if (!account) return request.destroySession(() => reply.redirect('/login'));
+        const pass = db.verifyPassword(account.email, account.password)
+        if (pass === false) return request.destroySession(() => reply.redirect('/login'));
+        done()
     })
 
     fs.readdirSync(path.join(`${__dirname}/authenticated`))
         .filter(file => file.endsWith(".js"))
         .forEach(file => {
-            app.require(require(`${__dirname}/authenticated/${file}`));
+            app.register(require(`${__dirname}/authenticated/${file}`));
         });
 }
 

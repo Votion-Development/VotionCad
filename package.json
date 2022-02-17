@@ -5,10 +5,16 @@
   "repository": "https://github.com/Votion-Development/VotionCad.git",
   "author": "Jamie_ <volcanomonster07@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "npm i && node .",
+    "start-yarn": "yarn && node ."
+  },
   "dependencies": {
     "@fastify/session": "^6.4.0",
+    "bcrypt": "^5.0.1",
     "chalk": "4.1.2",
     "connect-mongodb-session": "^3.1.1",
+    "csrf": "^3.1.0",
     "ejs": "^3.1.6",
     "fastify": "^3.27.1",
     "fastify-cookie": "^5.5.0",

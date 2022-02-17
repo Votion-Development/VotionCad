@@ -8,84 +8,41 @@
     </title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="/static/js/functions.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" />
+    <link rel="stylesheet" href="/static/css/login.css" />
 
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <meta name="author" content="" />
-
-    <style>
-        #loader {
-            transition: all .3s ease-in-out;
-            opacity: 1;
-            visibility: visible;
-            position: fixed;
-            height: 100vh;
-            width: 100%;
-            background: #fff;
-            z-index: 90000
-        }
-
-        #loader.fadeOut {
-            opacity: 0;
-            visibility: hidden
-        }
-
-        .body-bg {
-            background-color:
-                #FFFFFF;
-            background-image:
-                url("/static/images/login_backround.png");
-            height:
-                100%;
-            background-position:
-                center;
-            background-repeat:
-                no-repeat;
-            background-size:
-                cover;
-        }
-
-        #background-container,
-        #background-container2 {
-            width: 100vw;
-            height: 100vh;
-            position: absolute;
-            filter: blur(5px);
-            z-index: 1;
-        }
-
-        #not-background {
-            z-index: 20;
-        }
-    </style>
 </head>
 
-<div id="loader">
-    <div class="spinner"></div>
-</div>
-
-<script>
-    window.addEventListener('load', function load() {
-        const loader = document.getElementById('loader');
-        setTimeout(function () {
-            loader.classList.add('fadeOut');
-        }, 300);
-    });
-</script>
+<style>
+    .body-bg {
+        background-image: url("/static/images/backrounds/<%= image %>");
+    }
+</style>
 
 <body class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" id="main">
     <div class="flex items-center justify-center body-bg {filter: blur(5px)}" id="background-container">
-    </div>
-    <div class="flex items-center justify-center body-bg {filter: blur(5px)}" id="background-container2">
     </div>
     <div class="max-w-md w-full space-y-8" id="not-background">
         <div>
             <div role="alert" style="display:none;" id="invalid_alert">
                 <div class="border border-red-400 rounded-b rounded-t bg-red-100 px-4 py-3 text-red-700">
                     <p>Email or password not correct.</p>
+                </div>
+            </div>
+            <div role="alert" style="display:none;" id="csrf_alert">
+                <div class="border border-red-400 rounded-b rounded-t bg-red-100 px-4 py-3 text-red-700">
+                    <p>CSRF token missmatch. Please reload the page and try again.</p>
+                </div>
+            </div>
+            <div role="alert" style="display:none;" id="unknown_alert">
+                <div class="border border-red-400 rounded-b rounded-t bg-red-100 px-4 py-3 text-red-700">
+                    <p>There was an unknown error when creating the account. Please contact an administrator.</p>
                 </div>
             </div>
             <br>
@@ -99,6 +56,7 @@
             </p>
         </div>
         <form class="mt-8 space-y-6" id="loginForm">
+            <input type="hidden" name="csrftoken" value="<%= csrftoken %>">
             <div class="rounded-md shadow-sm -space-y-px">
                 <div>
                     <label for="email-address" class="sr-only">Email address</label>
@@ -138,10 +96,28 @@
 </body>
 
 <script>
-    $.fn.serializeObject = function() {
+    $.fn.serializeObject = function () {
         var o = {};
         var a = this.serializeArray();
-        $.each(a, function() {
+        $.each(a, function () {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+</script>
+
+<script>
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
             if (o[this.name]) {
                 if (!o[this.name].push) {
                     o[this.name] = [o[this.name]];
@@ -159,12 +135,22 @@
     $('#loginForm').submit(async function (e) {
         e.preventDefault();
         const values = $(this).serializeObject();
-        const res = await fetch(`/login`, { 
+        const res = await fetch(`/login`, {
             method: "POST",
             credentials: "same-origin",
             body: JSON.stringify(values)
         });
         const response = await res.json();
+        if (!response.error) {
+            if (response.success === true) {
+                window.location.href = "/dashboard";
+            } else {
+                return document.getElementById("unknown_alert").style.display = "block";
+            }
+        }
+        if (response.error === "csrftokenmissmatch") {
+            return document.getElementById("csrf_alert").style.display = "block";
+        }
         if (response.error === "invaliduserorpass") {
             return document.getElementById("invalid_alert").style.display = "block";
         }
