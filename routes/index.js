@@ -16,8 +16,7 @@ async function router(app, opts) {
         console.log(request.body)
         const user = await db.getUser(request.body.email)
         if (!user) {
-            const settings = await db.getSettings()
-            return reply.view("./views/login", { settings: settings, error: "emailorpass" });
+            return reply.send({ "error": "invaliduserorpass"})
         }
     })
 }
