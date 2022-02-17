@@ -2,7 +2,6 @@ const db = require('../functions/db');
 
 async function router(app, opts) {
     app.get('/', async (request, reply) => {
-        const settings = await db.getSettings()
         if (!request.session.authenticated || request.session.authenticated != true) return reply.redirect('/login')
         reply.redirect("/dashboard")
     })

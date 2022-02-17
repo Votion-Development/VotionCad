@@ -166,7 +166,6 @@
         });
         const response = await res.json();
         if (response.error === "invaliduserorpass") {
-            console.log("invalid")
             return document.getElementById("invalid_alert").style.display = "block";
         }
         console.log(response)
