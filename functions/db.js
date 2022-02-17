@@ -101,25 +101,33 @@ module.exports = {
             const filteredDocs = await collection.findOne({
                 email: email,
             });
-            if (filteredDocs) reject("emailexists")
-            const filteredDocs2 = await collection.findOne({
-                username: username,
-            });
-            if (filteredDocs2) reject("usernameexists")
-            bcrypt.genSalt(saltRounds, function (err, salt) {
-                bcrypt.hash(password, salt, async function (err, hash) {
-                    if (err) reject(err)
-                    await collection.insertOne({
-                        username: username,
-                        email: email,
-                        password: hash,
-                        dateadded: Date(),
-                    });
-                    resolve(true)
+            if (filteredDocs) {
+                reject("emailexists")
+            } else {
+                const filteredDocs2 = await collection.findOne({
+                    username: username,
                 });
-            });
-            
-            resolve(true);
+                if (filteredDocs2) {
+                    reject("usernameexists")
+                } else {
+                    bcrypt.genSalt(saltRounds, function (err, salt) {
+                        bcrypt.hash(password, salt, async function (err, hash) {
+                            if (err) reject(err)
+                            await collection.insertOne({
+                                username: username,
+                                email: email,
+                                password: hash,
+                                leo: false,
+                                staff: false,
+                                dateadded: Date(),
+                            });
+                            resolve(true)
+                        });
+                    });
+
+                    resolve(true);
+                }
+            }
         });
     },
 };

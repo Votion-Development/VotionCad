@@ -43,12 +43,16 @@ async function router(app, opts) {
     app.post('/signup', async (request, reply) => {
         const body = JSON.parse(request.body)
         if (!csrf.verify(secret, body.csrftoken)) return reply.send({ "error": "csrftokenmissmatch" })
-        const user = await db.createUser(body.username, body.email, body.password)
-        if (user === "emailexists") {
-            return reply.send({ error: "emailexists" })
-        } else if (user === "usernameexists") {
-            return reply.send({ error: "usernameexists" })
-        } else if (user === true) {
+        const user = await db.createUser(body.username, body.email, body.password).catch(e => {
+            if (e === "emailexists") {
+                return reply.send({ error: "emailexists" })
+            } else if (e === "usernameexists") {
+                return reply.send({ error: "usernameexists" })
+            } else {
+                return reply.send({ error: "unknown" })
+            }
+        })
+        if (user === true) {
             reply.send({ success: true })
         } else {
             reply.send({ success: false })
