@@ -84,8 +84,10 @@ module.exports = {
     },
     verifyPassword: async function (email, password) {
         return new Promise(async (resolve, reject) => {
-            const user = this.getUser(email);
+            const user = await this.getUser(email);
             bcrypt.compare(password, user.password, async function (err, result) {
+                console.log(err)
+                console.log(result)
                 if (result) {
                     resolve(true);
                 } else {
