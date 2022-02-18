@@ -45,6 +45,11 @@
                     <p>There was an unknown error when creating the account. Please contact an administrator.</p>
                 </div>
             </div>
+            <div role="alert" style="display:none;" id="approval_alert">
+                <div class="border border-red-400 rounded-b rounded-t bg-red-100 px-4 py-3 text-red-700">
+                    <p>You are still waiting for a Cad Admin to approve your account! Please try again later.</p>
+                </div>
+            </div>
             <br>
             <img class="mx-auto h-12 w-auto" src="/static/logo.svg" alt="Workflow">
             <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
@@ -144,16 +149,20 @@
         console.log(response)
         if (!response.error) {
             if (response.success === true) {
-                window.location.href = "/dashboard";
+                return window.location.href = "/dashboard";
             } else {
                 return document.getElementById("unknown_alert").style.display = "block";
             }
-        }
-        if (response.error === "csrftokenmissmatch") {
-            return document.getElementById("csrf_alert").style.display = "block";
-        }
-        if (response.error === "invaliduserorpass") {
-            return document.getElementById("invalid_alert").style.display = "block";
+        } else {
+            if (response.error === "csrftokenmissmatch") {
+                return document.getElementById("csrf_alert").style.display = "block";
+            } else if (response.error === "invaliduserorpass") {
+                return document.getElementById("invalid_alert").style.display = "block";
+            } else if (response.error === "approval") {
+                return document.getElementById("approval_alert").style.display = "block";
+            } else {
+                return document.getElementById("unknown_alert").style.display = "block";
+            }
         }
     });
 </script>

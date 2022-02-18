@@ -55,7 +55,9 @@ if (!webconfig.connection_uri) {
                     }
                     if (coll === 'settings') {
                         await doc.insertOne({
-                            name: 'Votion Cad'
+                            name: 'Votion Cad',
+                            discord: '',
+                            manualApproval: false
                         });
                     }
                 });
@@ -84,21 +86,21 @@ module.exports = {
     },
     verifyPassword: async function (email, password) {
         return new Promise(async (resolve, reject) => {
-            const user = await this.getUser(email);
-            bcrypt.compare(password, user.password, async function (err, result) {
-                console.log(err)
-                console.log(result)
-                if (result) {
-                    resolve(true);
-                } else {
-                    resolve(false)
-                }
+            const collection = db.collection("users");
+            const user = await collection.findOne({
+                email: email,
             });
+            if (!user) reject(false)
+            if (user.password === password) {
+                resolve(true)
+            } else {
+                reject(false)
+            }
         });
     },
-
     createUser: async function (username, email, password) {
         return new Promise(async (resolve, reject) => {
+            const settings = await this.getSettings()
             const collection = db.collection("users");
             const filteredDocs = await collection.findOne({
                 email: email,
@@ -115,19 +117,31 @@ module.exports = {
                     bcrypt.genSalt(saltRounds, function (err, salt) {
                         bcrypt.hash(password, salt, async function (err, hash) {
                             if (err) reject(err)
-                            await collection.insertOne({
-                                username: username,
-                                email: email,
-                                password: hash,
-                                leo: false,
-                                staff: false,
-                                dateadded: Date(),
-                            });
-                            resolve(true)
+                            if (settings.manualApproval === true) {
+                                await collection.insertOne({
+                                    username: username,
+                                    email: email,
+                                    password: hash,
+                                    leo: false,
+                                    staff: false,
+                                    approved: false,
+                                    dateadded: Date(),
+                                });
+                                resolve("approval")
+                            } else {
+                                await collection.insertOne({
+                                    username: username,
+                                    email: email,
+                                    password: hash,
+                                    leo: false,
+                                    staff: false,
+                                    approved: true,
+                                    dateadded: Date(),
+                                });
+                                resolve(true)
+                            }
                         });
                     });
-
-                    resolve(true);
                 }
             }
         });

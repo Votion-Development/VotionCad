@@ -56,6 +56,11 @@
                     <p>Success! You can now login with your credentials.</p>
                 </div>
             </div>
+            <div role="alert" style="display:none;" id="approval_alert">
+                <div class="border border-green-400 rounded-b rounded-t bg-green-100 px-4 py-3 text-green-700">
+                    <p>Success! You now have to wait for a Cad Admin to manually approve you before you can login.</p>
+                </div>
+            </div>
             <br>
             <img class="mx-auto h-12 w-auto" src="/static/logo.svg" alt="Workflow">
             <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
@@ -144,11 +149,12 @@
         if (!response.error) {
             if (response.success === true) {
                 return document.getElementById("success_alert").style.display = "block";
+            } else if (response.success === "approval") {
+                return document.getElementById("approval_alert").style.display = "block";
             } else {
-                return document.getElementById("unknown_alert").style.display = "block";
+                return document.getElementById("unknown_alert").style.display = "block"; 
             }
         }
-        console.log(response.error)
         if (response.error === "csrftokenmissmatch") {
             return document.getElementById("csrf_alert").style.display = "block";
         } else if (response.error === "usernameexists") {

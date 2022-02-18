@@ -9,7 +9,7 @@ async function router(app, opts) {
 
     app.get('/', async (request, reply) => {
         let account = request.session.get('account');
-        if (!account) return request.destroySession(() => reply.redirect('/login?err=INVALIDSESSION'));
+        if (!account) return request.destroySession(() => reply.redirect('/login'));
         reply.redirect("/dashboard")
     })
 
@@ -27,6 +27,9 @@ async function router(app, opts) {
         const user = await db.getUser(body.email)
         if (!user) {
             return reply.send({ "error": "invaliduserorpass" })
+        }
+        if (user.approved === false) {
+            return reply.send({ error: "approval" })
         }
         request.session.set('account', user);
         reply.send({ success: true })
@@ -54,6 +57,8 @@ async function router(app, opts) {
         })
         if (user === true) {
             reply.send({ success: true })
+        } else if (user === "approval") {
+            reply.send({ success: "approval" })
         } else {
             reply.send({ success: false })
         }
