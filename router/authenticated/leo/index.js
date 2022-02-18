@@ -7,12 +7,14 @@ const secret = csrf.secretSync()
 
 async function router(app, opts) {
     app.addHook('preHandler', async (request, reply) => {
-        let account = request.session.get('account');
+        const account = request.session.get('account');
         if (!account) return request.destroySession(() => reply.redirect('/login'));
+        const currentCharacter = request.session.get('currentCharacter');
+        if (!currentCharacter) return reply.redirect('/dashboard');
         const user = await db.getUser(account.email)
         if (!user) return request.destroySession(() => reply.redirect('/login'));
         request.session.set('account', user); // Refresh the session constantly so no updates get missed
-        if (user.leo != true) return reply.redirect("/dashboard")
+        if (currentCharacter.leo != true) return reply.redirect("/dashboard")
         const pass = await db.verifyPassword(account.email, account.password).catch(e => { return request.destroySession(() => reply.redirect('/login')); })
         if (pass === false) return request.destroySession(() => reply.redirect('/login'));
     })

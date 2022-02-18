@@ -124,7 +124,6 @@ module.exports = {
                                     username: username,
                                     email: email,
                                     password: hash,
-                                    leo: false,
                                     staff: false,
                                     approved: false,
                                     dateadded: Date(),
@@ -135,7 +134,6 @@ module.exports = {
                                     username: username,
                                     email: email,
                                     password: hash,
-                                    leo: false,
                                     staff: false,
                                     approved: true,
                                     dateadded: Date(),
@@ -149,29 +147,28 @@ module.exports = {
         });
     },
     generateID: async function () {
-        let id
-        let isUnique = false
-        const collection = db.collection("characters");
-        while (isUnique === false) {
-            console.log(12)
-            id = await uuidv4()
-            console.log(id)
-            const filteredDocs = await collection.findOne({
-                id: id,
-            });
-            if (!filteredDocs) {
-                isUnique = true
-            } else {
-                isUnique = false
+        return new Promise(async (resolve, reject) => {
+            let id
+            let isUnique = false
+            const collection = db.collection("characters");
+            while (isUnique === false) {
+                id = await uuidv4()
+                const filteredDocs = await collection.findOne({
+                    id: id,
+                });
+                if (!filteredDocs) {
+                    isUnique = true
+                } else {
+                    isUnique = false
+                }
             }
-        }
-        resolve(id)
+            resolve(id)
+        })
     },
     createCharacter: async function (data, owner) {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("characters");
             const generatedID = await this.generateID()
-            console.log(generatedID)
             await collection.insertOne({
                 name: data.name,
                 dob: data.dob,
@@ -185,6 +182,8 @@ module.exports = {
                 driver: data.driver,
                 gun: data.gun,
                 pilot: data.pilot,
+                leo: false,
+                department: null,
                 owner: owner,
                 id: generatedID,
                 dateadded: Date(),
@@ -198,6 +197,14 @@ module.exports = {
             const filteredDocs = await collection.find({ owner: username }).toArray();
             resolve(filteredDocs)
         })
-
+    },
+    getCharacter: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            const filteredDocs = await collection.findOne({
+                id: id,
+            });
+            resolve(filteredDocs)
+        })
     }
 };

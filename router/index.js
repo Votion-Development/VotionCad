@@ -31,7 +31,15 @@ async function router(app, opts) {
         if (user.approved === false) {
             return reply.send({ error: "approval" })
         }
+        const characters = await db.getCharacters(user.username)
+        let character
+        if (!characters) {
+            character = null
+        } else {
+            character = characters[Math.floor(Math.random() * characters.length)]
+        }
         request.session.set('account', user);
+        request.session.set('currentCharacter', character);
         reply.send({ success: true })
     })
 
