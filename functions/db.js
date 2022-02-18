@@ -1,7 +1,9 @@
 const { MongoClient } = require('mongodb');
+const { v4: uuidv4 } = require('uuid');
 const log = require('./logger');
 const functions = require('.');
 const bcrypt = require("bcrypt");
+const { resolve } = require('path/posix');
 const saltRounds = 10;
 
 const webconfig = functions.loadWebconfig();
@@ -146,4 +148,56 @@ module.exports = {
             }
         });
     },
+    generateID: async function () {
+        let id
+        let isUnique = false
+        const collection = db.collection("characters");
+        while (isUnique === false) {
+            console.log(12)
+            id = await uuidv4()
+            console.log(id)
+            const filteredDocs = await collection.findOne({
+                id: id,
+            });
+            if (!filteredDocs) {
+                isUnique = true
+            } else {
+                isUnique = false
+            }
+        }
+        resolve(id)
+    },
+    createCharacter: async function (data, owner) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            const generatedID = await this.generateID()
+            console.log(generatedID)
+            await collection.insertOne({
+                name: data.name,
+                dob: data.dob,
+                height: data.height,
+                weight: data.weight,
+                gender: data.gender,
+                ethnicity: data.ethnicity,
+                hair: data.hair,
+                address: data.address,
+                job: data.job,
+                driver: data.driver,
+                gun: data.gun,
+                pilot: data.pilot,
+                owner: owner,
+                id: generatedID,
+                dateadded: Date(),
+            });
+            resolve(true)
+        });
+    },
+    getCharacters: async function (username) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            const filteredDocs = await collection.find({ owner: username }).toArray();
+            resolve(filteredDocs)
+        })
+
+    }
 };

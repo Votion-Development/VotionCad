@@ -10,7 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="/static/js/functions.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" />
     <link rel="stylesheet" href="/static/css/login.css" />
 
@@ -99,24 +99,6 @@
         </form>
     </div>
 </body>
-
-<script>
-    $.fn.serializeObject = function () {
-        var o = {};
-        var a = this.serializeArray();
-        $.each(a, function () {
-            if (o[this.name]) {
-                if (!o[this.name].push) {
-                    o[this.name] = [o[this.name]];
-                }
-                o[this.name].push(this.value || '');
-            } else {
-                o[this.name] = this.value || '';
-            }
-        });
-        return o;
-    };
-</script>
 
 <script>
     $.fn.serializeObject = function () {

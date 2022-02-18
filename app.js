@@ -54,7 +54,7 @@ app.listen(webconfig.port).then(() => {
     log.web(`Votion Cad listening on port ${webconfig.port}.`)
 })
 
-app.ready().then(() => {
+app.ready().then(async () => {
     log.web("The dashboard has fully started!")
     console.log(app.printRoutes())
 }, (err) => {
