@@ -44,9 +44,13 @@
                     <div class="flex space-x-4">
                         <a href="/dashboard" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Characters</a>
 
-                        <a href="/dashboard/leo" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">LEO</a>
+                        <% if (user.leo === true) { %>
+                            <a href="/dashboard/leo" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">LEO</a>
+                        <% } %>
 
-                        <a href="/dashboard/staff" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Staff</a>
+                        <% if (user.staff === true) { %>
+                            <a href="/dashboard/staff" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Staff</a>
+                        <% } %>
 
                         <a href="/dashboard/penal_code" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Penal Code</a>
                     </div>

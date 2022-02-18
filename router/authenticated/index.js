@@ -23,6 +23,14 @@ async function router(app, opts) {
                 prefix: '/leo'
             });
         });
+
+    fs.readdirSync(path.join(`${__dirname}/staff`))
+        .filter(file => file.endsWith(".js"))
+        .forEach(file => {
+            app.register(require(`${__dirname}/staff/${file}`), {
+                prefix: '/staff'
+            });
+        });
 }
 
 module.exports = router;
