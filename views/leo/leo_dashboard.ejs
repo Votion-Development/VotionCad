@@ -8,8 +8,13 @@
     </title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" />
     <link rel="stylesheet" href="/static/css/login.css" />
 
@@ -106,6 +111,142 @@
     </div>
 </nav>
 
+<style>
+    /*Overrides for Tailwind CSS */
+
+    /*Form fields*/
+    .dataTables_wrapper select,
+    .dataTables_wrapper .dataTables_filter input {
+        color: #4a5568;
+        /*text-gray-700*/
+        padding-left: 1rem;
+        /*pl-4*/
+        padding-right: 1rem;
+        /*pl-4*/
+        padding-top: .5rem;
+        /*pl-2*/
+        padding-bottom: .5rem;
+        /*pl-2*/
+        line-height: 1.25;
+        /*leading-tight*/
+        border-width: 2px;
+        /*border-2*/
+        border-radius: .25rem;
+        border-color: #edf2f7;
+        /*border-gray-200*/
+        background-color: #edf2f7;
+        /*bg-gray-200*/
+    }
+
+    /*Row Hover*/
+    table.dataTable.hover tbody tr:hover,
+    table.dataTable.display tbody tr:hover {
+        background-color: #ebf4ff;
+        /*bg-indigo-100*/
+    }
+
+    /*Pagination Buttons*/
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        font-weight: 700;
+        /*font-bold*/
+        border-radius: .25rem;
+        /*rounded*/
+        border: 1px solid transparent;
+        /*border border-transparent*/
+    }
+
+    /*Pagination Buttons - Current selected */
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        color: #fff !important;
+        /*text-white*/
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+        /*shadow*/
+        font-weight: 700;
+        /*font-bold*/
+        border-radius: .25rem;
+        /*rounded*/
+        background: #667eea !important;
+        /*bg-indigo-500*/
+        border: 1px solid transparent;
+        /*border border-transparent*/
+    }
+
+    /*Pagination Buttons - Hover */
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        color: #fff !important;
+        /*text-white*/
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+        /*shadow*/
+        font-weight: 700;
+        /*font-bold*/
+        border-radius: .25rem;
+        /*rounded*/
+        background: #667eea !important;
+        /*bg-indigo-500*/
+        border: 1px solid transparent;
+        /*border border-transparent*/
+    }
+
+    /*Add padding to bottom border */
+    table.dataTable.no-footer {
+        border-bottom: 1px solid #e2e8f0;
+        /*border-b-1 border-gray-300*/
+        margin-top: 0.75em;
+        margin-bottom: 0.75em;
+    }
+
+    /*Change colour of responsive icon*/
+    table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
+    table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
+        background-color: #667eea !important;
+        /*bg-indigo-500*/
+    }
+</style>
+
+<br>
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <% if (currentCharacter.onduty === true) { %>
+            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled">10-41</button>
+            <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOffduty()">10-42</button><br>
+            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" disabled>10-8</button>
+            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">10-7</button>
+            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">10-6</button><br>
+            <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="panic()">PANIC</button>
+        <% } else { %>
+            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOnduty()">10-41</button>
+            <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOffduty()" disabled>10-42</button><br>
+            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" disabled>10-8</button>
+            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" disabled>10-7</button>
+            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" disabled>10-6</button><br>
+            <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg" onclick="panic()" disabled>PANIC</button>
+        <% } %>
+		<!--Title-->
+		<h1 class="flex items-center font-sans font-bold break-normal text-indigo-500 px-2 py-8 text-xl md:text-2xl">
+			On Duty LEO:
+		</h1>
+		<!--Card-->
+		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+
+
+			<table id="leoTable" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+				<thead>
+					<tr>
+						<th data-priority="1">Identifier</th>
+						<th data-priority="2">Name</th>
+						<th data-priority="3">Department</th>
+						<th data-priority="4">Status</th>
+					</tr>
+				</thead>
+				<tbody id="officers">
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
 <script>
     let profileOpened = false
     async function openProfilePopup() {
@@ -149,5 +290,147 @@
                 return location.reload();
             }
         }
+    }
+
+    const webSocketProtocol = window.location.protocol == "https:" ? "wss://" : "ws://";
+
+    const socket = new WebSocket(`${webSocketProtocol}${window.location.host}${window.location.pathname}`);
+
+    let table
+
+    $(document).ready(function() {
+        table = $('#leoTable').DataTable({
+            responsive: true
+        }).columns.adjust().responsive.recalc();
+    });
+
+    socket.onmessage = function (event) {
+        if (event.data.includes("PANIC")) {
+            const location = event.data.split('PANIC ')[1]
+            Swal.fire(
+                'An officer just pressed their panic!',
+                `Location: ${location}`,
+                'warning'
+            )
+            const music = new Audio('/static/sounds/panic-button.mp3');
+            music.play();
+            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg";
+            document.getElementById("PANIC").disabled = true;
+            document.body.style.background = "red";
+            setTimeout(function () {
+                music.play();
+                setTimeout(function () {
+                    music.play();
+                    setTimeout(function () {
+                        music.play();
+                        setTimeout(function () {
+                            music.play();
+                            setTimeout(function () {
+                                document.body.style.background = "white";
+                                document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
+                                document.getElementById("PANIC").disabled = false;
+                            }, 20000);
+                        }, 3000);
+                    }, 3000);
+                }, 3000);
+            }, 3000);
+        } else {
+            const json = JSON.parse(event.data)
+            if (!json) return;
+            for (var i = 0; i < json.length; i++) {
+                const officer = table.row(`#officer_${json[i].id}`).data();
+                console.log(json[i].status)
+                console.log(json[i])
+                if (!officer) {
+                    if (json[i].status === "108") {
+                        table.row.add([
+                            `${json[i].callsign}`,
+                            `${json[i].name}`,
+                            `${json[i].department}`,
+                            `<td style="background-color: rgb(105, 255, 105);">10-8</td>`,
+                        ]).node().id = `officer_${json[i].id}`;
+                        table.draw( false );
+                    }
+                } else {
+                    if (json[i].status === "1042") {
+                        table.row(`#officer_${json[i].id}`).remove().draw()
+                    }
+                }
+            }
+        }
+    }
+
+    setInterval(function () {
+        socket.send("data")
+    }, 1000);
+
+    async function goOnduty() {
+        const res = await fetch(`/dashboard/leo/onduty`, {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify({ "id": "<%= currentCharacter.id %>" })
+        });
+        const response = await res.json();
+        if (response.success === true) {
+            table.row.add([
+                `<%= currentCharacter.callsign %>`,
+                 `<%= currentCharacter.name %>`,
+                `<%= currentCharacter.department %>`,
+                `<td style="background-color: rgb(105, 255, 105);">10-8</td>`,
+            ]).node().id = `officer_<%= currentCharacter.id %>`;
+            table.draw( false );
+            document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+            document.getElementById("1041").disabled = true;
+            document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("1042").disabled = false;
+            document.getElementById("107").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("107").disabled = false;
+            document.getElementById("106").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("106").disabled = false;
+            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
+            document.getElementById("PANIC").disabled = false;
+        } else {
+            location.reload()
+        }
+    }
+
+    async function goOffduty() {
+        const res = await fetch(`/dashboard/leo/offduty`, {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify({ "id": "<%= currentCharacter.id %>" })
+        });
+        const response = await res.json();
+        if (response.success === true) {
+            table.row(`#officer_<%= currentCharacter.id %>`).remove().draw()
+            document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("1041").disabled = false;
+            document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+            document.getElementById("1042").disabled = true;
+            document.getElementById("107").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+            document.getElementById("107").disabled = true;
+            document.getElementById("106").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+            document.getElementById("106").disabled = true;
+            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg";
+            document.getElementById("PANIC").disabled = true;
+        } else {
+            location.reload()
+        }
+    }
+
+    async function panic() {
+        const { value: location } = await Swal.fire({
+            title: 'Enter your location',
+            input: 'text',
+            inputLabel: 'Your location',
+            showCancelButton: true,
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'You need to put a location!'
+                } else {
+                    socket.send(`PANIC ${value}`)
+                }
+            }
+        })
     }
 </script>

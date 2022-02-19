@@ -184,6 +184,8 @@ module.exports = {
                 pilot: data.pilot,
                 leo: false,
                 department: null,
+                callsign: null,
+                status: null,
                 owner: owner,
                 id: generatedID,
                 dateadded: Date(),
@@ -205,6 +207,27 @@ module.exports = {
                 id: id,
             });
             resolve(filteredDocs)
+        })
+    },
+    getAllLEOs: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            const filteredDocs = await collection.find({ leo: true }).toArray();
+            resolve(filteredDocs)
+        })
+    },
+    setOnduty: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            await collection.updateOne({ id: id }, { $set: { status: "108", onduty: true } });
+            resolve(true)
+        })
+    },
+    setOffduty: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            await collection.updateOne({ id: id }, { $set: { status: "1042", onduty: false } });
+            resolve(true)
         })
     }
 };

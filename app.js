@@ -6,10 +6,22 @@ const path = require('path')
 const webconfig = loadWebconfig();
 
 const fastify = require('fastify');
+
+let app
+
+if (webconfig.ssl === true) {
+    app = fastify({
+        https: {
+            key: fs.readFileSync(path.join(__dirname, '/ssl/fastify.key')),
+            cert: fs.readFileSync(path.join(__dirname, '/ssl/fastify.cert'))
+        }
+    });
+} else {
+    app = fastify({
+    });
+}
 const session = require('@fastify/session');
 const MongoStore = require('connect-mongodb-session')(session);
-
-const app = fastify();
 
 app.register(require('fastify-cookie'), {
     secret: webconfig.secret, // for cookies signature
@@ -49,6 +61,7 @@ app.register(require('./router/index'), {
 app.register(require('./router/authenticated'), {
     prefix: '/dashboard'
 })
+
 
 app.listen(webconfig.port).then(() => {
     log.web(`Votion Cad listening on port ${webconfig.port}.`)
