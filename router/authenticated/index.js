@@ -11,7 +11,6 @@ async function router(app, opts) {
         const settings = await db.getSettings();
         const account = request.session.get('account');
         const currentCharacter = request.session.get('currentCharacter');
-        console.log(currentCharacter)
         if (!account) return request.destroySession(() => reply.redirect('/login'));
         const user = await db.getUser(account.email);
         const characters = await db.getCharacters(account.username);
