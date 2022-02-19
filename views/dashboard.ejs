@@ -112,12 +112,12 @@
 </div>
 <br>
 
-<div class="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 gap-5">
+<div class="p-10 grid xl:grid-cols-3 gap-3">
     <% if (characters.length === 0) { %>
         <a>You have no characters! Please create one.</a>
     <% } %>
     <% for (var i=0; i < characters.length; i++) { %>
-        <div class="max-w-md py-4 px-8 bg-white shadow-lg rounded-lg my-20">
+        <div class="max-w-md py-4 px-8 bg-white shadow-lg rounded-lg my-20 w-full">
             <div class="flex justify-center md:justify-end -mt-16">
             </div>
             <div>

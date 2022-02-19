@@ -10,16 +10,15 @@ async function router(app, opts) {
         const user = await db.getUser(account.email)
         if (!user) return request.destroySession(() => reply.redirect('/login'));
         const characters = await db.getCharacters(user.username)
-        let character
         if (!characters) {
-            character = null
+            const character = null
+            request.session.set('currentCharacter', character);
         } else {
-            console.log(currentCharacter)
             if (!currentCharacter) {
-                character = characters[Math.floor(Math.random() * characters.length)]
+                const character = characters[0]
+                request.session.set('currentCharacter', character);
             }
         }
-        request.session.set('currentCharacter', character);
         request.session.set('account', user); // Refresh the session constantly so no updates get missed
         const pass = await db.verifyPassword(account.email, account.password).catch(e => { return request.destroySession(() => reply.redirect('/login')); })
         if (pass === false) return request.destroySession(() => reply.redirect('/login'));
