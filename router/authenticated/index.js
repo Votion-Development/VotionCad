@@ -61,12 +61,12 @@ async function router(app, opts) {
     app.post('/characters/switch', async (request, reply) => {
         const body = JSON.parse(request.body);
         const account = request.session.get('account');
-        if (!account) return request.destroySession(() => reply.send('invalidsession'));
-        if (!csrf.verify(secret, body.csrftoken)) return reply.send({ "error": "csrftokenmissmatch" })
+        if (!account) return request.destroySession(() => reply.send({ error: invalidsession }));
         const character = await db.getCharacter(body.id)
         if (!character) return reply.send({ error: notfound })
         if (character.owner != account.username) return reply.send({ error: notowner })
-
+        request.session.set('currentCharacter', character);
+        reply.send({ success: true })
     })
 
     fs.readdirSync(path.join(`${__dirname}/leo`))

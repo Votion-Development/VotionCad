@@ -17,6 +17,9 @@ async function router(app, opts) {
             if (!currentCharacter) {
                 const character = characters[0]
                 request.session.set('currentCharacter', character);
+            } else {
+                const currentCharacterUpdated = await db.getCharacter(currentCharacter.id)
+                request.session.set('currentCharacter', currentCharacterUpdated);
             }
         }
         request.session.set('account', user); // Refresh the session constantly so no updates get missed

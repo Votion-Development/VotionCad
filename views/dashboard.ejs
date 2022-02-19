@@ -74,6 +74,7 @@
                   <div class="py-1" role="none">
                     <% for (var i=0; i < characters.length; i++) { %>
                         <button onclick="switchCharacter('<%= characters[i].id %>')"><a class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0"><%= characters[i].name %></a></button>
+                        <br>
                     <% } %>
                   </div>
                 </div>
@@ -164,22 +165,17 @@
             body: JSON.stringify({ id: id, csrf: "<%= csrftoken %>" })
         });
         const response = await res.json();
-        console.log(response)
         if (!response.error) {
             if (response.success === true) {
-                return window.location.href = "/dashboard";
+                return location.reload();
             } else {
-                return document.getElementById("unknown_alert").style.display = "block";
+                return location.reload();
             }
         } else {
-            if (response.error === "csrftokenmissmatch") {
-                return document.getElementById("csrf_alert").style.display = "block";
-            } else if (response.error === "invaliduserorpass") {
-                return document.getElementById("invalid_alert").style.display = "block";
-            } else if (response.error === "approval") {
-                return document.getElementById("approval_alert").style.display = "block";
+            if (response.error === "invalidsession") {
+                return window.location.href = "/login";
             } else {
-                return document.getElementById("unknown_alert").style.display = "block";
+                return location.reload();
             }
         }
     }
