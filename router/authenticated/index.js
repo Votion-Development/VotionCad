@@ -45,16 +45,16 @@ async function router(app, opts) {
 
     app.get('/characters/:id', async (request, reply) => {
         const settings = await db.getSettings()
-        const character = db.getCharacter(request.params.id);
+        const character = await db.getCharacter(request.params.id);
         if (!character) return reply.redirect("/dashboard");
         const account = request.session.get('account');
-        const currentCharacter = request.session.get('currentCharacter');
         if (!account) return request.destroySession(() => reply.redirect('/login'));
         if (character.owner != account.username) return reply.redirect("/dashboard");
-        const currentCharacterCheck = await db.getCharacter(currentCharacter)
-        if (!currentCharacterCheck) return reply.redirect("/dashboard")
+        const user = await db.getUser(account.email);
+        const currentCharacter = request.session.get('currentCharacter');
+        const characters = await db.getCharacters(account.username);
         const token = csrf.create(secret)
-        reply.view("./views/character_overview", { settings: settings, character: character, currentCharacter: currentCharacter, csrftoken: token });
+        reply.view("./views/character_overview", { settings: settings, user: user, character: character, characters: characters, currentCharacter: currentCharacter, csrftoken: token });
     })
 
     app.post('/characters/switch', async (request, reply) => {
