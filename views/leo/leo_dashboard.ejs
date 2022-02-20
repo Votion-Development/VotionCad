@@ -208,19 +208,40 @@
 <body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
 	<!--Container-->
 	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
-        <% if (currentCharacter.onduty === true) { %>
-            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled">10-41</button>
+        <% if (currentCharacter.status === "10-8") { %>
+            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled>10-41</button>
             <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOffduty()">10-42</button><br>
-            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" disabled>10-8</button>
-            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">10-7</button>
-            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">10-6</button><br>
+            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go108()" disabled>10-8</button>
+            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go107()">10-7</button>
+            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go106()">10-6</button><br>
             <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="panic()">PANIC</button>
+        <% } else if (currentCharacter.status === "10-7") { %>
+            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled>10-41</button>
+            <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOffduty()">10-42</button><br>
+            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go108()">10-8</button>
+            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go107()" disabled>10-7</button>
+            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go106()">10-6</button><br>
+            <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="panic()">PANIC</button>
+        <% } else if (currentCharacter.status === "10-6") { %>
+            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled>10-41</button>
+            <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOffduty()">10-42</button><br>
+            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go108()">10-8</button>
+            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go107()">10-7</button>
+            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go106()" disabled>10-6</button><br>
+            <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="panic()">PANIC</button>
+        <% } else if (currentCharacter.status === "PANIC") { %>
+            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled>10-41</button>
+            <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOffduty()">10-42</button><br>
+            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go108()">10-8</button>
+            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go107()">10-7</button>
+            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go106()">10-6</button><br>
+            <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg" onclick="panic()" disabled>PANIC</button>
         <% } else { %>
             <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOnduty()">10-41</button>
             <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOffduty()" disabled>10-42</button><br>
-            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" disabled>10-8</button>
-            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" disabled>10-7</button>
-            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" disabled>10-6</button><br>
+            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go108()" disabled>10-8</button>
+            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go107()" disabled>10-7</button>
+            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go106()" disabled>10-6</button><br>
             <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg" onclick="panic()" disabled>PANIC</button>
         <% } %>
 		<!--Title-->
@@ -308,8 +329,8 @@
             if (data['Status'] === "10-8") {
                 $(nRow).find('td:eq(3)').css('background-color', '#69ff69');
             } else if (data['Status'] === "10-6") {
-                $(nRow).find('td:eq(3)').css('10-7', '#d26767');
-            } else if (data['Status'] === "Out of Service") {
+                $(nRow).find('td:eq(3)').css('background-color', '#d26767');
+            } else if (data['Status'] === "10-7") {
                 $(nRow).find('td:eq(3)').css('background-color', '#856b6b');
             } else if (data['Status'] === "PANIC") {
                 $(nRow).addClass('preventInvert')
@@ -339,8 +360,6 @@
             )
             const music = new Audio('/static/sounds/panic-button.mp3');
             music.play();
-            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg";
-            document.getElementById("PANIC").disabled = true;
             setTimeout(function () {
                 music.play();
                 setTimeout(function () {
@@ -349,10 +368,6 @@
                         music.play();
                         setTimeout(function () {
                             music.play();
-                            setTimeout(function () {
-                                document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
-                                document.getElementById("PANIC").disabled = false;
-                            }, 20000);
                         }, 3000);
                     }, 3000);
                 }, 3000);
@@ -412,6 +427,84 @@
         }
     }
 
+    async function go108() {
+        const res = await fetch(`/dashboard/leo/108`, {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify({ "id": "<%= currentCharacter.id %>" })
+        });
+        const response = await res.json();
+        if (response.success === true) {
+            document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+            document.getElementById("1041").disabled = true;
+            document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("1042").disabled = false;
+            document.getElementById("108").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+            document.getElementById("108").disabled = true;
+            document.getElementById("107").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("107").disabled = false;
+            document.getElementById("106").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("106").disabled = false;
+            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
+            document.getElementById("PANIC").disabled = false;
+            socket.send("UPDATE")
+        } else {
+            location.reload()
+        }
+    }
+
+    async function go107() {
+        const res = await fetch(`/dashboard/leo/107`, {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify({ "id": "<%= currentCharacter.id %>" })
+        });
+        const response = await res.json();
+        if (response.success === true) {
+            document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+            document.getElementById("1041").disabled = true;
+            document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("1042").disabled = false;
+            document.getElementById("108").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("108").disabled = false;
+            document.getElementById("107").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+            document.getElementById("107").disabled = true;
+            document.getElementById("106").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("106").disabled = false;
+            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
+            document.getElementById("PANIC").disabled = false;
+            socket.send("UPDATE")
+        } else {
+            location.reload()
+        }
+    }
+
+    async function go106() {
+        const res = await fetch(`/dashboard/leo/106`, {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify({ "id": "<%= currentCharacter.id %>" })
+        });
+        const response = await res.json();
+        if (response.success === true) {
+            document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+            document.getElementById("1041").disabled = true;
+            document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("1042").disabled = false;
+            document.getElementById("108").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("108").disabled = false;
+            document.getElementById("107").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+            document.getElementById("107").disabled = true;
+            document.getElementById("106").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+            document.getElementById("106").disabled = true;
+            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
+            document.getElementById("PANIC").disabled = false;
+            socket.send("UPDATE")
+        } else {
+            location.reload()
+        }
+    }
+
     async function panic() {
         const { value: location } = await Swal.fire({
             title: 'Enter your location',
@@ -423,6 +516,11 @@
                     return 'You need to put a location!'
                 } else {
                     socket.send(JSON.stringify({ "type": "PANIC", "id": "<%= currentCharacter.id %>", "location": value }))
+                    document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg";
+                    document.getElementById("PANIC").disabled = true;
+                    document.getElementById("108").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+                    document.getElementById("108").disabled = false;
+                    socket.send("UPDATE")
                 }
             }
         })

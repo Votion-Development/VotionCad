@@ -244,5 +244,26 @@ module.exports = {
             await collection.updateOne({ id: id }, { $set: { status: "PANIC" } });
             resolve(true)
         })
+    },
+    set108: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            await collection.updateOne({ id: id }, { $set: { status: "10-8" } });
+            resolve(true)
+        })
+    },
+    set107: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            await collection.updateOne({ id: id }, { $set: { status: "10-7" } });
+            resolve(true)
+        })
+    },
+    set106: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            await collection.updateOne({ id: id }, { $set: { status: "10-6" } });
+            resolve(true)
+        })
     }
 };

@@ -73,6 +73,51 @@ async function router(app, opts) {
         }
     });
 
+    app.post('/108', async (request, reply) => {
+        const body = JSON.parse(request.body);
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.send({ error: invalidsession }));
+        const character = await db.getCharacter(body.id)
+        if (!character) return reply.send({ error: notfound })
+        if (character.owner != account.username) return reply.send({ error: notowner })
+        const teneight = await db.set108(body.id)
+        if (teneight === true) {
+            reply.send({ success: true })
+        } else {
+            reply.send({ success: false })
+        }
+    });
+
+    app.post('/107', async (request, reply) => {
+        const body = JSON.parse(request.body);
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.send({ error: invalidsession }));
+        const character = await db.getCharacter(body.id)
+        if (!character) return reply.send({ error: notfound })
+        if (character.owner != account.username) return reply.send({ error: notowner })
+        const tenseven = await db.set107(body.id)
+        if (tenseven === true) {
+            reply.send({ success: true })
+        } else {
+            reply.send({ success: false })
+        }
+    });
+
+    app.post('/106', async (request, reply) => {
+        const body = JSON.parse(request.body);
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.send({ error: invalidsession }));
+        const character = await db.getCharacter(body.id)
+        if (!character) return reply.send({ error: notfound })
+        if (character.owner != account.username) return reply.send({ error: notowner })
+        const tensix = await db.set106(body.id)
+        if (tensix === true) {
+            reply.send({ success: true })
+        } else {
+            reply.send({ success: false })
+        }
+    });
+
     wss.on('connection', (ws) => {
         ws.on('message', async function message(data) {
             if (data.toString("utf8") === "UPDATE") {
@@ -82,6 +127,8 @@ async function router(app, opts) {
             } else if (JSON.parse(data.toString("utf8")).type === "PANIC") {
                 const json = JSON.parse(data.toString("utf8"))
                 const officer = await db.getCharacter(json.id)
+                if (!officer) ws.close()
+                await db.setPanic(json.id)
                 wss.clients.forEach(function each(client) {
                     client.send(JSON.stringify({ "type": "PANIC", "officer": officer.name, "location": json.location }));
                 });
