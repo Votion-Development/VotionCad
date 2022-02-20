@@ -118,6 +118,36 @@ async function router(app, opts) {
         }
     });
 
+    app.post('/1023', async (request, reply) => {
+        const body = JSON.parse(request.body);
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.send({ error: invalidsession }));
+        const character = await db.getCharacter(body.id)
+        if (!character) return reply.send({ error: notfound })
+        if (character.owner != account.username) return reply.send({ error: notowner })
+        const tentwentythree = await db.set1023(body.id)
+        if (tentwentythree === true) {
+            reply.send({ success: true })
+        } else {
+            reply.send({ success: false })
+        }
+    });
+
+    app.post('/1011', async (request, reply) => {
+        const body = JSON.parse(request.body);
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.send({ error: invalidsession }));
+        const character = await db.getCharacter(body.id)
+        if (!character) return reply.send({ error: notfound })
+        if (character.owner != account.username) return reply.send({ error: notowner })
+        const teneleven = await db.set1011(body.id)
+        if (teneleven === true) {
+            reply.send({ success: true })
+        } else {
+            reply.send({ success: false })
+        }
+    });
+
     wss.on('connection', (ws) => {
         ws.on('message', async function message(data) {
             if (data.toString("utf8") === "UPDATE") {
