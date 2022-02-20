@@ -316,7 +316,6 @@
             music.play();
             document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg";
             document.getElementById("PANIC").disabled = true;
-            document.body.style.background = "red";
             setTimeout(function () {
                 music.play();
                 setTimeout(function () {
@@ -326,7 +325,6 @@
                         setTimeout(function () {
                             music.play();
                             setTimeout(function () {
-                                document.body.style.background = "white";
                                 document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
                                 document.getElementById("PANIC").disabled = false;
                             }, 20000);
