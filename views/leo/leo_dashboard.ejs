@@ -234,14 +234,12 @@
 			<table id="leoTable" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
 				<thead>
 					<tr>
-						<th data-priority="1">Identifier</th>
-						<th data-priority="2">Name</th>
-						<th data-priority="3">Department</th>
-						<th data-priority="4">Status</th>
+                        <th>Name</th>
+						<th>Callsign</th>
+						<th>Department</th>
+						<th>Status</th>
 					</tr>
 				</thead>
-				<tbody id="officers">
-				</tbody>
 			</table>
 		</div>
 	</div>
@@ -296,20 +294,38 @@
 
     const socket = new WebSocket(`${webSocketProtocol}${window.location.host}${window.location.pathname}`);
 
-    let table
+    const table = new DataTable('#leoTable', {
+        "ajax": "/dashboard/leo/ajax",
+        responsive: true,
+        "columns": [
+            {"data": "Callsign"},
+            {"data": "Name"},
+            {"data": "Department"},
+            {"data": "Status"},
+        ],
+        "fnRowCallback": function (nRow, data) {
+            $(nRow).find('td:eq(3)').addClass("preventInvert")
+            if (data['Status'] === "10-8") {
+                $(nRow).find('td:eq(3)').css('background-color', '#69ff69');
+            } else if (data['Status'] === "10-6") {
+                $(nRow).find('td:eq(3)').css('10-7', '#d26767');
+            } else if (data['Status'] === "Out of Service") {
+                $(nRow).find('td:eq(3)').css('background-color', '#856b6b');
+            } else if (data['Status'] === "PANIC") {
+                $(nRow).addClass('preventInvert')
+                $(nRow).css('background-color', '#ff0000');
+            }
+        },
+    }).columns.adjust().responsive.recalc();
 
-    $(document).ready(function() {
-        table = $('#leoTable').DataTable({
-            responsive: true
-        }).columns.adjust().responsive.recalc();
-    });
+    console.log(table)
 
     socket.onmessage = function (event) {
-        if (event.data.includes("PANIC")) {
-            const location = event.data.split('PANIC ')[1]
+        if (JSON.parse(event.data.toString("utf8")).type === "PANIC") {
+            const data = JSON.parse(event.data.toString("utf8"))
             Swal.fire(
-                'An officer just pressed their panic!',
-                `Location: ${location}`,
+                `${data.officer} just pressed their panic!`,
+                `Location: ${data.location}`,
                 'warning'
             )
             const music = new Audio('/static/sounds/panic-button.mp3');
@@ -332,35 +348,10 @@
                     }, 3000);
                 }, 3000);
             }, 3000);
-        } else {
-            const json = JSON.parse(event.data)
-            if (!json) return;
-            for (var i = 0; i < json.length; i++) {
-                const officer = table.row(`#officer_${json[i].id}`).data();
-                console.log(json[i].status)
-                console.log(json[i])
-                if (!officer) {
-                    if (json[i].status === "108") {
-                        table.row.add([
-                            `${json[i].callsign}`,
-                            `${json[i].name}`,
-                            `${json[i].department}`,
-                            `<td style="background-color: rgb(105, 255, 105);">10-8</td>`,
-                        ]).node().id = `officer_${json[i].id}`;
-                        table.draw( false );
-                    }
-                } else {
-                    if (json[i].status === "1042") {
-                        table.row(`#officer_${json[i].id}`).remove().draw()
-                    }
-                }
-            }
+        } else if (event.data.toString("utf8") === "UPDATE") {
+            table.ajax.reload(null, false);
         }
     }
-
-    setInterval(function () {
-        socket.send("data")
-    }, 1000);
 
     async function goOnduty() {
         const res = await fetch(`/dashboard/leo/onduty`, {
@@ -370,13 +361,6 @@
         });
         const response = await res.json();
         if (response.success === true) {
-            table.row.add([
-                `<%= currentCharacter.callsign %>`,
-                 `<%= currentCharacter.name %>`,
-                `<%= currentCharacter.department %>`,
-                `<td style="background-color: rgb(105, 255, 105);">10-8</td>`,
-            ]).node().id = `officer_<%= currentCharacter.id %>`;
-            table.draw( false );
             document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
             document.getElementById("1041").disabled = true;
             document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
@@ -387,6 +371,7 @@
             document.getElementById("106").disabled = false;
             document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
             document.getElementById("PANIC").disabled = false;
+            socket.send("UPDATE")
         } else {
             location.reload()
         }
@@ -400,7 +385,6 @@
         });
         const response = await res.json();
         if (response.success === true) {
-            table.row(`#officer_<%= currentCharacter.id %>`).remove().draw()
             document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
             document.getElementById("1041").disabled = false;
             document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
@@ -411,6 +395,7 @@
             document.getElementById("106").disabled = true;
             document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg";
             document.getElementById("PANIC").disabled = true;
+            socket.send("UPDATE")
         } else {
             location.reload()
         }
@@ -426,7 +411,7 @@
                 if (!value) {
                     return 'You need to put a location!'
                 } else {
-                    socket.send(`PANIC ${value}`)
+                    socket.send(JSON.stringify({ "type": "PANIC", "id": "<%= currentCharacter.id %>", "location": value }))
                 }
             }
         })

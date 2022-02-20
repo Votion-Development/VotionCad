@@ -33,7 +33,15 @@ async function router(app, opts) {
         const currentCharacter = request.session.get('currentCharacter');
         const characters = await db.getCharacters(account.username);
         const user = await db.getUser(account.email)
+        await db.getAllLEOs()
         reply.view("./views/leo/leo_dashboard", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token });
+    });
+
+    app.get('/ajax', async (request, reply) => {
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.redirect('/login'));
+        const officers = await db.getAllLEOs()
+        reply.send({ data: officers})
     });
 
     app.post('/onduty', async (request, reply) => {
@@ -68,14 +76,16 @@ async function router(app, opts) {
 
     wss.on('connection', (ws) => {
         ws.on('message', async function message(data) {
-            if (data.toString("utf8").includes("PANIC")) {
-                const location = data.toString("utf8").split('PANIC ')[1]
+            if (data.toString("utf8") === "UPDATE") {
                 wss.clients.forEach(function each(client) {
-                    client.send("PANIC " + location);
+                    client.send("UPDATE");
                 });
-            } else {
-                const onduty = await db.getAllLEOs()
-                ws.send(JSON.stringify(onduty))
+            } else if (JSON.parse(data.toString("utf8")).type === "PANIC") {
+                const json = JSON.parse(data.toString("utf8"))
+                const officer = await db.getCharacter(json.id)
+                wss.clients.forEach(function each(client) {
+                    client.send(JSON.stringify({ "type": "PANIC", "officer": officer.name, "location": json.location }));
+                });
             }
         });
     })

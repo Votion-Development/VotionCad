@@ -213,20 +213,32 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("characters");
             const filteredDocs = await collection.find({ leo: true }).toArray();
-            resolve(filteredDocs)
+            const officers = []
+            for (var i = 0; i < filteredDocs.length; i++) {
+                if (filteredDocs[i].status === "10-42") return
+                officers.push({ "Name": filteredDocs[i].name, "Callsign": filteredDocs[i].callsign, "Department": filteredDocs[i].department, "Status": filteredDocs[i].status })
+            }
+            resolve(officers)
         })
     },
     setOnduty: async function (id) {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("characters");
-            await collection.updateOne({ id: id }, { $set: { status: "108", onduty: true } });
+            await collection.updateOne({ id: id }, { $set: { status: "10-8", onduty: true } });
             resolve(true)
         })
     },
     setOffduty: async function (id) {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("characters");
-            await collection.updateOne({ id: id }, { $set: { status: "1042", onduty: false } });
+            await collection.updateOne({ id: id }, { $set: { status: "10-42", onduty: false } });
+            resolve(true)
+        })
+    },
+    setPanic: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            await collection.updateOne({ id: id }, { $set: { status: "PANIC" } });
             resolve(true)
         })
     }
