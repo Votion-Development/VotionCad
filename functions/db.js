@@ -215,8 +215,11 @@ module.exports = {
             const filteredDocs = await collection.find({ leo: true }).toArray();
             const officers = []
             for (var i = 0; i < filteredDocs.length; i++) {
-                if (filteredDocs[i].status === "10-42") return
-                officers.push({ "Name": filteredDocs[i].name, "Callsign": filteredDocs[i].callsign, "Department": filteredDocs[i].department, "Status": filteredDocs[i].status })
+                if (filteredDocs[i].status === "10-42") {
+                    
+                } else {
+                    officers.push({ "Name": filteredDocs[i].name, "Callsign": filteredDocs[i].callsign, "Department": filteredDocs[i].department, "Status": filteredDocs[i].status })
+                }
             }
             resolve(officers)
         })

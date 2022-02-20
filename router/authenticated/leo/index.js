@@ -33,7 +33,6 @@ async function router(app, opts) {
         const currentCharacter = request.session.get('currentCharacter');
         const characters = await db.getCharacters(account.username);
         const user = await db.getUser(account.email)
-        await db.getAllLEOs()
         reply.view("./views/leo/leo_dashboard", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token });
     });
 
@@ -41,6 +40,7 @@ async function router(app, opts) {
         const account = request.session.get('account');
         if (!account) return request.destroySession(() => reply.redirect('/login'));
         const officers = await db.getAllLEOs()
+        console.log(officers)
         reply.send({ data: officers})
     });
 
