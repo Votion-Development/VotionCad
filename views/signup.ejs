@@ -145,7 +145,6 @@
             body: JSON.stringify(values)
         });
         const response = await res.json();
-        console.log(response)
         if (!response.error) {
             if (response.success === true) {
                 return document.getElementById("success_alert").style.display = "block";

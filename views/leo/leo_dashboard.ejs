@@ -318,7 +318,16 @@
         },
     }).columns.adjust().responsive.recalc();
 
-    console.log(table)
+    setInterval(function () {
+
+    }, 10000)
+
+    function reloadAjax(){
+        table.ajax.reload(null, false);
+        setTimeout(reloadAjax, 10000);
+    }
+    reloadAjax();
+
 
     socket.onmessage = function (event) {
         if (JSON.parse(event.data.toString("utf8")).type === "PANIC") {
@@ -348,8 +357,10 @@
                     }, 3000);
                 }, 3000);
             }, 3000);
-        } else if (event.data.toString("utf8") === "UPDATE") {
+        } else if (JSON.parse(event.data.toString("utf8")).action === "UPDATE") {
             table.ajax.reload(null, false);
+        } else {
+            location.reload()
         }
     }
 

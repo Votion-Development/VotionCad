@@ -40,7 +40,6 @@ async function router(app, opts) {
         const account = request.session.get('account');
         if (!account) return request.destroySession(() => reply.redirect('/login'));
         const officers = await db.getAllLEOs()
-        console.log(officers)
         reply.send({ data: officers})
     });
 
@@ -78,7 +77,7 @@ async function router(app, opts) {
         ws.on('message', async function message(data) {
             if (data.toString("utf8") === "UPDATE") {
                 wss.clients.forEach(function each(client) {
-                    client.send("UPDATE");
+                    client.send(JSON.stringify({"action": "UPDATE"}));
                 });
             } else if (JSON.parse(data.toString("utf8")).type === "PANIC") {
                 const json = JSON.parse(data.toString("utf8"))

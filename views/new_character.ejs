@@ -238,7 +238,6 @@
             body: JSON.stringify(values)
         });
         const response = await res.json();
-        console.log(response)
         if (!response.error) {
             if (response.success === true) {
                 return window.location.href = "/dashboard";
