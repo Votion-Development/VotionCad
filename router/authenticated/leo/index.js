@@ -1,10 +1,7 @@
 const db = require('../../../functions/db');
-const fs = require('fs');
 const { loadWebconfig } = require('../../../functions');
-const webconfig = loadWebconfig();
 const WebSocket = require('ws');
 const Tokens = require('csrf');
-const { request } = require('http');
 const csrf = new Tokens()
 
 const secret = csrf.secretSync()
@@ -41,6 +38,24 @@ async function router(app, opts) {
         if (!account) return request.destroySession(() => reply.redirect('/login'));
         const officers = await db.getAllLEOs()
         reply.send({ data: officers})
+    });
+
+    app.get('/search', async (request, reply) => {
+        const settings = await db.getSettings()
+        const token = csrf.create(secret)
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.redirect('/login'));
+        const currentCharacter = request.session.get('currentCharacter');
+        const characters = await db.getCharacters(account.username);
+        const user = await db.getUser(account.email)
+        reply.view("./views/leo/leo_character_search", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token });
+    });
+
+    app.get('/search/ajax', async (request, reply) => {
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.redirect('/login'));
+        const characters = await db.getAllCharacters()
+        reply.send({ data: characters })
     });
 
     app.post('/onduty', async (request, reply) => {
@@ -149,6 +164,7 @@ async function router(app, opts) {
     });
 
     wss.on('connection', (ws) => {
+        console.log(1)
         ws.on('message', async function message(data) {
             if (data.toString("utf8") === "UPDATE") {
                 wss.clients.forEach(function each(client) {

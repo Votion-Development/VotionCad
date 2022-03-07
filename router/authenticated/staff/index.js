@@ -1,5 +1,4 @@
 const db = require('../../../functions/db');
-const fs = require('fs')
 const Tokens = require('csrf')
 const csrf = new Tokens()
 

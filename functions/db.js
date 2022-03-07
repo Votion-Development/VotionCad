@@ -200,6 +200,17 @@ module.exports = {
             resolve(filteredDocs)
         })
     },
+    getAllCharacters: async function () {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            const filteredDocs = await collection.find({}).toArray();
+            const characters = []
+            for (var i = 0; i < filteredDocs.length; i++) {
+                characters.push({ "Name": filteredDocs[i].name, "Date Of Birth": filteredDocs[i].dob, "Job": filteredDocs[i].job, "Address": filteredDocs[i].address })
+            }
+            resolve(characters)
+        })
+    },
     getCharacter: async function (id) {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("characters");

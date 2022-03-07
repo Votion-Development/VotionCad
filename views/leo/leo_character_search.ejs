@@ -352,9 +352,6 @@
             {"data": "Department"},
             {"data": "Status"},
         ],
-        "oLanguage": {
-            "sEmptyTable": "There are no officers on duty.",
-        },
         "fnRowCallback": function (nRow, data) {
             $(nRow).find('td:eq(3)').addClass("preventInvert")
             if (data['Status'] === "10-8") {
