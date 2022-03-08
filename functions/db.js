@@ -39,7 +39,7 @@ if (!webconfig.connection_uri) {
     */
 
     const COLLECTIONS = [
-        'users', 'sessions', 'departments', 'vehicles', 'characters', 'settings'
+        'users', 'sessions', 'departments', 'vehicles', 'characters', 'settings', 'penal_code', 'arrests', 'citations', 'warrants'
     ];
 
     for (const coll of COLLECTIONS) {
@@ -206,7 +206,7 @@ module.exports = {
             const filteredDocs = await collection.find({}).toArray();
             const characters = []
             for (var i = 0; i < filteredDocs.length; i++) {
-                characters.push({ "Name": filteredDocs[i].name, "Date Of Birth": filteredDocs[i].dob, "Job": filteredDocs[i].job, "Address": filteredDocs[i].address })
+                characters.push({ "Name": filteredDocs[i].name, "Date Of Birth": filteredDocs[i].dob, "Job": filteredDocs[i].job, "Address": filteredDocs[i].address, "uuid": filteredDocs[i].id })
             }
             resolve(characters)
         })
@@ -290,5 +290,14 @@ module.exports = {
             await collection.updateOne({ id: id }, { $set: { status: "10-11" } });
             resolve(true)
         })
+    },
+    /*
+    addRecord: async function (id, offense, time) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            await collection.updateOne({ id: id }, { $push: { record: {"offense": offense, "time": time} } });
+            resolve(true)
+        })
     }
+    */ //For my future refference
 };

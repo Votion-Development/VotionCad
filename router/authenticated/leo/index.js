@@ -163,8 +163,36 @@ async function router(app, opts) {
         }
     });
 
+    app.get('/person/:id', async (request, reply) => {
+        const settings = await db.getSettings()
+        const token = csrf.create(secret)
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.redirect('/login'));
+        if (!request.params.id) reply.send("Unkown person.")
+        const currentCharacter = request.session.get('currentCharacter');
+        const characters = await db.getCharacters(account.username);
+        const user = await db.getUser(account.email)
+        const character = await db.getCharacter(request.params.id)
+        reply.view("./views/leo/leo_person_overview", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token, character: character });
+    });
+
+    app.post('/addRecord', async (request, reply) => {
+        const body = JSON.parse(request.body);
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.send({ error: invalidsession }));
+        const currentCharacter = request.session.get('currentCharacter');
+        if (currentCharacter.leo != true) return reply.send({ error: notleo })
+        const character = await db.getCharacter(body.id)
+        if (!character) return reply.send({ error: notfound })
+        const addrecord = await db.addRecord(body.id, body.offense, body.time)
+        if (addrecord === true) {
+            reply.send({ success: true })
+        } else {
+            reply.send({ success: false })
+        }
+    });
+
     wss.on('connection', (ws) => {
-        console.log(1)
         ws.on('message', async function message(data) {
             if (data.toString("utf8") === "UPDATE") {
                 wss.clients.forEach(function each(client) {

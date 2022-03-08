@@ -208,24 +208,87 @@
 <body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
 	<!--Container-->
 	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
-		<!--Card-->
-		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-
-
-			<table id="leoTable" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-				<thead>
-					<tr>
-                        <th>Name</th>
-						<th>Date Of Birth</th>
-						<th>Job</th>
-						<th>Address</th>
-                        <th></th>
-					</tr>
-				</thead>
-			</table>
-		</div>
-	</div>
+        <button class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="arrestReport()">Create Arrest Report</button>
+        <button class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="giveCitation()">Give Citation</button>
+        <button class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="issueWarrant()">Issue Arrest Warrant</button>
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">Person Overview</h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Full name</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.name %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Date Of Birth</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.dob %></dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Job</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.job %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Gender</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.gender %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Height</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.height %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Weight</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.weight %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Ethnicity</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.ethnicity %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Drivers License</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.driver %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Gun License</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.gun %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Pilots License</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.pilot %></dd>
+                </div>
+              </dl>
+            </div>
+        </div>
+    </div>
 </body>
+<br>
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">Criminal Record</h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Offense</dt>
+                    <dd class="text-sm font-medium text-gray-500 sm:mt-0 sm:col-span-2">Time</dd>
+                </div>
+                <% for (i = 0; i < character.record.length; i++) { %>
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500"><%= character.record[i].offense %></dt>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.record[i].time %></dd>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+
+<br>
 
 <script>
     let profileOpened = false
@@ -272,30 +335,29 @@
         }
     }
 
-    const table = new DataTable('#leoTable', {
-        "ajax": "/dashboard/leo/search/ajax",
-        responsive: true,
-        "columns": [
-            {"data": "Name"},
-            {"data": "Date Of Birth"},
-            {"data": "Job"},
-            {"data": "Address"},
-            {"data": "uuid"},
-        ],
-        'fnRowCallback': function (row, data, index) {
-            $(row).find('td:eq(4)').html(
-                '<button class="h-12 px-6 m-2 text-xs text-green-100 transition-colors duration-150 bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-800" onclick="window.location.href = `/dashboard/leo/person/'+data.uuid+'`;">View Person</button>'
-            );
-        },
-    }).columns.adjust().responsive.recalc();
-
-    setInterval(function () {
-
-    }, 10000)
-
-    function reloadAjax(){
-        table.ajax.reload(null, false);
-        setTimeout(reloadAjax, 10000);
+    async function addRecord() {
+        const res = await fetch(`/dashboard/leo/addRecord`, {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify({ "id": "<%= currentCharacter.id %>", "offense": "murder", "time": "100" })
+        });
+        const response = await res.json();
+        if (response.success === true) {
+            console.log("added")
+        } else {
+            console.log(response)
+        }
     }
-    reloadAjax();
+
+    async function arrestReport() {
+        return window.location.href = `${window.location.pathname}/arrest`;
+    }
+
+    async function giveCitation() {
+        return window.location.href = `${window.location.pathname}/citation`;
+    }
+
+    async function issueWarrant() {
+        return window.location.href = `${window.location.pathname}/warrant`;
+    }
 </script>

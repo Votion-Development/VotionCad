@@ -208,6 +208,8 @@
 <body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
 	<!--Container-->
 	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <button class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="personSearch()">Person Search</button>
+        <br></br>
         <% if (currentCharacter.status === "10-8") { %>
             <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled>10-41</button>
             <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOffduty()">10-42</button><br>
@@ -639,5 +641,9 @@
                 }
             }
         })
+    }
+
+    async function personSearch() {
+        return window.location.href = "/dashboard/leo/search";
     }
 </script>
