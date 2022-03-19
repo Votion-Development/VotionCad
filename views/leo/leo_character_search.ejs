@@ -212,7 +212,7 @@
 		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
 
 
-			<table id="leoTable" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+			<table id="searchTable" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
 				<thead>
 					<tr>
                         <th>Name</th>
@@ -272,7 +272,7 @@
         }
     }
 
-    const table = new DataTable('#leoTable', {
+    const table = new DataTable('#searchTable', {
         "ajax": "/dashboard/leo/search/ajax",
         responsive: true,
         "columns": [

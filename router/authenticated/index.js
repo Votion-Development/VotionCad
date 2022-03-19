@@ -21,11 +21,12 @@ async function router(app, opts) {
     app.get('/characters/new', async (request, reply) => {
         const settings = await db.getSettings();
         const account = request.session.get('account');
+        const currentCharacter = request.session.get('currentCharacter');
         if (!account) return request.destroySession(() => reply.redirect('/login'));
         const user = await db.getUser(account.email);
+        const characters = await db.getCharacters(account.username);
         const token = csrf.create(secret);
-        const currentCharacter = await db.getCharacter(account.currentCharacter);
-        reply.view("./views/new_character", { settings: settings, user: user, currentCharacter: currentCharacter, csrftoken: token });
+        reply.view("./views/new_character", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token });
     });
 
     app.post('/characters/new', async (request, reply) => {
@@ -67,6 +68,13 @@ async function router(app, opts) {
         request.session.set('currentCharacter', character);
         reply.send({ success: true })
     })
+
+    app.get('/penal_code/ajax', async (request, reply) => {
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.redirect('/login'));
+        const penal_codes = await db.getAllPenalCodes()
+        reply.send({ data: penal_codes})
+    });
 
     fs.readdirSync(path.join(`${__dirname}/leo`))
         .filter(file => file.endsWith(".js"))

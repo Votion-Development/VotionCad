@@ -175,12 +175,12 @@
               <dl>
                 <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">Offense</dt>
-                    <dd class="text-sm font-medium text-gray-500 sm:mt-0 sm:col-span-2">Time</dd>
+                    <dd class="text-sm font-medium text-gray-500 sm:mt-0 sm:col-span-2">Penalty</dd>
                 </div>
                 <% for (i = 0; i < character.record.length; i++) { %>
                     <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500"><%= character.record[i].offense %></dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.record[i].time %></dd>
+                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.record[i].penalty %></dd>
                     </div>
                 <% } %>
             </div>

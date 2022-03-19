@@ -193,6 +193,29 @@ module.exports = {
             resolve(true)
         });
     },
+    createPenalCode: async function (data, creator) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("penal_code");
+            const generatedID = await this.generateID()
+            await collection.insertOne({
+                name: data.name,
+                penalty: data.penalty,
+                id: generatedID,
+                createdby: creator,
+                dateadded: Date(),
+            });
+            resolve(true)
+        });
+    },
+    deletePenalCode: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("penal_code");
+            const deleted = await collection.deleteOne({
+                id: id,
+            });
+            resolve(true)
+        });
+    },
     getCharacters: async function (username) {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("characters");
@@ -291,8 +314,75 @@ module.exports = {
             resolve(true)
         })
     },
+    addArrest: async function (id, offense, time) {
+        return new Promise(async (resolve, reject) => {
+            const generatedID = await this.generateID()
+            const collection = db.collection("characters");
+            await collection.insertOne({
+                character_id: id,
+                offense: offense,
+                time: time,
+                id: generatedID,
+                dateadded: Date(),
+            });
+            resolve(true)
+        })
+    },
+    getAllUsersRaw: async function () {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("users");
+            const filteredDocs = await collection.find({}).toArray();
+            resolve(filteredDocs)
+        })
+    },
+    getAllCharactersRaw: async function () {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            const filteredDocs = await collection.find({}).toArray();
+            resolve(filteredDocs)
+        })
+    },
+    getAllVehiclesRaw: async function () {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("vehicles");
+            const filteredDocs = await collection.find({}).toArray();
+            resolve(filteredDocs)
+        })
+    },
+    getAllArrestsRaw: async function () {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("arrests");
+            const filteredDocs = await collection.find({}).toArray();
+            resolve(filteredDocs)
+        })
+    },
+    getAllWarrantsRaw: async function () {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("warrants");
+            const filteredDocs = await collection.find({}).toArray();
+            resolve(filteredDocs)
+        })
+    },
+    getAllCitationsRaw: async function () {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("citations");
+            const filteredDocs = await collection.find({}).toArray();
+            resolve(filteredDocs)
+        })
+    },
+    getAllPenalCodes: async function () {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("penal_code");
+            const filteredDocs = await collection.find({}).toArray();
+            const penal_codes = []
+            for (var i = 0; i < filteredDocs.length; i++) {
+                penal_codes.push({ "Name": filteredDocs[i].name, "Penalty": filteredDocs[i].penalty, "Created by": filteredDocs[i].createdby, "ID": filteredDocs[i].id })
+            }
+            resolve(penal_codes)
+        })
+    },
     /*
-    addRecord: async function (id, offense, time) {
+    addArrest: async function (id, offense, time) {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("characters");
             await collection.updateOne({ id: id }, { $push: { record: {"offense": offense, "time": time} } });

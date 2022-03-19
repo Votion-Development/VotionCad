@@ -176,7 +176,21 @@ async function router(app, opts) {
         reply.view("./views/leo/leo_person_overview", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token, character: character });
     });
 
-    app.post('/addRecord', async (request, reply) => {
+    app.get('/person/:id/arrest', async (request, reply) => {
+        const settings = await db.getSettings()
+        const token = csrf.create(secret)
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.redirect('/login'));
+        if (!request.params.id) reply.send("Unkown person.")
+        const currentCharacter = request.session.get('currentCharacter');
+        const characters = await db.getCharacters(account.username);
+        const user = await db.getUser(account.email)
+        const character = await db.getCharacter(request.params.id)
+        const penal_codes = await db.getAllPenalCodes()
+        reply.view("./views/leo/leo_character_arrest", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token, character: character, penal_codes: penal_codes });
+    });
+
+    app.post('/addArrest', async (request, reply) => {
         const body = JSON.parse(request.body);
         const account = request.session.get('account');
         if (!account) return request.destroySession(() => reply.send({ error: invalidsession }));
@@ -184,8 +198,8 @@ async function router(app, opts) {
         if (currentCharacter.leo != true) return reply.send({ error: notleo })
         const character = await db.getCharacter(body.id)
         if (!character) return reply.send({ error: notfound })
-        const addrecord = await db.addRecord(body.id, body.offense, body.time)
-        if (addrecord === true) {
+        const addArrest = await db.addArrest(body.id, body.offense, body.time)
+        if (addArrest === true) {
             reply.send({ success: true })
         } else {
             reply.send({ success: false })

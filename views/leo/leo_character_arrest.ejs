@@ -125,95 +125,21 @@
           <div class="grid grid-cols-1 gap-6">
             <input type="hidden" name="csrftoken" value="<%= csrftoken %>">
             <label class="block">
-              <span class="text-gray-700">Full name</span>
-              <input name="name" type="text" class=" mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" placeholder="John Doe" required />
-            </label>
-            <label class="block">
-              <span class="text-gray-700">Date Of Birth</span>
-              <input name="dob" type="date" class=" mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" required />
-            </label>
-            <label class="block">
-                <span class="text-gray-700">Height</span>
-                <input name="height" type="text" class=" mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" placeholder="6'1" required />
-            </label>
+                <span class="text-gray-700">Penal Code</span>
+                    <select name="penal_code" id="penal_code" class="block w-full mt-0 px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" required>
+                        <option disabled selected value> -- select an option -- </option>
+                        <% for (i = 0; i < penal_codes.length; i++) { %>
+                            <option><%= penal_codes[i].Name %></option>
+                        <% } %> 
+                    </select>
+                </label>
 
-            <label class="block">
-                <span class="text-gray-700">Weight</span>
-                <input name="weight" type="text" class="mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" placeholder="100lbs" required />
-            </label>
-
-            <label class="block">
-              <span class="text-gray-700">Gender</span>
-              <select name="gender" class="block w-full mt-0 px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" required>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-              </select>
-            </label>
-
-            <label class="block">
-                <span class="text-gray-700">Ethnicity</span>
-                <select name="ethnicity" class="block w-full mt-0 px-0.5 border-0 border-b-2 border-gray-200  focus:ring-0 focus:border-black">
-                  <option>Caucasian</option>
-                  <option>African American</option>
-                  <option>Latino</option>
-                  <option>Asian</option>
-                  <option>American Indian</option>
-                  <option>Other</option>
-                </select>
-            </label>
-
-            <label class="block">
-                <span class="text-gray-700">Hair Colour</span>
-                <select name="hair" class="block w-full mt-0 px-0.5 border-0 border-b-2 border-gray-200  focus:ring-0 focus:border-black">
-                  <option>Blonde</option>
-                  <option>Black</option>
-                  <option>Brown</option>
-                  <option>Ginger</option>
-                  <option>Other</option>
-                  <option>None (Bald)</option>
-                </select>
-            </label>
-
-            <label class="block">
-                <span class="text-gray-700">Address</span>
-                <input name="address" type="text" class="mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" placeholder="The White House" required />
-            </label>
-            
-            <label class="block">
-                <span class="text-gray-700">Job</span>
-                <input name="job" type="text" class="mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" placeholder="KFC Worker" required />
-            </label>
-
-            <label class="block">
-                <span class="text-gray-700">Drivers License</span>
-                <select name="driver" class="block w-full mt-0 px-0.5 border-0 border-b-2 border-gray-200  focus:ring-0 focus:border-black">
-                  <option>Valid</option>
-                  <option>Suspended</option>
-                  <option>Expired</option>
-                  <option>None</option>
-                </select>
-            </label>
-
-            <label class="block">
-                <span class="text-gray-700">Gun License</span>
-                <select name="gun" class="block w-full mt-0 px-0.5 border-0 border-b-2 border-gray-200  focus:ring-0 focus:border-black">
-                  <option>Valid</option>
-                  <option>Suspended</option>
-                  <option>Expired</option>
-                  <option>None</option>
-                </select>
-            </label>
-            
-            <label class="block">
-                <span class="text-gray-700">Pilots License</span>
-                <select name="pilot" class="block w-full mt-0 px-0.5 border-0 border-b-2 border-gray-200  focus:ring-0 focus:border-black">
-                  <option>Valid</option>
-                  <option>Suspended</option>
-                  <option>Expired</option>
-                  <option>None</option>
-                </select>
-            </label>
+                <a id="suggested_penalty">Suggested Penalty: </a>
+  
+                <label class="block">
+                    <span class="text-gray-700">Penalty</span>
+                    <input name="penalty" type="text" class="mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" placeholder="100s" required />
+                </label>
           </div>
         </div>
     </div>
@@ -226,6 +152,22 @@
 
 
 <script>
+    $("#penal_code").change(async function () {
+        const res = await fetch(`/dashboard/penal_code/ajax`, {
+            method: "GET",
+            credentials: "same-origin",
+        });
+        const data2 = await res.json();
+        const data = data2.data
+        console.log(data)
+
+        const val = this.value;
+        let obj = data.find(o => o.Name === val);
+        console.log(val)
+        console.log(obj)
+        $("#suggested_penalty").text(`Suggested Penalty: ${obj.Penalty}`);
+    });
+
     let profileOpened = false
     async function openProfilePopup() {
         if (profileOpened === false) {
@@ -293,7 +235,7 @@
     $('#characterForm').submit(async function (e) {
         e.preventDefault();
         const values = $(this).serializeObject();
-        const res = await fetch(`/dashboard/characters/new`, {
+        const res = await fetch(`${window.location.pathname}`, {
             method: "POST",
             credentials: "same-origin",
             body: JSON.stringify(values)
