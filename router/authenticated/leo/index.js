@@ -190,15 +190,15 @@ async function router(app, opts) {
         reply.view("./views/leo/leo_character_arrest", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token, character: character, penal_codes: penal_codes });
     });
 
-    app.post('/addArrest', async (request, reply) => {
+    app.post('/person/:id/arrest', async (request, reply) => {
         const body = JSON.parse(request.body);
         const account = request.session.get('account');
         if (!account) return request.destroySession(() => reply.send({ error: invalidsession }));
         const currentCharacter = request.session.get('currentCharacter');
         if (currentCharacter.leo != true) return reply.send({ error: notleo })
-        const character = await db.getCharacter(body.id)
+        const character = await db.getCharacter(request.params.id)
         if (!character) return reply.send({ error: notfound })
-        const addArrest = await db.addArrest(body.id, body.offense, body.time)
+        const addArrest = await db.addArrest(request.params.id, body.penal_code, body.penalty)
         if (addArrest === true) {
             reply.send({ success: true })
         } else {
