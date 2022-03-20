@@ -79,6 +79,24 @@ async function router(app, opts) {
         const penal_codes = await db.getAllPenalCodes()
         reply.send({ data: penal_codes})
     });
+
+    app.get('/users', async (request, reply) => {
+        const settings = await db.getSettings()
+        const token = csrf.create(secret)
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.redirect('/login'));
+        const currentCharacter = request.session.get('currentCharacter');
+        const characters = await db.getCharacters(account.username);
+        const user = await db.getUser(account.email)
+        reply.view("./views/staff/staff_users", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token });
+    })
+
+    app.get('/users/ajax', async (request, reply) => {
+        const account = request.session.get('account');
+        if (!account) return request.destroySession(() => reply.redirect('/login'));
+        const penal_codes = await db.getAllPenalCodes()
+        reply.send({ data: penal_codes})
+    });
 }
 
 module.exports = router;
