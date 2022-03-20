@@ -28,6 +28,12 @@ async function router(app, opts) {
         if (!user) {
             return reply.send({ "error": "invaliduserorpass" })
         }
+        const pass = await db.verifyPassword(body.email, body.password).catch(e => reply.send({ "error": "invaliduserorpass" }))
+        console.log(pass)
+        if (pass != true) {
+            reply.send({ "error": "invaliduserorpass" })
+        }
+        console.log(2)
         if (user.approved === false) {
             return reply.send({ error: "approval" })
         }
@@ -41,6 +47,7 @@ async function router(app, opts) {
         request.session.set('account', user);
         request.session.set('currentCharacter', character);
         reply.send({ success: true })
+        console.log(3)
     })
 
     app.get('/signup', async (request, reply) => {

@@ -93,6 +93,23 @@ module.exports = {
                 email: email,
             });
             if (!user) reject(false)
+            bcrypt.compare(password, user.password, function(err, result) {
+                console.log(result)
+                if (result === true) {
+                    resolve(true)
+                } else {
+                    reject(false)
+                }
+            });
+        });
+    },
+    matchPasswords: async function (email, password) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("users");
+            const user = await collection.findOne({
+                email: email,
+            });
+            if (!user) reject(false)
             if (user.password === password) {
                 resolve(true)
             } else {
