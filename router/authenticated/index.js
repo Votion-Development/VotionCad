@@ -55,7 +55,10 @@ async function router(app, opts) {
         const currentCharacter = request.session.get('currentCharacter');
         const characters = await db.getCharacters(account.username);
         const token = csrf.create(secret)
-        reply.view("./views/character_overview", { settings: settings, user: user, character: character, characters: characters, currentCharacter: currentCharacter, csrftoken: token });
+        const warrants = await db.getWarrants(request.params.id)
+        const arrests = await db.getArrests(request.params.id)
+        const citations = await db.getCitations(request.params.id)
+        reply.view("./views/character_overview", { settings: settings, user: user, character: character, characters: characters, currentCharacter: currentCharacter, csrftoken: token, warrants: warrants, arrests: arrests, citations: citations });
     })
 
     app.post('/characters/switch', async (request, reply) => {

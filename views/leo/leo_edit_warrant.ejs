@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>
-        <%= settings.name %> - Dashboard
+        <%= settings.name %> - New Character
     </title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -106,38 +106,57 @@
     </div>
 </nav>
 <br>
-<div class="relative">
-    <div class="absolute left-5">
-        <button type="button" onclick="window.location.href = '/dashboard/characters/new'" class="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-800 dark:border-gray-700">New Character</button>
+
+<div role="alert" style="display:none;" id="unknown_alert">
+    <div class="border border-red-400 rounded-b rounded-t bg-red-100 px-4 py-3 text-red-700">
+        <p>There was an unknown error when creating the arrest report.</p>
     </div>
 </div>
-<br>
 
-<div class="p-10 grid xl:grid-cols-5 gap-2 row">
-    <% if (characters.length === 0) { %>
-        <a>You have no characters! Please create one.</a>
-    <% } %>
-    <% for (var i=0; i < characters.length; i++) { %>
-        <div class="p-6 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md">
-            <a>
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900"><%= characters[i].name %></h5>
-            </a>
-            <a>Date Of Birth: <%= characters[i].dob %></a><br>
-            <a>Height: <%= characters[i].height %></a><br>
-            <a>Weight: <%= characters[i].weight %></a><br>
-            <a>Gender: <%= characters[i].gender %></a><br>
-            <a>Ethnicity: <%= characters[i].ethnicity %></a><br>
-            <a>Hair Colour: <%= characters[i].hair %></a><br>
-            <a>Job: <%= characters[i].job %></a><br></br>
-            <a href="/dashboard/characters/<%= characters[i].id %>" class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300">
-                View
-                <svg class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-            </a>
-        </div>
-    <% } %>
+<div role="alert" style="display:none;" id="csrf_alert">
+    <div class="border border-red-400 rounded-b rounded-t bg-red-100 px-4 py-3 text-red-700">
+        <p>CSRF token missmatch. Please reload the page and try again.</p>
+    </div>
 </div>
 
+<form class="left-5" id="characterForm">
+    <div class="py-12">
+        <div class="mt-8 max-w-md">
+          <div class="grid grid-cols-1 gap-6">
+            <input type="hidden" name="csrftoken" value="<%= csrftoken %>">
+            <label class="block">
+                <span class="text-gray-700">Status</span>
+                <select name="status" id="status" class="block w-full mt-0 px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" required>
+                    <option>Pending</option>
+                    <option>Active</option>
+                    <option>Served</option>
+                </select>
+            </label>
+          </div>
+        </div>
+    </div>
+    <div class="relative">
+        <div class="absolute left-5">
+            <button type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-800 dark:border-gray-700">Submit Arrest Warrant</button>
+        </div>
+    </div>
+</form>
+
+
 <script>
+    $("#penal_code").change(async function () {
+        const res = await fetch(`/dashboard/penal_code/ajax`, {
+            method: "GET",
+            credentials: "same-origin",
+        });
+        const data2 = await res.json();
+        const data = data2.data
+
+        const val = this.value;
+        let obj = data.find(o => o.Name === val);
+        $("#suggested_penalty").text(`Suggested Penalty: ${obj.Penalty}`);
+    });
+
     let profileOpened = false
     async function openProfilePopup() {
         if (profileOpened === false) {
@@ -181,4 +200,47 @@
             }
         }
     }
+</script>
+
+<script>
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+</script>
+
+<script>
+    $('#characterForm').submit(async function (e) {
+        e.preventDefault();
+        const values = $(this).serializeObject();
+        const res = await fetch(`${window.location.pathname}`, {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify(values)
+        });
+        const response = await res.json();
+        if (!response.error) {
+            if (response.success === true) {
+                const url = window.location.toString();
+                window.location = url.replace(`/warrant/<%= warrant.id %>`, '');
+            } else {
+                return document.getElementById("unknown_alert").style.display = "block";
+            }
+        } else if (response.error === "csrftokenmissmatch") {
+            return document.getElementById("csrf_alert").style.display = "block";
+        } else {
+            return document.getElementById("unknown_alert").style.display = "block";
+        }
+    });
 </script>

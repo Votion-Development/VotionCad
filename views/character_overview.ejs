@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>
-        <%= settings.name %> - Login
+        <%= settings.name %> - Character Overview
     </title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -169,24 +169,145 @@
 	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <div class="px-4 py-5 sm:px-6">
-              <h3 class="text-lg leading-6 font-medium text-gray-900">Criminal Record</h3>
+              <h3 class="text-lg leading-6 font-medium text-gray-900">Warrants</h3>
             </div>
             <div class="border-t border-gray-200">
               <dl>
-                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">Offense</dt>
-                    <dd class="text-sm font-medium text-gray-500 sm:mt-0 sm:col-span-2">Penalty</dd>
-                </div>
-                <% for (i = 0; i < character.record.length; i++) { %>
-                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500"><%= character.record[i].offense %></dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= character.record[i].penalty %></dd>
+                <div class="flex flex-col">
+                    <div class="overflow-x-auto shadow-md">
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden ">
+                                <table class="min-w-full divide-y divide-gray-200 table-fixed">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Offense
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Penalty
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Issued By
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Status
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <% for (i = 0; i < warrants.length; i++) { %>
+                                            <tr class="">
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= warrants[i].offense %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= warrants[i].penalty %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= warrants[i].issued_by %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= warrants[i].status %></td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                <% } %>
+                </div>
             </div>
         </div>
     </div>
 </body>
+<br>
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">Arrests</h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="flex flex-col">
+                    <div class="overflow-x-auto shadow-md">
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden ">
+                                <table class="min-w-full divide-y divide-gray-200 table-fixed">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Offense
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Penalty
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Issued By
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <% for (i = 0; i < arrests.length; i++) { %>
+                                            <tr class="">
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= arrests[i].offense %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= arrests[i].penalty %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= arrests[i].issued_by %></td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<br>
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">Citations</h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="flex flex-col">
+                    <div class="overflow-x-auto shadow-md">
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden ">
+                                <table class="min-w-full divide-y divide-gray-200 table-fixed">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Offense
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Penalty
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Issued By
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <% for (i = 0; i < citations.length; i++) { %>
+                                            <tr class="">
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= citations[i].offense %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= citations[i].penalty %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= citations[i].issued_by %></td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<br>
 
 <br>
 

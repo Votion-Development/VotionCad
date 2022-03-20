@@ -314,15 +314,84 @@ module.exports = {
             resolve(true)
         })
     },
-    addArrest: async function (id, offense, time) {
+    addArrest: async function (id, offense, penalty, officer) {
         return new Promise(async (resolve, reject) => {
             const generatedID = await this.generateID()
-            const collection = db.collection("characters");
+            const collection = db.collection("arrests");
             await collection.insertOne({
                 character_id: id,
                 offense: offense,
-                time: time,
+                penalty: penalty,
                 id: generatedID,
+                issued_by: officer,
+                dateadded: Date(),
+            });
+            resolve(true)
+        })
+    },
+    getArrests: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("arrests");
+            const filteredDocs = await collection.find({ character_id: id }).toArray();
+            resolve(filteredDocs)
+        })
+    },
+    getWarrants: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("warrants");
+            const filteredDocs = await collection.find({ character_id: id }).toArray();
+            resolve(filteredDocs)
+        })
+    },
+    addWarrant: async function (id, offense, penalty, officer, status) {
+        return new Promise(async (resolve, reject) => {
+            const generatedID = await this.generateID()
+            const collection = db.collection("warrants");
+            await collection.insertOne({
+                character_id: id,
+                offense: offense,
+                penalty: penalty,
+                id: generatedID,
+                issued_by: officer,
+                status: status,
+                dateadded: Date(),
+            });
+            resolve(true)
+        })
+    },
+    editWarrantStatus: async function (id, status) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("warrants");
+            await collection.updateOne({ id: id }, { $set: { status: status } });
+            resolve(true)
+        })
+    },
+    getWarrant: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("warrants");
+            const filteredDocs = await collection.findOne({
+                id: id,
+            });
+            resolve(filteredDocs)
+        })
+    },
+    getCitations: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("citations");
+            const filteredDocs = await collection.find({ character_id: id }).toArray();
+            resolve(filteredDocs)
+        })
+    },
+    addCitation: async function (id, offense, penalty, officer) {
+        return new Promise(async (resolve, reject) => {
+            const generatedID = await this.generateID()
+            const collection = db.collection("citations");
+            await collection.insertOne({
+                character_id: id,
+                offense: offense,
+                penalty: penalty,
+                id: generatedID,
+                issued_by: officer,
                 dateadded: Date(),
             });
             resolve(true)
