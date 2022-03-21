@@ -18,6 +18,18 @@ async function router(app, opts) {
         reply.view("./views/dashboard", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token });
     });
 
+    app.get('/penal_code', async (request, reply) => {
+        const settings = await db.getSettings();
+        const account = request.session.get('account');
+        const currentCharacter = request.session.get('currentCharacter');
+        if (!account) return request.destroySession(() => reply.redirect('/login'));
+        const user = await db.getUser(account.email);
+        const characters = await db.getCharacters(account.username);
+        const token = csrf.create(secret);
+        const penal_codes = await db.getPenalCodes()
+        reply.view("./views/penal_codes", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token, penal_codes: penal_codes });
+    });
+
     app.get('/characters/new', async (request, reply) => {
         const settings = await db.getSettings();
         const account = request.session.get('account');

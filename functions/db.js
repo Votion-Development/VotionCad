@@ -94,7 +94,6 @@ module.exports = {
             });
             if (!user) reject(false)
             bcrypt.compare(password, user.password, function(err, result) {
-                console.log(result)
                 if (result === true) {
                     resolve(true)
                 } else {
@@ -465,6 +464,13 @@ module.exports = {
                 penal_codes.push({ "Name": filteredDocs[i].name, "Penalty": filteredDocs[i].penalty, "Created by": filteredDocs[i].createdby, "ID": filteredDocs[i].id })
             }
             resolve(penal_codes)
+        })
+    },
+    getPenalCodes: async function () {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("penal_code");
+            const filteredDocs = await collection.find({}).toArray();
+            resolve(filteredDocs)
         })
     },
     /*
