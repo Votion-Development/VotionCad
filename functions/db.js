@@ -226,7 +226,7 @@ module.exports = {
     deletePenalCode: async function (id) {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("penal_code");
-            const deleted = await collection.deleteOne({
+            await collection.deleteOne({
                 id: id,
             });
             resolve(true)
@@ -430,6 +430,63 @@ module.exports = {
             const filteredDocs = await collection.find({}).toArray();
             resolve(filteredDocs)
         })
+    },
+    getAllVehicles: async function () {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("vehicles");
+            const filteredDocs = await collection.find({}).toArray();
+            const vehicles = []
+            for (var i = 0; i < filteredDocs.length; i++) {
+                vehicles.push({ "Make": filteredDocs[i].make, "Model": filteredDocs[i].model, "Plate": filteredDocs[i].plate, "Colour": filteredDocs[i].colour, "uuid": filteredDocs[i].id })
+            }
+            resolve(vehicles)
+        })
+    },
+    getCharactersVehicles: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("vehicles");
+            const filteredDocs = await collection.find({ owner: id }).toArray();
+            resolve(filteredDocs)
+        })
+    },
+    getVehicle: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("vehicles");
+            const filteredDocs = await collection.findOne({ id: id })
+            resolve(filteredDocs)
+        })
+    },
+    editVehicle: async function (data, id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("vehicles");
+            await collection.updateOne({ id: id }, { $set: { plate: data.plate, make: data.make, model: data.model, colour: data.colour } });
+            resolve(true)
+        })
+    },
+    deleteVehicle: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("vehicles");
+            await collection.deleteOne({
+                id: id,
+            });
+            resolve(true)
+        })
+    },
+    createVehicle: async function (data, owner) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("vehicles");
+            const generatedID = await this.generateID()
+            await collection.insertOne({
+                plate: data.plate,
+                make: data.make,
+                model: data.model,
+                colour: data.colour,
+                owner: owner,
+                id: generatedID,
+                dateadded: Date(),
+            });
+            resolve(true)
+        });
     },
     /*
     addArrest: async function (id, offense, time) {

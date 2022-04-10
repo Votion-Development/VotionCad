@@ -12,6 +12,25 @@ async function router(app, opts) {
         reply.view("./views/dashboard", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters });
     });
 
+    app.get('/characters', async (request, reply) => {
+        const settings = await db.getSettings();
+        const account = request.session.get('account');
+        const currentCharacter = request.session.get('currentCharacter');
+        const user = await db.getUser(account.email);
+        const characters = await db.getCharacters(account.username);
+        reply.view("./views/characters", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters });
+    });
+
+    app.get('/vehicles', async (request, reply) => {
+        const settings = await db.getSettings();
+        const account = request.session.get('account');
+        const currentCharacter = request.session.get('currentCharacter');
+        const user = await db.getUser(account.email);
+        const characters = await db.getCharacters(account.username);
+        const vehicles = await db.getCharactersVehicles(currentCharacter.id);
+        reply.view("./views/vehicles", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, vehicles: vehicles });
+    });
+
     app.get('/penal_code', async (request, reply) => {
         const settings = await db.getSettings();
         const account = request.session.get('account');
@@ -44,6 +63,61 @@ async function router(app, opts) {
         }
     });
 
+    app.get('/vehicles/new', async (request, reply) => {
+        const settings = await db.getSettings();
+        const account = request.session.get('account');
+        const currentCharacter = request.session.get('currentCharacter');
+        const user = await db.getUser(account.email);
+        const characters = await db.getCharacters(account.username);
+        reply.view("./views/new_vehicle", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters });
+    });
+
+    app.post('/vehicles/new', async (request, reply) => {
+        const body = JSON.parse(request.body);
+        const currentCharacter = request.session.get('currentCharacter');
+        const vehicle = await db.createVehicle(body, currentCharacter.id).catch(e => {
+            reply.send({ "error": "unknown" });
+        })
+        if (vehicle === true) {
+            reply.send({ "success": true });
+        } else {
+            reply.send({ "error": "unknown" });
+        }
+    });
+
+    app.get('/vehicles/:id', async (request, reply) => {
+        const settings = await db.getSettings();
+        const account = request.session.get('account');
+        const currentCharacter = request.session.get('currentCharacter');
+        const user = await db.getUser(account.email);
+        const characters = await db.getCharacters(account.username);
+        const vehicle = await db.getVehicle(request.params.id);
+        reply.view("./views/vehicle_edit", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, vehicle: vehicle });
+    });
+
+    app.delete('/vehicles/:id', async (request, reply) => {
+        const vehicle = await db.deleteVehicle(request.params.id).catch(e => {
+            reply.send({ "error": "unknown" });
+        })
+        if (vehicle === true) {
+            reply.send({ "success": true });
+        } else {
+            reply.send({ "error": "unknown" });
+        }
+    });
+
+    app.post('/vehicles/:id/edit', async (request, reply) => {
+        const body = JSON.parse(request.body);
+        const vehicle = await db.editVehicle(body, request.params.id).catch(e => {
+            reply.send({ "error": "unknown" });
+        })
+        if (vehicle === true) {
+            reply.send({ "success": true });
+        } else {
+            reply.send({ "error": "unknown" });
+        }
+    });
+
     app.get('/characters/:id', async (request, reply) => {
         const settings = await db.getSettings()
         const character = await db.getCharacter(request.params.id);
@@ -56,7 +130,8 @@ async function router(app, opts) {
         const warrants = await db.getWarrants(request.params.id)
         const arrests = await db.getArrests(request.params.id)
         const citations = await db.getCitations(request.params.id)
-        reply.view("./views/character_overview", { settings: settings, user: user, character: character, characters: characters, currentCharacter: currentCharacter, warrants: warrants, arrests: arrests, citations: citations });
+        const vehicles = await db.getCharactersVehicles(request.params.id)
+        reply.view("./views/character_overview", { settings: settings, user: user, character: character, characters: characters, currentCharacter: currentCharacter, warrants: warrants, arrests: arrests, citations: citations, vehicles: vehicles });
     })
 
     app.post('/characters/switch', async (request, reply) => {

@@ -23,7 +23,6 @@
     <meta name="author" content="" />
 </head>
 
-<!-- This example requires Tailwind CSS v2.0+ -->
 <nav class="bg-gray-800">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
@@ -47,7 +46,9 @@
             <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div class="hidden sm:block sm:ml-6">
                     <div class="flex space-x-4">
-                        <a href="/dashboard" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Characters</a>
+                        <a href="/dashboard" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</a>
+                        <a href="/dashboard/characters" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Characters</a>
+                        <a href="/dashboard/vehicles" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Vehicles</a>
                             <% if (!currentCharacter) { %>
                             <% } else if (currentCharacter.leo === true) { %>
                                 <a href="/dashboard/leo" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">LEO</a>
@@ -110,99 +111,6 @@
         </div>
     </div>
 </nav>
-
-<style>
-    /*Overrides for Tailwind CSS */
-
-    /*Form fields*/
-    .dataTables_wrapper select,
-    .dataTables_wrapper .dataTables_filter input {
-        color: #4a5568;
-        /*text-gray-700*/
-        padding-left: 1rem;
-        /*pl-4*/
-        padding-right: 1rem;
-        /*pl-4*/
-        padding-top: .5rem;
-        /*pl-2*/
-        padding-bottom: .5rem;
-        /*pl-2*/
-        line-height: 1.25;
-        /*leading-tight*/
-        border-width: 2px;
-        /*border-2*/
-        border-radius: .25rem;
-        border-color: #edf2f7;
-        /*border-gray-200*/
-        background-color: #edf2f7;
-        /*bg-gray-200*/
-    }
-
-    /*Row Hover*/
-    table.dataTable.hover tbody tr:hover,
-    table.dataTable.display tbody tr:hover {
-        background-color: #ebf4ff;
-        /*bg-indigo-100*/
-    }
-
-    /*Pagination Buttons*/
-    .dataTables_wrapper .dataTables_paginate .paginate_button {
-        font-weight: 700;
-        /*font-bold*/
-        border-radius: .25rem;
-        /*rounded*/
-        border: 1px solid transparent;
-        /*border border-transparent*/
-    }
-
-    /*Pagination Buttons - Current selected */
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-        color: #fff !important;
-        /*text-white*/
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
-        /*shadow*/
-        font-weight: 700;
-        /*font-bold*/
-        border-radius: .25rem;
-        /*rounded*/
-        background: #667eea !important;
-        /*bg-indigo-500*/
-        border: 1px solid transparent;
-        /*border border-transparent*/
-    }
-
-    /*Pagination Buttons - Hover */
-    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-        color: #fff !important;
-        /*text-white*/
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
-        /*shadow*/
-        font-weight: 700;
-        /*font-bold*/
-        border-radius: .25rem;
-        /*rounded*/
-        background: #667eea !important;
-        /*bg-indigo-500*/
-        border: 1px solid transparent;
-        /*border border-transparent*/
-    }
-
-    /*Add padding to bottom border */
-    table.dataTable.no-footer {
-        border-bottom: 1px solid #e2e8f0;
-        /*border-b-1 border-gray-300*/
-        margin-top: 0.75em;
-        margin-bottom: 0.75em;
-    }
-
-    /*Change colour of responsive icon*/
-    table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
-    table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
-        background-color: #667eea !important;
-        /*bg-indigo-500*/
-    }
-</style>
-
 <br>
 
 <body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
@@ -211,6 +119,7 @@
         <button class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="arrestReport()">Create Arrest Report</button>
         <button class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="giveCitation()">Give Citation</button>
         <button class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="issueWarrant()">Issue Arrest Warrant</button>
+        <br><br>
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <div class="px-4 py-5 sm:px-6">
               <h3 class="text-lg leading-6 font-medium text-gray-900">Person Overview</h3>
@@ -263,13 +172,6 @@
     </div>
 </body>
 <br>
-
-<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
-    <!--Container-->
-    <div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
-        
-    </div>
-</body>
 <br>
 
 <body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
@@ -409,6 +311,71 @@
                                                 <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= citations[i].offense %></td>
                                                 <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= citations[i].penalty %></td>
                                                 <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= citations[i].issued_by %></td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<br>
+<br>
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">Vehicles</h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="flex flex-col">
+                    <div class="overflow-x-auto shadow-md">
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden ">
+                                <table class="min-w-full divide-y divide-gray-200 table-fixed">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Plate
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Make
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Model
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Colour
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <% for (i = 0; i < vehicles.length; i++) { %>
+                                            <tr class="">
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= vehicles[i].plate %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= vehicles[i].make %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= vehicles[i].model %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= vehicles[i].colour %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><a href="/dashboard/leo/vehicle/<%= vehicles[i].id %>"
+                                                    class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300">
+                                                    View
+                                                    <svg class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd"
+                                                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                                            clip-rule="evenodd"></path>
+                                                    </svg>
+                                                </a></td>
                                             </tr>
                                         <% } %>
                                     </tbody>

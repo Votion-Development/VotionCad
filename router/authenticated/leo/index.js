@@ -31,7 +31,7 @@ async function router(app, opts) {
         reply.send({ data: officers})
     });
 
-    app.get('/search', async (request, reply) => {
+    app.get('/search/person', async (request, reply) => {
         const settings = await db.getSettings()
         const account = request.session.get('account');
         const currentCharacter = request.session.get('currentCharacter');
@@ -40,9 +40,34 @@ async function router(app, opts) {
         reply.view("./views/leo/leo_character_search", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters });
     });
 
-    app.get('/search/ajax', async (request, reply) => {
+    app.get('/search/person/ajax', async (request, reply) => {
         const characters = await db.getAllCharacters()
         reply.send({ data: characters })
+    });
+
+    app.get('/search/vehicle', async (request, reply) => {
+        const settings = await db.getSettings()
+        const account = request.session.get('account');
+        const currentCharacter = request.session.get('currentCharacter');
+        const characters = await db.getCharacters(account.username);
+        const user = await db.getUser(account.email)
+        reply.view("./views/leo/leo_vehicle_search", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters });
+    });
+
+    app.get('/search/vehicle/ajax', async (request, reply) => {
+        const vehicles = await db.getAllVehicles()
+        reply.send({ data: vehicles })
+    });
+
+    app.get('/vehicle/:id', async (request, reply) => {
+        const settings = await db.getSettings()
+        const account = request.session.get('account');
+        if (!request.params.id) reply.send("Unkown person.")
+        const currentCharacter = request.session.get('currentCharacter');
+        const characters = await db.getCharacters(account.username);
+        const user = await db.getUser(account.email)
+        const vehicle = await db.getVehicle(request.params.id)
+        reply.view("./views/leo/leo_vehicle_overview", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, vehicle: vehicle });
     });
 
     app.post('/setStatus/:status', async (request, reply) => {
@@ -70,7 +95,8 @@ async function router(app, opts) {
         const arrests = await db.getArrests(request.params.id)
         const warrants = await db.getWarrants(request.params.id)
         const citations = await db.getCitations(request.params.id)
-        reply.view("./views/leo/leo_person_overview", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, character: character, citations: citations, arrests: arrests, warrants: warrants });
+        const vehicles = await db.getCharactersVehicles(request.params.id)
+        reply.view("./views/leo/leo_person_overview", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, character: character, citations: citations, arrests: arrests, warrants: warrants, vehicles: vehicles });
     });
 
     app.get('/person/:id/arrest', async (request, reply) => {

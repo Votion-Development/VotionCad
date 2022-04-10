@@ -4,13 +4,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>
-        <%= settings.name %> - Dashboard
+        <%= settings.name %> - Person Overview
     </title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" />
+    <link rel="stylesheet" href="/static/css/login.css" />
 
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -40,7 +46,8 @@
             <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div class="hidden sm:block sm:ml-6">
                     <div class="flex space-x-4">
-                        <a href="/dashboard" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                        <a href="/dashboard"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                             aria-current="page">Dashboard</a>
                         <a href="/dashboard/characters"
                             class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -51,7 +58,7 @@
                         <% if (!currentCharacter) { %>
                         <% } else if (currentCharacter.leo === true) { %>
                         <a href="/dashboard/leo"
-                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">LEO</a>
+                            class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">LEO</a>
                         <% } %>
 
                         <% if (user.staff === true) { %>
@@ -126,9 +133,50 @@
 </nav>
 <br>
 
-<div class="p-10 grid gap-3">
-    <a class="text-4xl">Welcome back <%= user.username %>!</a>
-</div>
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+    <!--Container-->
+    <div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Person Overview</h3>
+            </div>
+            <div class="border-t border-gray-200">
+                <dl>
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Plate</dt>
+                        <dd class="mt-1 text-sm text-gray-900"><%= vehicle.plate %></dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Make</dt>
+                        <dd class="mt-1 text-sm text-gray-900"><%= vehicle.make %></dd>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Model</dt>
+                        <dd class="mt-1 text-sm text-gray-900"><%= vehicle.model %></dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Colour</dt>
+                        <dd class="mt-1 text-sm text-gray-900"><%= vehicle.colour %></dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt class="text-sm font-medium text-gray-500">Owner</dt>
+                        <dd class="mt-1 text-sm text-gray-900"><a href="/dashboard/leo/person/<%= vehicle.owner %>"
+                                class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300">
+                                View
+                                <svg class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </a></dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </div>
+</body>
+<br>
 
 <script>
     let profileOpened = false

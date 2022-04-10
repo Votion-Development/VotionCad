@@ -4,12 +4,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>
-        <%= settings.name %> - Person Citation
+        <%= settings.name %> - Vehicle Search
     </title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" />
 
     <meta name="description" content="" />
@@ -105,65 +109,125 @@
         </div>
     </div>
 </nav>
+
+<style>
+    /*Overrides for Tailwind CSS */
+
+    /*Form fields*/
+    .dataTables_wrapper select,
+    .dataTables_wrapper .dataTables_filter input {
+        color: #4a5568;
+        /*text-gray-700*/
+        padding-left: 1rem;
+        /*pl-4*/
+        padding-right: 1rem;
+        /*pl-4*/
+        padding-top: .5rem;
+        /*pl-2*/
+        padding-bottom: .5rem;
+        /*pl-2*/
+        line-height: 1.25;
+        /*leading-tight*/
+        border-width: 2px;
+        /*border-2*/
+        border-radius: .25rem;
+        border-color: #edf2f7;
+        /*border-gray-200*/
+        background-color: #edf2f7;
+        /*bg-gray-200*/
+    }
+
+    /*Row Hover*/
+    table.dataTable.hover tbody tr:hover,
+    table.dataTable.display tbody tr:hover {
+        background-color: #ebf4ff;
+        /*bg-indigo-100*/
+    }
+
+    /*Pagination Buttons*/
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        font-weight: 700;
+        /*font-bold*/
+        border-radius: .25rem;
+        /*rounded*/
+        border: 1px solid transparent;
+        /*border border-transparent*/
+    }
+
+    /*Pagination Buttons - Current selected */
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        color: #fff !important;
+        /*text-white*/
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+        /*shadow*/
+        font-weight: 700;
+        /*font-bold*/
+        border-radius: .25rem;
+        /*rounded*/
+        background: #667eea !important;
+        /*bg-indigo-500*/
+        border: 1px solid transparent;
+        /*border border-transparent*/
+    }
+
+    /*Pagination Buttons - Hover */
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        color: #fff !important;
+        /*text-white*/
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+        /*shadow*/
+        font-weight: 700;
+        /*font-bold*/
+        border-radius: .25rem;
+        /*rounded*/
+        background: #667eea !important;
+        /*bg-indigo-500*/
+        border: 1px solid transparent;
+        /*border border-transparent*/
+    }
+
+    /*Add padding to bottom border */
+    table.dataTable.no-footer {
+        border-bottom: 1px solid #e2e8f0;
+        /*border-b-1 border-gray-300*/
+        margin-top: 0.75em;
+        margin-bottom: 0.75em;
+    }
+
+    /*Change colour of responsive icon*/
+    table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
+    table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
+        background-color: #667eea !important;
+        /*bg-indigo-500*/
+    }
+</style>
+
 <br>
 
-<div role="alert" style="display:none;" id="unknown_alert">
-    <div class="border border-red-400 rounded-b rounded-t bg-red-100 px-4 py-3 text-red-700">
-        <p>There was an unknown error when creating the arrest report.</p>
-    </div>
-</div>
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+		<!--Card-->
+		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
 
-<div role="alert" style="display:none;" id="csrf_alert">
-    <div class="border border-red-400 rounded-b rounded-t bg-red-100 px-4 py-3 text-red-700">
-        <p>CSRF token missmatch. Please reload the page and try again.</p>
-    </div>
-</div>
 
-<form class="left-5" id="characterForm">
-    <div class="py-12">
-        <div class="mt-8 max-w-md">
-          <div class="grid grid-cols-1 gap-6">
-                <label class="block">
-                    <span class="text-gray-700">Penal Code</span>
-                    <select name="penal_code" id="penal_code" class="block w-full mt-0 px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" required>
-                        <option disabled selected value> -- select an option -- </option>
-                        <% for (i = 0; i < penal_codes.length; i++) { %>
-                            <option><%= penal_codes[i].Name %></option>
-                        <% } %> 
-                    </select>
-                </label>
-
-                <a id="suggested_penalty">Suggested Penalty: </a>
-  
-                <label class="block">
-                    <span class="text-gray-700">Penalty</span>
-                    <input name="penalty" type="text" class="mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" placeholder="$500" required />
-                </label>
-          </div>
-        </div>
-    </div>
-    <div class="relative">
-        <div class="absolute left-5">
-            <button type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-800 dark:border-gray-700">Submit Citation</button>
-        </div>
-    </div>
-</form>
-
+			<table id="searchTable" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+				<thead>
+					<tr>
+                        <th>Make</th>
+						<th>Model</th>
+						<th>Plate</th>
+						<th>Colour</th>
+                        <th></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+    <br>
+</body>
 
 <script>
-    $("#penal_code").change(async function () {
-        const res = await fetch(`/dashboard/penal_code/ajax`, {
-            method: "GET",
-            credentials: "same-origin",
-        });
-        const data2 = await res.json();
-        const data = data2.data
-
-        const val = this.value;
-        let obj = data.find(o => o.Name === val);
-        $("#suggested_penalty").text(`Suggested Penalty: ${obj.Penalty}`);
-    });
-
     let profileOpened = false
     async function openProfilePopup() {
         if (profileOpened === false) {
@@ -207,47 +271,31 @@
             }
         }
     }
-</script>
 
-<script>
-    $.fn.serializeObject = function () {
-        var o = {};
-        var a = this.serializeArray();
-        $.each(a, function () {
-            if (o[this.name]) {
-                if (!o[this.name].push) {
-                    o[this.name] = [o[this.name]];
-                }
-                o[this.name].push(this.value || '');
-            } else {
-                o[this.name] = this.value || '';
-            }
-        });
-        return o;
-    };
-</script>
+    const table = new DataTable('#searchTable', {
+        "ajax": "/dashboard/leo/search/vehicle/ajax",
+        responsive: true,
+        "columns": [
+            {"data": "Make"},
+            {"data": "Model"},
+            {"data": "Plate"},
+            {"data": "Colour"},
+            {"data": "uuid"},
+        ],
+        'fnRowCallback': function (row, data, index) {
+            $(row).find('td:eq(4)').html(
+                '<button class="h-12 px-6 m-2 text-xs text-green-100 transition-colors duration-150 bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-800" onclick="window.location.href = `/dashboard/leo/vehicle/'+data.uuid+'`;">View Vehicle</button>'
+            );
+        },
+    }).columns.adjust().responsive.recalc();
 
-<script>
-    $('#characterForm').submit(async function (e) {
-        e.preventDefault();
-        const values = $(this).serializeObject();
-        const res = await fetch(`${window.location.pathname}`, {
-            method: "POST",
-            credentials: "same-origin",
-            body: JSON.stringify(values)
-        });
-        const response = await res.json();
-        if (!response.error) {
-            if (response.success === true) {
-                const url = window.location.toString();
-                window.location = url.replace(`/citation`, '');
-            } else {
-                return document.getElementById("unknown_alert").style.display = "block";
-            }
-        } else if (response.error === "csrftokenmissmatch") {
-            return document.getElementById("csrf_alert").style.display = "block";
-        } else {
-            return document.getElementById("unknown_alert").style.display = "block";
-        }
-    });
+    setInterval(function () {
+
+    }, 10000)
+
+    function reloadAjax(){
+        table.ajax.reload(null, false);
+        setTimeout(reloadAjax, 10000);
+    }
+    reloadAjax();
 </script>

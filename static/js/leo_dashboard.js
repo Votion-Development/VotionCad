@@ -198,8 +198,7 @@ async function go108(id) {
         document.getElementById("PANIC").disabled = false;
         socket.send("UPDATE")
     } else {
-        console.log(response)
-        //location.reload()
+        location.reload()
     }
 }
 
@@ -393,5 +392,9 @@ async function panic(id) {
 }
 
 async function personSearch() {
-    return window.location.href = "/dashboard/leo/search";
+    return window.location.href = "/dashboard/leo/search/person";
+}
+
+async function vehicleSearch() {
+    return window.location.href = "/dashboard/leo/search/vehicle";
 }
