@@ -20,7 +20,6 @@ async function router(app, opts) {
         const settings = await db.getSettings()
         const token = csrf.create(secret)
         const account = request.session.get('account');
-        if (!account) return request.destroySession(() => reply.redirect('/login'));
         const currentCharacter = request.session.get('currentCharacter');
         const characters = await db.getCharacters(account.username);
         const user = await db.getUser(account.email)
@@ -30,25 +29,21 @@ async function router(app, opts) {
         const arrests_raw = await db.getAllArrestsRaw()
         const warrants_raw = await db.getAllWarrantsRaw()
         const citations_raw = await db.getAllCitationsRaw()
-        reply.view("./views/staff/staff_dashboard", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token, users: users_raw.length, characters: characters_raw.length, vehicles: vehicles_raw.length, arrests: arrests_raw.length, warrants: warrants_raw.length, citations: citations_raw.length });
+        reply.view("./views/staff/staff_dashboard", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token, users_ammount: users_raw.length, characters_ammount: characters_raw.length, vehicles_ammount: vehicles_raw.length, arrests_ammount: arrests_raw.length, warrants_ammount: warrants_raw.length, citations_ammount: citations_raw.length });
     })
 
     app.get('/penal_code', async (request, reply) => {
         const settings = await db.getSettings()
-        const token = csrf.create(secret)
         const account = request.session.get('account');
-        if (!account) return request.destroySession(() => reply.redirect('/login'));
         const currentCharacter = request.session.get('currentCharacter');
         const characters = await db.getCharacters(account.username);
         const user = await db.getUser(account.email)
-        reply.view("./views/staff/staff_penal_code", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token });
+        reply.view("./views/staff/staff_penal_code", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters });
     })
 
     app.post('/penal_code/new', async (request, reply) => {
         const body = JSON.parse(request.body);
         const account = request.session.get('account');
-        if (!account) return request.destroySession(() => reply.send('invalidsession'));
-        if (!csrf.verify(secret, body.csrftoken)) return reply.send({ "error": "csrftokenmissmatch" })
         const character = await db.createPenalCode(body, account.username).catch(e => {
             reply.send({ "error": "unknown" });
         })
@@ -56,13 +51,11 @@ async function router(app, opts) {
             reply.send({ "success": true });
         } else {
             reply.send({ "error": "unknown" });
-        };
+        }
     })
 
     app.post('/penal_code/delete', async (request, reply) => {
         const body = JSON.parse(request.body);
-        const account = request.session.get('account');
-        if (!account) return request.destroySession(() => reply.send('invalidsession'));
         const character = await db.deletePenalCode(body.id).catch(e => {
             reply.send({ "error": "unknown" });
         })
@@ -70,30 +63,24 @@ async function router(app, opts) {
             reply.send({ "success": true });
         } else {
             reply.send({ "error": "unknown" });
-        };
+        }
     })
 
     app.get('/penal_code/ajax', async (request, reply) => {
-        const account = request.session.get('account');
-        if (!account) return request.destroySession(() => reply.redirect('/login'));
         const penal_codes = await db.getAllPenalCodes()
         reply.send({ data: penal_codes})
     });
 
     app.get('/users', async (request, reply) => {
         const settings = await db.getSettings()
-        const token = csrf.create(secret)
         const account = request.session.get('account');
-        if (!account) return request.destroySession(() => reply.redirect('/login'));
         const currentCharacter = request.session.get('currentCharacter');
         const characters = await db.getCharacters(account.username);
         const user = await db.getUser(account.email)
-        reply.view("./views/staff/staff_users", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, csrftoken: token });
+        reply.view("./views/staff/staff_users", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters });
     })
 
     app.get('/users/ajax', async (request, reply) => {
-        const account = request.session.get('account');
-        if (!account) return request.destroySession(() => reply.redirect('/login'));
         const penal_codes = await db.getAllPenalCodes()
         reply.send({ data: penal_codes})
     });

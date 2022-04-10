@@ -1,7 +1,7 @@
-const db = require('./functions/db');
 const { loadWebconfig } = require('./functions');
 const log = require('./functions/logger')
 const path = require('path')
+const fs = require('fs');
 
 const webconfig = loadWebconfig();
 

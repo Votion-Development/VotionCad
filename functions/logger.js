@@ -1,5 +1,6 @@
 const chalk = require('chalk');
 const { loadWebconfig } = require('./index');
+const webconfig = loadWebconfig();
 
 async function getDate() {
 	const date_ob = new Date();
@@ -33,7 +34,7 @@ exports.lavalink = async (data) => {
 exports.debug = async (data) => {
 	if (webconfig.debug === false) {
 		return;
-	} else if (webconfig.debug === false) {
+	} else if (webconfig.debug === true) {
         const dateLog = await getDate();
         console.log(chalk.blue(dateLog + ' [DEBUG] ' + data));
     } else {

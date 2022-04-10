@@ -11,7 +11,6 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" />
-    <link rel="stylesheet" href="/static/css/login.css" />
 
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -123,7 +122,6 @@
     <div class="py-12">
         <div class="mt-8 max-w-md">
           <div class="grid grid-cols-1 gap-6">
-            <input type="hidden" name="csrftoken" value="<%= csrftoken %>">
             <label class="block">
               <span class="text-gray-700">Full name</span>
               <input name="name" type="text" class=" mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" placeholder="John Doe" required />

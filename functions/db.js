@@ -274,20 +274,6 @@ module.exports = {
             resolve(officers)
         })
     },
-    setOnduty: async function (id) {
-        return new Promise(async (resolve, reject) => {
-            const collection = db.collection("characters");
-            await collection.updateOne({ id: id }, { $set: { status: "10-8", onduty: true } });
-            resolve(true)
-        })
-    },
-    setOffduty: async function (id) {
-        return new Promise(async (resolve, reject) => {
-            const collection = db.collection("characters");
-            await collection.updateOne({ id: id }, { $set: { status: "10-42", onduty: false } });
-            resolve(true)
-        })
-    },
     setPanic: async function (id) {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("characters");
@@ -295,38 +281,10 @@ module.exports = {
             resolve(true)
         })
     },
-    set108: async function (id) {
+    setStatus: async function (id, status) {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("characters");
-            await collection.updateOne({ id: id }, { $set: { status: "10-8" } });
-            resolve(true)
-        })
-    },
-    set107: async function (id) {
-        return new Promise(async (resolve, reject) => {
-            const collection = db.collection("characters");
-            await collection.updateOne({ id: id }, { $set: { status: "10-7" } });
-            resolve(true)
-        })
-    },
-    set106: async function (id) {
-        return new Promise(async (resolve, reject) => {
-            const collection = db.collection("characters");
-            await collection.updateOne({ id: id }, { $set: { status: "10-6" } });
-            resolve(true)
-        })
-    },
-    set1023: async function (id) {
-        return new Promise(async (resolve, reject) => {
-            const collection = db.collection("characters");
-            await collection.updateOne({ id: id }, { $set: { status: "10-23" } });
-            resolve(true)
-        })
-    },
-    set1011: async function (id) {
-        return new Promise(async (resolve, reject) => {
-            const collection = db.collection("characters");
-            await collection.updateOne({ id: id }, { $set: { status: "10-11" } });
+            await collection.updateOne({ id: id }, { $set: { status: status } });
             resolve(true)
         })
     },

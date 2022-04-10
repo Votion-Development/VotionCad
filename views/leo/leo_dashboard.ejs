@@ -47,41 +47,56 @@
             <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div class="hidden sm:block sm:ml-6">
                     <div class="flex space-x-4">
-                        <a href="/dashboard" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Characters</a>
-                            <% if (!currentCharacter) { %>
-                            <% } else if (currentCharacter.leo === true) { %>
-                                <a href="/dashboard/leo" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">LEO</a>
-                            <% } %>
-    
-                            <% if (user.staff === true) { %>
-                                <a href="/dashboard/staff" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Staff</a>
-                            <% } %>
+                        <a href="/dashboard"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                            aria-current="page">Characters</a>
+                        <% if (!currentCharacter) { %>
+                        <% } else if (currentCharacter.leo === true) { %>
+                        <a href="/dashboard/leo"
+                            class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">LEO</a>
+                        <% } %>
 
-                        <a href="/dashboard/penal_code" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Penal Code</a>
+                        <% if (user.staff === true) { %>
+                        <a href="/dashboard/staff"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Staff</a>
+                        <% } %>
+
+                        <a href="/dashboard/penal_code"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Penal
+                            Code</a>
                     </div>
                 </div>
             </div>
             <div class="relative inline-block text-left">
                 <div>
-                  <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="menu-button" aria-expanded="true" aria-haspopup="true" onclick="openCharactersPopup()">
-                    <% if (!currentCharacter) { %>
+                    <button type="button"
+                        class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+                        id="menu-button" aria-expanded="true" aria-haspopup="true" onclick="openCharactersPopup()">
+                        <% if (!currentCharacter) { %>
                         No Characters
-                    <% } else { %>
+                        <% } else { %>
                         <%= currentCharacter.name %>
-                    <% } %>
-                
-                    <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                  </button>
+                        <% } %>
+
+                        <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                            fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
                 </div>
-                <div style="display:none;" id="popupMenuCharacters" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                  <div class="py-1" role="none">
-                    <% for (var i=0; i < characters.length; i++) { %>
-                        <button onclick="switchCharacter('<%= characters[i].id %>')"><a class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0"><%= characters[i].name %></a></button>
+                <div style="display:none;" id="popupMenuCharacters"
+                    class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                    <div class="py-1" role="none">
+                        <% for (var i=0; i < characters.length; i++) { %>
+                        <button onclick="switchCharacter('<%= characters[i].id %>')"><a
+                                class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
+                                id="menu-item-0"><%= characters[i].name %></a></button>
                         <br>
-                    <% } %>
-                  </div>
+                        <% } %>
+                    </div>
                 </div>
             </div>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -89,7 +104,8 @@
                     <div>
                         <button type="button"
                             class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                            id="user-menu-button" aria-expanded="false" aria-haspopup="true" onclick="openProfilePopup()">
+                            id="user-menu-button" aria-expanded="false" aria-haspopup="true"
+                            onclick="openProfilePopup()">
                             <span class="sr-only">Open user menu</span>
                             <img class="h-8 w-8 rounded-full"
                                 src="https://cdn5.vectorstock.com/i/thumb-large/45/79/male-avatar-profile-picture-silhouette-light-vector-4684579.jpg"
@@ -206,444 +222,208 @@
 <br>
 
 <body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
-	<!--Container-->
-	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
-        <button class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="personSearch()">Person Search</button>
+    <!--Container-->
+    <div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <button
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="personSearch()">Person Search</button>
         <br></br>
         <% if (currentCharacter.status === "10-8") { %>
-            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled>10-41</button>
-            <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOffduty()">10-42</button><br>
-            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go108()" disabled>10-8</button>
-            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go107()">10-7</button>
-            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go106()">10-6</button>
-            <button id="1023" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go1023()">10-23</button>
-            <button id="1011" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go1011()">10-11</button><br>
-            <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="panic()">PANIC</button>
+        <button id="1041"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go108(`<%= currentCharacter.id %>`)" disabled>10-41</button>
+        <button id="1042"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="goOffduty(`<%= currentCharacter.id %>`)">10-42</button><br>
+        <button id="108"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go108(`<%= currentCharacter.id %>`)" disabled>10-8</button>
+        <button id="107"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go107(`<%= currentCharacter.id %>`)">10-7</button>
+        <button id="106"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go106(`<%= currentCharacter.id %>`)">10-6</button>
+        <button id="1023"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go1023(`<%= currentCharacter.id %>`)">10-23</button>
+        <button id="1011"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go1011(`<%= currentCharacter.id %>`)">10-11</button><br>
+        <button id="PANIC"
+            class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800"
+            onclick="panic(`<%= currentCharacter.id %>`)">PANIC</button>
         <% } else if (currentCharacter.status === "10-7") { %>
-            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled>10-41</button>
-            <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOffduty()">10-42</button><br>
-            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go108()">10-8</button>
-            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go107()" disabled>10-7</button>
-            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go106()">10-6</button>
-            <button id="1023" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go1023()">10-23</button>
-            <button id="1011" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go1011()">10-11</button><br>
-            <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="panic()">PANIC</button>
+        <button id="1041"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go108(`<%= currentCharacter.id %>`)" disabled>10-41</button>
+        <button id="1042"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="goOffduty(`<%= currentCharacter.id %>`)">10-42</button><br>
+        <button id="108"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go108(`<%= currentCharacter.id %>`)">10-8</button>
+        <button id="107"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go107(`<%= currentCharacter.id %>`)" disabled>10-7</button>
+        <button id="106"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go106(`<%= currentCharacter.id %>`)">10-6</button>
+        <button id="1023"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go1023(`<%= currentCharacter.id %>`)">10-23</button>
+        <button id="1011"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go1011(`<%= currentCharacter.id %>`)">10-11</button><br>
+        <button id="PANIC"
+            class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800"
+            onclick="panic(`<%= currentCharacter.id %>`)">PANIC</button>
         <% } else if (currentCharacter.status === "10-6") { %>
-            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled>10-41</button>
-            <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOffduty()">10-42</button><br>
-            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go108()">10-8</button>
-            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go107()">10-7</button>
-            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go106()" disabled>10-6</button>
-            <button id="1023" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go1023()">10-23</button>
-            <button id="1011" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go1011()">10-11</button><br>
-            <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="panic()">PANIC</button>
+        <button id="1041"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go108(`<%= currentCharacter.id %>`)" disabled>10-41</button>
+        <button id="1042"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="goOffduty(`<%= currentCharacter.id %>`)">10-42</button><br>
+        <button id="108"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go108(`<%= currentCharacter.id %>`)">10-8</button>
+        <button id="107"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go107(`<%= currentCharacter.id %>`)">10-7</button>
+        <button id="106"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go106(`<%= currentCharacter.id %>`)" disabled>10-6</button>
+        <button id="1023"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go1023(`<%= currentCharacter.id %>`)">10-23</button>
+        <button id="1011"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go1011(`<%= currentCharacter.id %>`)">10-11</button><br>
+        <button id="PANIC"
+            class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800"
+            onclick="panic(`<%= currentCharacter.id %>`)">PANIC</button>
         <% } else if (currentCharacter.status === "10-23") { %>
-            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled>10-41</button>
-            <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOffduty()">10-42</button><br>
-            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go108()">10-8</button>
-            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go107()">10-7</button>
-            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go106()">10-6</button>
-            <button id="1023" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go1023()" disabled>10-23</button>
-            <button id="1011" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go1011()">10-11</button><br>
-            <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="panic()">PANIC</button>
+        <button id="1041"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go108(`<%= currentCharacter.id %>`)" disabled>10-41</button>
+        <button id="1042"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="goOffduty(`<%= currentCharacter.id %>`)">10-42</button><br>
+        <button id="108"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go108(`<%= currentCharacter.id %>`)">10-8</button>
+        <button id="107"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go107(`<%= currentCharacter.id %>`)">10-7</button>
+        <button id="106"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go106(`<%= currentCharacter.id %>`)">10-6</button>
+        <button id="1023"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go1023(`<%= currentCharacter.id %>`)" disabled>10-23</button>
+        <button id="1011"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go1011(`<%= currentCharacter.id %>`)">10-11</button><br>
+        <button id="PANIC"
+            class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800"
+            onclick="panic(`<%= currentCharacter.id %>`)">PANIC</button>
         <% } else if (currentCharacter.status === "10-11") { %>
-            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled>10-41</button>
-            <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOffduty()">10-42</button><br>
-            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go108()">10-8</button>
-            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go107()">10-7</button>
-            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go106()">10-6</button>
-            <button id="1023" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go1023()">10-23</button>
-            <button id="1011" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go1011()" disabled>10-11</button><br>
-            <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800" onclick="panic()">PANIC</button>
+        <button id="1041"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go108(`<%= currentCharacter.id %>`)" disabled>10-41</button>
+        <button id="1042"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="goOffduty(`<%= currentCharacter.id %>`)">10-42</button><br>
+        <button id="108"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go108(`<%= currentCharacter.id %>`)">10-8</button>
+        <button id="107"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go107(`<%= currentCharacter.id %>`)">10-7</button>
+        <button id="106"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go106(`<%= currentCharacter.id %>`)">10-6</button>
+        <button id="1023"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go1023(`<%= currentCharacter.id %>`)">10-23</button>
+        <button id="1011"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go1011(`<%= currentCharacter.id %>`)" disabled>10-11</button><br>
+        <button id="PANIC"
+            class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800"
+            onclick="panic(`<%= currentCharacter.id %>`)">PANIC</button>
         <% } else if (currentCharacter.status === "PANIC") { %>
-            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOnduty()" disabled>10-41</button>
-            <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOffduty()">10-42</button><br>
-            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go108()">10-8</button>
-            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go107()">10-7</button>
-            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go106()">10-6</button>
-            <button id="1023" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go1023()">10-23</button>
-            <button id="1011" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="go1011()">10-11</button><br>
-            <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg" onclick="panic()" disabled>PANIC</button>
+        <button id="1041"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go108(`<%= currentCharacter.id %>`)" disabled>10-41</button>
+        <button id="1042"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="goOffduty(`<%= currentCharacter.id %>`)">10-42</button><br>
+        <button id="108"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go108(`<%= currentCharacter.id %>`)">10-8</button>
+        <button id="107"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go107(`<%= currentCharacter.id %>`)">10-7</button>
+        <button id="106"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go106(`<%= currentCharacter.id %>`)">10-6</button>
+        <button id="1023"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go1023(`<%= currentCharacter.id %>`)">10-23</button>
+        <button id="1011"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go1011(`<%= currentCharacter.id %>`)">10-11</button><br>
+        <button id="PANIC"
+            class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg"
+            onclick="panic(`<%= currentCharacter.id %>`)" disabled>PANIC</button>
         <% } else { %>
-            <button id="1041" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800" onclick="goOnduty()">10-41</button>
-            <button id="1042" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="goOffduty()" disabled>10-42</button><br>
-            <button id="108" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go108()" disabled>10-8</button>
-            <button id="107" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go107()" disabled>10-7</button>
-            <button id="106" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go106()" disabled>10-6</button>
-            <button id="1023" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go1023()" disabled>10-23</button>
-            <button id="1011" class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg" onclick="go1011()" disabled>10-11</button><br>
-            <button id="PANIC" class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg" onclick="panic()" disabled>PANIC</button>
+        <button id="1041"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+            onclick="go108(`<%= currentCharacter.id %>`)">10-41</button>
+        <button id="1042"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="goOffduty(`<%= currentCharacter.id %>`)" disabled>10-42</button><br>
+        <button id="108"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go108(`<%= currentCharacter.id %>`)" disabled>10-8</button>
+        <button id="107"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go107(`<%= currentCharacter.id %>`)" disabled>10-7</button>
+        <button id="106"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go106(`<%= currentCharacter.id %>`)" disabled>10-6</button>
+        <button id="1023"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go1023(`<%= currentCharacter.id %>`)" disabled>10-23</button>
+        <button id="1011"
+            class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg"
+            onclick="go1011(`<%= currentCharacter.id %>`)" disabled>10-11</button><br>
+        <button id="PANIC"
+            class="h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg"
+            onclick="panic(`<%= currentCharacter.id %>`)" disabled>PANIC</button>
         <% } %>
-		<!--Title-->
-		<h1 class="flex items-center font-sans font-bold break-normal text-indigo-500 px-2 py-8 text-xl md:text-2xl">
-			On Duty LEO:
-		</h1>
-		<!--Card-->
-		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+        <!--Title-->
+        <h1 class="flex items-center font-sans font-bold break-normal text-indigo-500 px-2 py-8 text-xl md:text-2xl">
+            On Duty LEO:
+        </h1>
+        <!--Card-->
+        <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
 
 
-			<table id="leoTable" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-				<thead>
-					<tr>
+            <table id="leoTable" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                <thead>
+                    <tr>
                         <th>Name</th>
-						<th>Callsign</th>
-						<th>Department</th>
-						<th>Status</th>
-					</tr>
-				</thead>
-			</table>
-		</div>
-	</div>
+                        <th>Callsign</th>
+                        <th>Department</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
 </body>
 
-<script>
-    let profileOpened = false
-    async function openProfilePopup() {
-        if (profileOpened === false) {
-            document.getElementById("popupMenuProfile").style.display = "block";
-            profileOpened = true
-        } else {
-            document.getElementById("popupMenuProfile").style.display = "none";
-            profileOpened = false
-        }
-    }
-
-    let charactersOpened = false
-    async function openCharactersPopup() {
-        if (charactersOpened === false) {
-            document.getElementById("popupMenuCharacters").style.display = "block";
-            charactersOpened = true
-        } else {
-            document.getElementById("popupMenuCharacters").style.display = "none";
-            charactersOpened = false
-        }
-    }
-
-    async function switchCharacter(id) {
-        const res = await fetch(`/dashboard/characters/switch`, {
-            method: "POST",
-            credentials: "same-origin",
-            body: JSON.stringify({ id: id })
-        });
-        const response = await res.json();
-        if (!response.error) {
-            if (response.success === true) {
-                return location.reload();
-            } else {
-                return location.reload();
-            }
-        } else {
-            if (response.error === "invalidsession") {
-                return window.location.href = "/login";
-            } else {
-                return location.reload();
-            }
-        }
-    }
-
-    const webSocketProtocol = window.location.protocol == "https:" ? "wss://" : "ws://";
-
-    const socket = new WebSocket(`${webSocketProtocol}${window.location.host}${window.location.pathname}`);
-
-    const table = new DataTable('#leoTable', {
-        "ajax": "/dashboard/leo/ajax",
-        responsive: true,
-        "columns": [
-            {"data": "Callsign"},
-            {"data": "Name"},
-            {"data": "Department"},
-            {"data": "Status"},
-        ],
-        "oLanguage": {
-            "sEmptyTable": "There are no officers on duty.",
-        },
-        "fnRowCallback": function (nRow, data) {
-            $(nRow).find('td:eq(3)').addClass("preventInvert")
-            if (data['Status'] === "10-8") {
-                $(nRow).find('td:eq(3)').css('background-color', '#69ff69');
-            } else if (data['Status'] === "10-6") {
-                $(nRow).find('td:eq(3)').css('background-color', '#f0fc03');
-            } else if (data['Status'] === "10-7") {
-                $(nRow).find('td:eq(3)').css('background-color', '#fc6b03');
-            } else if (data['Status'] === "PANIC") {
-                $(nRow).addClass('preventInvert')
-                $(nRow).css('background-color', '#ff0000');
-            } else if(data['Status'] === "10-11") {
-                $(nRow).find('td:eq(3)').css('background-color', '#0000cc');
-            } else if(data['Status'] === "10-23") {
-                $(nRow).find('td:eq(3)').css('background-color', '#cc00ff');
-            }
-        },
-    }).columns.adjust().responsive.recalc();
-
-    setInterval(function () {
-
-    }, 10000)
-
-    function reloadAjax(){
-        table.ajax.reload(null, false);
-        setTimeout(reloadAjax, 10000);
-    }
-    reloadAjax();
-
-
-    socket.onmessage = function (event) {
-        if (JSON.parse(event.data.toString("utf8")).type === "PANIC") {
-            const data = JSON.parse(event.data.toString("utf8"))
-            Swal.fire(
-                `${data.officer} just pressed their panic!`,
-                `Location: ${data.location}`,
-                'warning'
-            )
-            const music = new Audio('/static/sounds/panic-button.mp3');
-            music.play();
-            setTimeout(function () {
-                music.play();
-                setTimeout(function () {
-                    music.play();
-                    setTimeout(function () {
-                        music.play();
-                        setTimeout(function () {
-                            music.play();
-                        }, 3000);
-                    }, 3000);
-                }, 3000);
-            }, 3000);
-        } else if (JSON.parse(event.data.toString("utf8")).action === "UPDATE") {
-            table.ajax.reload(null, false);
-        } else {
-            location.reload()
-        }
-    }
-
-    async function goOnduty() {
-        const res = await fetch(`/dashboard/leo/onduty`, {
-            method: "POST",
-            credentials: "same-origin",
-            body: JSON.stringify({ "id": "<%= currentCharacter.id %>" })
-        });
-        const response = await res.json();
-        if (response.success === true) {
-            document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("1041").disabled = true;
-            document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1042").disabled = false;
-            document.getElementById("107").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("107").disabled = false;
-            document.getElementById("106").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("106").disabled = false;
-            document.getElementById("1023").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1023").disabled = false;
-            document.getElementById("1011").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1011").disabled = false;
-            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
-            document.getElementById("PANIC").disabled = false;
-            socket.send("UPDATE")
-        } else {
-            location.reload()
-        }
-    }
-
-    async function goOffduty() {
-        const res = await fetch(`/dashboard/leo/offduty`, {
-            method: "POST",
-            credentials: "same-origin",
-            body: JSON.stringify({ "id": "<%= currentCharacter.id %>" })
-        });
-        const response = await res.json();
-        if (response.success === true) {
-            document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1041").disabled = false;
-            document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("1042").disabled = true;
-            document.getElementById("107").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("107").disabled = true;
-            document.getElementById("106").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("106").disabled = true;
-            document.getElementById("1023").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("1023").disabled = true;
-            document.getElementById("1011").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("1011").disabled = true;
-            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg";
-            document.getElementById("PANIC").disabled = true;
-            socket.send("UPDATE")
-        } else {
-            location.reload()
-        }
-    }
-
-    async function go108() {
-        const res = await fetch(`/dashboard/leo/108`, {
-            method: "POST",
-            credentials: "same-origin",
-            body: JSON.stringify({ "id": "<%= currentCharacter.id %>" })
-        });
-        const response = await res.json();
-        if (response.success === true) {
-            document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("1041").disabled = true;
-            document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1042").disabled = false;
-            document.getElementById("108").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("108").disabled = true;
-            document.getElementById("107").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("107").disabled = false;
-            document.getElementById("106").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("106").disabled = false;
-            document.getElementById("1023").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1023").disabled = false;
-            document.getElementById("1011").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1011").disabled = false;
-            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
-            document.getElementById("PANIC").disabled = false;
-            socket.send("UPDATE")
-        } else {
-            location.reload()
-        }
-    }
-
-    async function go107() {
-        const res = await fetch(`/dashboard/leo/107`, {
-            method: "POST",
-            credentials: "same-origin",
-            body: JSON.stringify({ "id": "<%= currentCharacter.id %>" })
-        });
-        const response = await res.json();
-        if (response.success === true) {
-            document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("1041").disabled = true;
-            document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1042").disabled = false;
-            document.getElementById("108").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("108").disabled = false;
-            document.getElementById("107").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("107").disabled = true;
-            document.getElementById("106").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("106").disabled = false;
-            document.getElementById("1023").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1023").disabled = false;
-            document.getElementById("1011").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1011").disabled = false;
-            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
-            document.getElementById("PANIC").disabled = false;
-            socket.send("UPDATE")
-        } else {
-            location.reload()
-        }
-    }
-
-    async function go106() {
-        const res = await fetch(`/dashboard/leo/106`, {
-            method: "POST",
-            credentials: "same-origin",
-            body: JSON.stringify({ "id": "<%= currentCharacter.id %>" })
-        });
-        const response = await res.json();
-        if (response.success === true) {
-            document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("1041").disabled = true;
-            document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1042").disabled = false;
-            document.getElementById("108").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("108").disabled = false;
-            document.getElementById("107").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("107").disabled = false;
-            document.getElementById("106").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("106").disabled = true;
-            document.getElementById("1023").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1023").disabled = false;
-            document.getElementById("1011").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1011").disabled = false;
-            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
-            document.getElementById("PANIC").disabled = false;
-            socket.send("UPDATE")
-        } else {
-            location.reload()
-        }
-    }
-
-    async function go1023() {
-        const res = await fetch(`/dashboard/leo/1023`, {
-            method: "POST",
-            credentials: "same-origin",
-            body: JSON.stringify({ "id": "<%= currentCharacter.id %>" })
-        });
-        const response = await res.json();
-        if (response.success === true) {
-            document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("1041").disabled = true;
-            document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1042").disabled = false;
-            document.getElementById("108").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("108").disabled = false;
-            document.getElementById("107").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("107").disabled = false;
-            document.getElementById("106").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("106").disabled = false;
-            document.getElementById("1023").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("1023").disabled = true;
-            document.getElementById("1011").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1011").disabled = false;
-            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
-            document.getElementById("PANIC").disabled = false;
-            socket.send("UPDATE")
-        } else {
-            location.reload()
-        }
-    }
-
-    async function go1011() {
-        const res = await fetch(`/dashboard/leo/1011`, {
-            method: "POST",
-            credentials: "same-origin",
-            body: JSON.stringify({ "id": "<%= currentCharacter.id %>" })
-        });
-        const response = await res.json();
-        if (response.success === true) {
-            document.getElementById("1041").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("1041").disabled = true;
-            document.getElementById("1042").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1042").disabled = false;
-            document.getElementById("108").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("108").disabled = false;
-            document.getElementById("107").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("107").disabled = false;
-            document.getElementById("106").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("106").disabled = false;
-            document.getElementById("1023").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-            document.getElementById("1023").disabled = false;
-            document.getElementById("1011").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-            document.getElementById("1011").disabled = true;
-            document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
-            document.getElementById("PANIC").disabled = false;
-            socket.send("UPDATE")
-        } else {
-            location.reload()
-        }
-    }
-
-    async function panic() {
-        const { value: location } = await Swal.fire({
-            title: 'Enter your location',
-            input: 'text',
-            inputLabel: 'Your location',
-            showCancelButton: true,
-            inputValidator: (value) => {
-                if (!value) {
-                    return 'You need to put a location!'
-                } else {
-                    socket.send(JSON.stringify({ "type": "PANIC", "id": "<%= currentCharacter.id %>", "location": value }))
-                    document.getElementById("PANIC").className = "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg";
-                    document.getElementById("PANIC").disabled = true;
-                    document.getElementById("108").className = "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-                    document.getElementById("108").disabled = false;
-                    socket.send("UPDATE")
-                }
-            }
-        })
-    }
-
-    async function personSearch() {
-        return window.location.href = "/dashboard/leo/search";
-    }
-</script>
+<script type="text/javascript" src="/static/js/leo_dashboard.js"></script>
