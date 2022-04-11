@@ -3,7 +3,6 @@ const { v4: uuidv4 } = require('uuid');
 const log = require('./logger');
 const functions = require('.');
 const bcrypt = require("bcrypt");
-const { resolve } = require('path/posix');
 const saltRounds = 10;
 
 const webconfig = functions.loadWebconfig();
