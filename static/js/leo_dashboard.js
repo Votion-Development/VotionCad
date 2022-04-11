@@ -126,6 +126,27 @@ socket.onmessage = function (event) {
 }
 
 async function goOffduty(id) {
+    document.getElementById("1041").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1041").disabled = false;
+    document.getElementById("1042").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1042").disabled = true;
+    document.getElementById("107").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("107").disabled = true;
+    document.getElementById("106").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("106").disabled = true;
+    document.getElementById("1023").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1023").disabled = true;
+    document.getElementById("1011").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1011").disabled = true;
+    document.getElementById("PANIC").className =
+        "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg";
+    document.getElementById("PANIC").disabled = true;
     const res = await fetch(`/dashboard/leo/setStatus/10-42`, {
         method: "POST",
         credentials: "same-origin",
@@ -135,27 +156,6 @@ async function goOffduty(id) {
     });
     const response = await res.json();
     if (response.success === true) {
-        document.getElementById("1041").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1041").disabled = false;
-        document.getElementById("1042").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("1042").disabled = true;
-        document.getElementById("107").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("107").disabled = true;
-        document.getElementById("106").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("106").disabled = true;
-        document.getElementById("1023").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("1023").disabled = true;
-        document.getElementById("1011").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("1011").disabled = true;
-        document.getElementById("PANIC").className =
-            "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg";
-        document.getElementById("PANIC").disabled = true;
         socket.send("UPDATE")
     } else {
         location.reload()
@@ -163,6 +163,30 @@ async function goOffduty(id) {
 }
 
 async function go108(id) {
+    document.getElementById("1041").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1041").disabled = true;
+    document.getElementById("1042").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1042").disabled = false;
+    document.getElementById("108").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("108").disabled = true;
+    document.getElementById("107").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("107").disabled = false;
+    document.getElementById("106").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("106").disabled = false;
+    document.getElementById("1023").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1023").disabled = false;
+    document.getElementById("1011").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1011").disabled = false;
+    document.getElementById("PANIC").className =
+        "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
+    document.getElementById("PANIC").disabled = false;
     const res = await fetch(`/dashboard/leo/setStatus/10-8`, {
         method: "POST",
         credentials: "same-origin",
@@ -172,30 +196,6 @@ async function go108(id) {
     });
     const response = await res.json();
     if (response.success === true) {
-        document.getElementById("1041").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("1041").disabled = true;
-        document.getElementById("1042").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1042").disabled = false;
-        document.getElementById("108").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("108").disabled = true;
-        document.getElementById("107").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("107").disabled = false;
-        document.getElementById("106").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("106").disabled = false;
-        document.getElementById("1023").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1023").disabled = false;
-        document.getElementById("1011").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1011").disabled = false;
-        document.getElementById("PANIC").className =
-            "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
-        document.getElementById("PANIC").disabled = false;
         socket.send("UPDATE")
     } else {
         location.reload()
@@ -203,6 +203,30 @@ async function go108(id) {
 }
 
 async function go107(id) {
+    document.getElementById("1041").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1041").disabled = true;
+    document.getElementById("1042").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1042").disabled = false;
+    document.getElementById("108").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("108").disabled = false;
+    document.getElementById("107").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("107").disabled = true;
+    document.getElementById("106").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("106").disabled = false;
+    document.getElementById("1023").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1023").disabled = false;
+    document.getElementById("1011").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1011").disabled = false;
+    document.getElementById("PANIC").className =
+        "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
+    document.getElementById("PANIC").disabled = false;
     const res = await fetch(`/dashboard/leo/setStatus/10-7`, {
         method: "POST",
         credentials: "same-origin",
@@ -212,30 +236,6 @@ async function go107(id) {
     });
     const response = await res.json();
     if (response.success === true) {
-        document.getElementById("1041").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("1041").disabled = true;
-        document.getElementById("1042").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1042").disabled = false;
-        document.getElementById("108").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("108").disabled = false;
-        document.getElementById("107").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("107").disabled = true;
-        document.getElementById("106").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("106").disabled = false;
-        document.getElementById("1023").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1023").disabled = false;
-        document.getElementById("1011").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1011").disabled = false;
-        document.getElementById("PANIC").className =
-            "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
-        document.getElementById("PANIC").disabled = false;
         socket.send("UPDATE")
     } else {
         location.reload()
@@ -243,6 +243,30 @@ async function go107(id) {
 }
 
 async function go106(id) {
+    document.getElementById("1041").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1041").disabled = true;
+    document.getElementById("1042").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1042").disabled = false;
+    document.getElementById("108").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("108").disabled = false;
+    document.getElementById("107").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("107").disabled = false;
+    document.getElementById("106").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("106").disabled = true;
+    document.getElementById("1023").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1023").disabled = false;
+    document.getElementById("1011").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1011").disabled = false;
+    document.getElementById("PANIC").className =
+        "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
+    document.getElementById("PANIC").disabled = false;
     const res = await fetch(`/dashboard/leo/setStatus/10-6`, {
         method: "POST",
         credentials: "same-origin",
@@ -252,30 +276,6 @@ async function go106(id) {
     });
     const response = await res.json();
     if (response.success === true) {
-        document.getElementById("1041").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("1041").disabled = true;
-        document.getElementById("1042").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1042").disabled = false;
-        document.getElementById("108").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("108").disabled = false;
-        document.getElementById("107").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("107").disabled = false;
-        document.getElementById("106").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("106").disabled = true;
-        document.getElementById("1023").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1023").disabled = false;
-        document.getElementById("1011").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1011").disabled = false;
-        document.getElementById("PANIC").className =
-            "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
-        document.getElementById("PANIC").disabled = false;
         socket.send("UPDATE")
     } else {
         location.reload()
@@ -283,6 +283,30 @@ async function go106(id) {
 }
 
 async function go1023(id) {
+    document.getElementById("1041").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1041").disabled = true;
+    document.getElementById("1042").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1042").disabled = false;
+    document.getElementById("108").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("108").disabled = false;
+    document.getElementById("107").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("107").disabled = false;
+    document.getElementById("106").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("106").disabled = false;
+    document.getElementById("1023").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1023").disabled = true;
+    document.getElementById("1011").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1011").disabled = false;
+    document.getElementById("PANIC").className =
+        "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
+    document.getElementById("PANIC").disabled = false;
     const res = await fetch(`/dashboard/leo/setStatus/10-23`, {
         method: "POST",
         credentials: "same-origin",
@@ -292,30 +316,6 @@ async function go1023(id) {
     });
     const response = await res.json();
     if (response.success === true) {
-        document.getElementById("1041").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("1041").disabled = true;
-        document.getElementById("1042").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1042").disabled = false;
-        document.getElementById("108").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("108").disabled = false;
-        document.getElementById("107").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("107").disabled = false;
-        document.getElementById("106").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("106").disabled = false;
-        document.getElementById("1023").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("1023").disabled = true;
-        document.getElementById("1011").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1011").disabled = false;
-        document.getElementById("PANIC").className =
-            "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
-        document.getElementById("PANIC").disabled = false;
         socket.send("UPDATE")
     } else {
         location.reload()
@@ -323,6 +323,30 @@ async function go1023(id) {
 }
 
 async function go1011(id) {
+    document.getElementById("1041").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1041").disabled = true;
+    document.getElementById("1042").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1042").disabled = false;
+    document.getElementById("108").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("108").disabled = false;
+    document.getElementById("107").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("107").disabled = false;
+    document.getElementById("106").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("106").disabled = false;
+    document.getElementById("1023").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+    document.getElementById("1023").disabled = false;
+    document.getElementById("1011").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1011").disabled = true;
+    document.getElementById("PANIC").className =
+        "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
+    document.getElementById("PANIC").disabled = false;
     const res = await fetch(`/dashboard/leo/setStatus/10-11`, {
         method: "POST",
         credentials: "same-origin",
@@ -332,30 +356,6 @@ async function go1011(id) {
     });
     const response = await res.json();
     if (response.success === true) {
-        document.getElementById("1041").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("1041").disabled = true;
-        document.getElementById("1042").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1042").disabled = false;
-        document.getElementById("108").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("108").disabled = false;
-        document.getElementById("107").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("107").disabled = false;
-        document.getElementById("106").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("106").disabled = false;
-        document.getElementById("1023").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
-        document.getElementById("1023").disabled = false;
-        document.getElementById("1011").className =
-            "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
-        document.getElementById("1011").disabled = true;
-        document.getElementById("PANIC").className =
-            "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800";
-        document.getElementById("PANIC").disabled = false;
         socket.send("UPDATE")
     } else {
         location.reload()
@@ -385,6 +385,18 @@ async function panic(id) {
                 document.getElementById("108").className =
                     "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
                 document.getElementById("108").disabled = false;
+                document.getElementById("107").className =
+                    "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+                document.getElementById("107").disabled = false;
+                document.getElementById("106").className =
+                    "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+                document.getElementById("106").disabled = false;
+                document.getElementById("1023").className =
+                    "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+                document.getElementById("1023").disabled = false;
+                document.getElementById("1011").className =
+                    "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+                document.getElementById("1011").disabled = false;
                 socket.send("UPDATE")
             }
         }
@@ -398,3 +410,43 @@ async function personSearch() {
 async function vehicleSearch() {
     return window.location.href = "/dashboard/leo/search/vehicle";
 }
+
+socket.addEventListener('error', function (event) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong with the websocket server! Please contact an administrator.'
+    })
+});
+
+socket.addEventListener('close', (event) => {
+    document.getElementById("PANIC").className =
+        "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg";
+    document.getElementById("PANIC").disabled = true;
+    document.getElementById("1042").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1042").disabled = true;
+    document.getElementById("1041").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1041").disabled = true;
+    document.getElementById("108").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("108").disabled = true;
+    document.getElementById("107").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("107").disabled = true;
+    document.getElementById("106").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("106").disabled = true;
+    document.getElementById("1023").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1023").disabled = true;
+    document.getElementById("1011").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("1011").disabled = true;
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong with the websocket server! Please contact an administrator.'
+    })
+});
