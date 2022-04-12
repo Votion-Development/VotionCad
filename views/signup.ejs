@@ -24,6 +24,20 @@
     }
 </style>
 
+<link rel="stylesheet" href="/static/css/loader.css" />
+
+<script>
+    window.addEventListener('load', function load() {
+        const loader = document.getElementById('loader');
+        setTimeout(function () {
+            loader.classList.add('fadeOut');
+        }, 750);
+    });
+</script>
+
+<div id="loader" class="spinner">
+</div>
+
 <body class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" id="main">
     <div class="flex items-center justify-center body-bg {filter: blur(5px)}" id="background-container">
     </div>
