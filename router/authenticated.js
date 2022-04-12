@@ -8,24 +8,29 @@ async function router(app, opts) {
             const account = request.session.get('account');
             const currentCharacter = request.session.get('currentCharacter');
             if (!account) return request.destroySession(() => reply.redirect('/login'));
+
             const user = await db.getUser(account.email)
             if (!user) return request.destroySession(() => reply.redirect('/login'));
-            const characters = await db.getCharacters(user.username)
+
+            const characters = await db.getCharacters(user.username);
+            
             if (!characters) {
                 request.session.set('currentCharacter', null);
             } else {
                 if (!currentCharacter) {
                     request.session.set('currentCharacter', characters[0]);
                 } else {
-                    const currentCharacterUpdated = await db.getCharacter(currentCharacter.id)
+                    const currentCharacterUpdated = await db.getCharacter(currentCharacter.id);
                     request.session.set('currentCharacter', currentCharacterUpdated);
                 }
             }
+
             request.session.set('account', user); // Refresh the session constantly so no updates get missed
         } else {
             const account = request.session.get('account');
             if (!account) return request.destroySession(() => reply.send('unauthorised'));
-            const user = await db.getUser(account.email)
+
+            const user = await db.getUser(account.email);
             if (!user) return request.destroySession(() => reply.send('unauthorised'));
         }
     })

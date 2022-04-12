@@ -7,7 +7,7 @@ const webconfig = loadWebconfig();
 
 const fastify = require('fastify');
 
-let app
+let app;
 
 if (webconfig.ssl === true) {
     app = fastify({
@@ -50,26 +50,26 @@ app.register(require("point-of-view"), {
 app.register(require('fastify-static'), {
     root: path.join(__dirname, 'static'),
     prefix: '/static/', // optional: default '/'
-})
+});
 
 app.register(require('fastify-formbody'))
 
 app.register(require('./router/index'), {
     prefix: '/'
-})
+});
 
 app.register(require('./router/authenticated'), {
     prefix: '/dashboard'
-})
+});
 
 
 app.listen(webconfig.port).then(() => {
     log.web(`Votion Cad listening on port ${webconfig.port}.`)
-})
+});
 
 app.ready().then(async () => {
     log.web("The dashboard has fully started!")
     console.log(app.printRoutes())
-}, (err) => {
+}, err => {
     log.error(err)
-})
+});
