@@ -86,10 +86,6 @@ const table = new DataTable('#leoTable', {
     },
 }).columns.adjust().responsive.recalc();
 
-setInterval(function () {
-
-}, 10000)
-
 function reloadAjax() {
     table.ajax.reload(null, false);
     setTimeout(reloadAjax, 10000);
@@ -158,7 +154,7 @@ async function goOffduty(id) {
     if (response.success === true) {
         socket.send("UPDATE")
     } else {
-        location.reload()
+        //location.reload()
     }
 }
 
@@ -198,7 +194,7 @@ async function go108(id) {
     if (response.success === true) {
         socket.send("UPDATE")
     } else {
-        //location.reload()
+        location.reload()
     }
 }
 

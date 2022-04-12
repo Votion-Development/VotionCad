@@ -1,15 +1,5 @@
 const db = require('../../../functions/db');
 const WebSocket = require('ws');
-const { MongoClient } = require('mongodb');
-const { loadWebconfig } = require('../../../functions');
-const webconfig = loadWebconfig();
-
-const client = new MongoClient(webconfig.connection_uri);
-const db2 = client.db(webconfig.database);
-
-(async () => {
-    await client.connect();
-})()
 
 async function router(app, opts) {
     const wss = new WebSocket.Server({ server: app.server, path: "/dashboard/leo" });
@@ -29,16 +19,7 @@ async function router(app, opts) {
     });
 
     app.get('/ajax', async (request, reply) => {
-        const collection = db2.collection("characters");
-        const filteredDocs = await collection.find({ leo: true }).toArray();
-        const officers = []
-        for (var i = 0; i < filteredDocs.length; i++) {
-            if (filteredDocs[i].status === "10-42") {
-
-            } else {
-                officers.push({ "Name": filteredDocs[i].name, "Callsign": filteredDocs[i].callsign, "Department": filteredDocs[i].department, "Status": filteredDocs[i].status })
-            }
-        }
+        const officers = await db.getAllLEOs()
         reply.send({ data: officers })
     });
 
@@ -87,12 +68,12 @@ async function router(app, opts) {
         const character = await db.getCharacter(body.id)
         if (!character) return reply.send({ error: "notfound" })
         if (character.owner != account.username) return reply.send({ error: "notowner" })
-        const collection = db2.collection("characters");
-        await collection.updateOne({ id: body.id }, { $set: { status: request.params.status } }).then(() => {
+        const status = await db.setStatus(body.id, request.params.status)
+        if (status === true) {
             reply.send({ success: true })
-        }).catch(e => { 
-            reply.send({ success: false, error: e })
-        })
+        } else {
+            reply.send({ success: false })
+        }
     })
 
     app.get('/person/:id', async (request, reply) => {

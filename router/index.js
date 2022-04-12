@@ -6,7 +6,6 @@ const csrf = new Tokens()
 const secret = csrf.secretSync()
 
 async function router(app, opts) {
-
     app.get('/', async (request, reply) => {
         let account = request.session.get('account');
         if (!account) return request.destroySession(() => reply.redirect('/login'));
