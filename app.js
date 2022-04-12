@@ -62,10 +62,16 @@ app.register(require('./router/authenticated'), {
     prefix: '/dashboard'
 });
 
+if (webconfig.environment === 'production') {
+    app.listen(webconfig.port, "0.0.0.0").then(() => {
+        log.web(`Votion Cad listening on port ${webconfig.port} on 0.0.0.0.`)
+    });
+} else {
+    app.listen(webconfig.port).then(() => {
+        log.web(`Votion Cad listening on port ${webconfig.port}.`)
+    });
+}
 
-app.listen(webconfig.port).then(() => {
-    log.web(`Votion Cad listening on port ${webconfig.port}.`)
-});
 
 app.ready().then(async () => {
     log.web("The dashboard has fully started!")
