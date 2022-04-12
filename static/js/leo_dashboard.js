@@ -198,7 +198,7 @@ async function go108(id) {
     if (response.success === true) {
         socket.send("UPDATE")
     } else {
-        location.reload()
+        //location.reload()
     }
 }
 

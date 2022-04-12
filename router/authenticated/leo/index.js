@@ -1,20 +1,22 @@
 const db = require('../../../functions/db');
 const WebSocket = require('ws');
+const { MongoClient } = require('mongodb');
+const { loadWebconfig } = require('../../../functions');
+const webconfig = loadWebconfig();
+
+const client = new MongoClient(webconfig.connection_uri);
+const db2 = client.db(webconfig.database);
+
+(async () => {
+    await client.connect();
+})()
 
 async function router(app, opts) {
     const wss = new WebSocket.Server({ server: app.server, path: "/dashboard/leo" });
 
     app.addHook('preHandler', async (request, reply) => {
-        const account = request.session.get('account');
-        if (!account) return request.destroySession(() => reply.redirect('/login'));
         const currentCharacter = request.session.get('currentCharacter');
-        if (!currentCharacter) return reply.redirect('/dashboard');
-        const user = await db.getUser(account.email)
-        if (!user) return request.destroySession(() => reply.redirect('/login'));
-        request.session.set('account', user); // Refresh the session constantly so no updates get missed
         if (currentCharacter.leo != true) return reply.redirect("/dashboard")
-        const pass = await db.matchPasswords(account.email, account.password).catch(e => { return request.destroySession(() => reply.redirect('/login')); })
-        if (pass === false) return request.destroySession(() => reply.redirect('/login'));
     })
 
     app.get('/', async (request, reply) => {
@@ -27,8 +29,17 @@ async function router(app, opts) {
     });
 
     app.get('/ajax', async (request, reply) => {
-        const officers = await db.getAllLEOs()
-        reply.send({ data: officers})
+        const collection = db2.collection("characters");
+        const filteredDocs = await collection.find({ leo: true }).toArray();
+        const officers = []
+        for (var i = 0; i < filteredDocs.length; i++) {
+            if (filteredDocs[i].status === "10-42") {
+
+            } else {
+                officers.push({ "Name": filteredDocs[i].name, "Callsign": filteredDocs[i].callsign, "Department": filteredDocs[i].department, "Status": filteredDocs[i].status })
+            }
+        }
+        reply.send({ data: officers })
     });
 
     app.get('/search/person', async (request, reply) => {
@@ -76,12 +87,12 @@ async function router(app, opts) {
         const character = await db.getCharacter(body.id)
         if (!character) return reply.send({ error: "notfound" })
         if (character.owner != account.username) return reply.send({ error: "notowner" })
-        const status = await db.setStatus(body.id, request.params.status)
-        if (status === true) {
+        const collection = db2.collection("characters");
+        await collection.updateOne({ id: body.id }, { $set: { status: request.params.status } }).then(() => {
             reply.send({ success: true })
-        } else {
-            reply.send({ success: false })
-        }
+        }).catch(e => { 
+            reply.send({ success: false, error: e })
+        })
     })
 
     app.get('/person/:id', async (request, reply) => {
@@ -208,7 +219,7 @@ async function router(app, opts) {
         ws.on('message', async function message(data) {
             if (data.toString("utf8") === "UPDATE") {
                 wss.clients.forEach(function each(client) {
-                    client.send(JSON.stringify({"action": "UPDATE"}));
+                    client.send(JSON.stringify({ "action": "UPDATE" }));
                 });
             } else if (JSON.parse(data.toString("utf8")).type === "PANIC") {
                 const json = JSON.parse(data.toString("utf8"))
