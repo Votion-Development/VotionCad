@@ -81,9 +81,83 @@ async function router(app, opts) {
     })
 
     app.get('/users/ajax', async (request, reply) => {
-        const penal_codes = await db.getAllPenalCodes()
-        reply.send({ data: penal_codes})
+        const users = await db.getAllUsers()
+        reply.send({ data: users })
     });
+
+    app.get('/users/:username', async (request, reply) => {
+        const settings = await db.getSettings()
+        const account = request.session.get('account');
+        const currentCharacter = request.session.get('currentCharacter');
+        const characters = await db.getCharacters(account.username);
+        const user = await db.getUser(account.email)
+        const view_user = await db.getUserUsername(request.params.username)
+        reply.view("./views/staff/staff_user_overview", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, view_user: view_user });
+    })
+
+    app.post('/users/:username/givestaff', async (request, reply) => {
+        const staff = await db.giveStaff(request.params.username)
+        reply.send({ "success": staff })
+    })
+
+    app.post('/users/:username/removestaff', async (request, reply) => {
+        const staff = await db.removeStaff(request.params.username)
+        reply.send({ "success": staff })
+    })
+
+    app.post('/users/:username/approve', async (request, reply) => {
+        const approval = await db.approveUser(request.params.username)
+        reply.send({ "success": approval })
+    })
+
+    app.post('/users/:username/revokeapproval', async (request, reply) => {
+        const approval = await db.revokeApproval(request.params.username)
+        reply.send({ "success": approval })
+    })
+
+    app.get('/characters', async (request, reply) => {
+        const settings = await db.getSettings()
+        const account = request.session.get('account');
+        const currentCharacter = request.session.get('currentCharacter');
+        const characters = await db.getCharacters(account.username);
+        const user = await db.getUser(account.email)
+        reply.view("./views/staff/staff_characters", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters });
+    })
+
+    app.get('/characters/ajax', async (request, reply) => {
+        const characters = await db.getAllCharacters()
+        reply.send({ data: characters })
+    });
+
+    app.get('/characters/:id', async (request, reply) => {
+        const settings = await db.getSettings()
+        const account = request.session.get('account');
+        const currentCharacter = request.session.get('currentCharacter');
+        const characters = await db.getCharacters(account.username);
+        const user = await db.getUser(account.email)
+        const character = await db.getCharacter(request.params.id)
+        const arrests = await db.getArrests(request.params.id)
+        const warrants = await db.getWarrants(request.params.id)
+        const citations = await db.getCitations(request.params.id)
+        const vehicles = await db.getCharactersVehicles(request.params.id)
+        reply.view("./views/staff/staff_character_overview", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, character: character, warrants: warrants, arrests: arrests, citations: citations, vehicles: vehicles });
+    })
+
+    app.delete('/characters/:id', async (request, reply) => {
+        const deleted = await db.deleteCharacter(request.params.id)
+        reply.send({ success: deleted })
+    })
+
+    app.post('/characters/:id/setleo', async (request, reply) => {
+        const body = JSON.parse(request.body);
+        const leo = await db.setLEO(request.params.id, body)
+        reply.send({ success: leo })
+    })
+
+    app.post('/characters/:id/removeleo', async (request, reply) => {
+        const leo = await db.removeLEO(request.params.id)
+        reply.send({ success: leo })
+    })
 }
 
 module.exports = router;

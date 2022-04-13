@@ -121,9 +121,9 @@ async function router(app, opts) {
     app.get('/characters/:id', async (request, reply) => {
         const settings = await db.getSettings()
         const character = await db.getCharacter(request.params.id);
-        if (!character) return reply.redirect("/dashboard");
+        if (!character) return reply.redirect("/dashboard/characters");
         const account = request.session.get('account');
-        if (character.owner != account.username) return reply.redirect("/dashboard");
+        if (character.owner != account.username) return reply.redirect("/dashboard/characters");
         const user = await db.getUser(account.email);
         const currentCharacter = request.session.get('currentCharacter');
         const characters = await db.getCharacters(account.username);

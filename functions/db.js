@@ -85,6 +85,15 @@ module.exports = {
             resolve(filteredDocs);
         });
     },
+    getUserUsername: async function (username) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("users");
+            const filteredDocs = await collection.findOne({
+                username: username,
+            });
+            resolve(filteredDocs);
+        });
+    },
     verifyPassword: async function (email, password) {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("users");
@@ -486,6 +495,68 @@ module.exports = {
             });
             resolve(true)
         });
+    },
+    getAllUsers: async function () {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("users");
+            const filteredDocs = await collection.find({}).toArray();
+            const users = []
+            for (var i = 0; i < filteredDocs.length; i++) {
+                users.push({ "Username": filteredDocs[i].username, "Email": filteredDocs[i].email, "Staff": filteredDocs[i].staff, "Approved": filteredDocs[i].approved, "username": filteredDocs[i].username })
+            }
+            resolve(users)
+        })
+    },
+    giveStaff: async function (username) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("users");
+            await collection.updateOne({ username: username }, { $set: { staff: true } });
+            resolve(true)
+        })
+    },
+    removeStaff: async function (username) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("users");
+            await collection.updateOne({ username: username }, { $set: { staff: false } });
+            resolve(true)
+        })
+    },
+    approveUser: async function (username) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("users");
+            await collection.updateOne({ username: username }, { $set: { approved: true } });
+            resolve(true)
+        })
+    },
+    revokeApproval: async function (username) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("users");
+            await collection.updateOne({ username: username }, { $set: { approved: false } });
+            resolve(true)
+        })
+    },
+    deleteCharacter: async function (id) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            await collection.deleteOne({
+                id: id,
+            });
+            resolve(true)
+        });
+    },
+    setLEO: async function (id, body) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            await collection.updateOne({ id: id }, { $set: { leo: true, department: body.department, callsign: body.callsign, status: "10-42" } });
+            resolve(true)
+        })
+    },
+    removeLEO: async function (id, body) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("characters");
+            await collection.updateOne({ id: id }, { $set: { leo: false, department: null, callsign: null, status: null } });
+            resolve(true)
+        })
     },
     /*
     addArrest: async function (id, offense, time) {

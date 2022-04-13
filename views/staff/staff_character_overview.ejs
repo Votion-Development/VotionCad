@@ -1,0 +1,584 @@
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>
+        <%= settings.name %> - Users
+    </title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" />
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="" />
+</head>
+
+<link rel="stylesheet" href="/static/css/loader.css" />
+
+<script>
+    window.addEventListener('load', function load() {
+        const loader = document.getElementById('loader');
+        setTimeout(function () {
+            loader.classList.add('fadeOut');
+        }, 750);
+    });
+</script>
+
+<div id="loader" class="spinner">
+</div>
+
+<nav class="bg-gray-800">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div class="relative flex items-center justify-between h-16">
+            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                <button type="button"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    aria-controls="mobile-menu" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                <div class="hidden sm:block sm:ml-6">
+                    <div class="flex space-x-4">
+                        <a href="/dashboard"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                            aria-current="page">Dashboard</a>
+                        <a href="/dashboard/characters"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                            aria-current="page">Characters</a>
+                        <a href="/dashboard/vehicles"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                            aria-current="page">Vehicles</a>
+                        <% if (!currentCharacter) { %>
+                        <% } else if (currentCharacter.leo===true) { %>
+                            <a href="/dashboard/leo" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">LEO</a>
+                        <% } %>
+
+                        <% if (user.staff===true) { %>
+                            <a href="/dashboard/staff" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Staff</a>
+                        <% } %>
+
+                         <a href="/dashboard/penal_code" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Penal Code</a>
+                    </div>
+                </div>
+            </div>
+            <div class="relative inline-block text-left">
+                <div>
+                    <button type="button"
+                        class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+                        id="menu-button" aria-expanded="true" aria-haspopup="true" onclick="openCharactersPopup()">
+                        <% if (!currentCharacter) { %>
+                            No Characters
+                        <% } else { %>
+                            <%= currentCharacter.name %>
+                        <% } %>
+
+                        <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+                <div style="display:none;" id="popupMenuCharacters"
+                    class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                    <div class="py-1" role="none">
+                        <% for (var i=0; i < characters.length; i++) { %>
+                            <button onclick="switchCharacter('<%= characters[i].id %>')"><a class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0"> <%= characters[i].name %> </a></button>
+                            <br>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <div class="ml-3 relative">
+                    <div>
+                        <button type="button"
+                            class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                            id="user-menu-button" aria-expanded="false" aria-haspopup="true"
+                            onclick="openProfilePopup()">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="h-8 w-8 rounded-full"
+                                src="https://cdn5.vectorstock.com/i/thumb-large/45/79/male-avatar-profile-picture-silhouette-light-vector-4684579.jpg"
+                                alt="">
+                        </button>
+                    </div>
+
+                    <div style="display:none;" id="popupMenuProfile"
+                        class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                        role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                        <a href="/dashboard/settings" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
+                            tabindex="-1" id="user-menu-item-1">Settings</a>
+                        <a href="/logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                            id="user-menu-item-2">Log out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<br>
+
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">Person Overview</h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Full name</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.name %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Date Of Birth</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.dob %></dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Job</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.job %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Gender</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.gender %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Height</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.height %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Weight</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.weight %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Ethnicity</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.ethnicity %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Drivers License</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.driver %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Gun License</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.gun %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Pilots License</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.pilot %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">LEO</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.leo %></dd>
+                </div>
+                <% if (character.leo === true) { %>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <dt class="text-sm font-medium text-gray-500">Department</dt>
+                      <dd class="mt-1 text-sm text-gray-900"><%= character.department %></dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <dt class="text-sm font-medium text-gray-500">Callsign</dt>
+                      <dd class="mt-1 text-sm text-gray-900"><%= character.callsign %></dd>
+                    </div>
+                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                      <dt class="text-sm font-medium text-gray-500">Status</dt>
+                      <dd class="mt-1 text-sm text-gray-900"><%= character.status %></dd>
+                    </div>
+                <% } %>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Owner</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.owner %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">ID</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.id %></dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Created At</dt>
+                  <dd class="mt-1 text-sm text-gray-900"><%= character.dateadded %></dd>
+                </div>
+              </dl>
+            </div>
+        </div>
+    </div>
+</body>
+<br>
+<br>
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">Warrants</h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="flex flex-col">
+                    <div class="overflow-x-auto shadow-md">
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden ">
+                                <table class="min-w-full divide-y divide-gray-200 table-fixed">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Offense
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Penalty
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Issued By
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Status
+                                            </th>
+                                            <th scope="col" class="p-4">
+                                                <span class="sr-only">Edit</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <% for (i = 0; i < warrants.length; i++) { %>
+                                            <tr class="">
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= warrants[i].offense %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= warrants[i].penalty %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= warrants[i].issued_by %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= warrants[i].status %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
+                                                    <a onclick="editWarrant(`<%= warrants[i].id %>`)" class="text-blue-600 hover:underline">Edit</a>
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<br>
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">Arrests</h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="flex flex-col">
+                    <div class="overflow-x-auto shadow-md">
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden ">
+                                <table class="min-w-full divide-y divide-gray-200 table-fixed">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Offense
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Penalty
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Issued By
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <% for (i = 0; i < arrests.length; i++) { %>
+                                            <tr class="">
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= arrests[i].offense %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= arrests[i].penalty %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= arrests[i].issued_by %></td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<br>
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">Citations</h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="flex flex-col">
+                    <div class="overflow-x-auto shadow-md">
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden ">
+                                <table class="min-w-full divide-y divide-gray-200 table-fixed">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Offense
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Penalty
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Issued By
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <% for (i = 0; i < citations.length; i++) { %>
+                                            <tr class="">
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= citations[i].offense %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= citations[i].penalty %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= citations[i].issued_by %></td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<br>
+<br>
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+	<!--Container-->
+	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">Vehicles</h3>
+            </div>
+            <div class="border-t border-gray-200">
+              <dl>
+                <div class="flex flex-col">
+                    <div class="overflow-x-auto shadow-md">
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden ">
+                                <table class="min-w-full divide-y divide-gray-200 table-fixed">
+                                    <thead class="bg-gray-100">
+                                        <tr>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Plate
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Make
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Model
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                Colour
+                                            </th>
+                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
+                                                
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <% for (i = 0; i < vehicles.length; i++) { %>
+                                            <tr class="">
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= vehicles[i].plate %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= vehicles[i].make %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= vehicles[i].model %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= vehicles[i].colour %></td>
+                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><a href="/dashboard/leo/vehicle/<%= vehicles[i].id %>"
+                                                    class="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300">
+                                                    View
+                                                    <svg class="ml-2 -mr-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd"
+                                                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                                            clip-rule="evenodd"></path>
+                                                    </svg>
+                                                </a></td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h1 class="flex items-center font-sans font-bold break-normal text-indigo-500 px-2 py-8 text-xl md:text-2xl">
+            Actions:
+        </h1>
+        <button onclick="deleteCharacter()" type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Delete Character</button>
+        <button onclick="removeLEO()" type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Remove LEO</button>
+        <br>
+        <br>
+        Set LEO:
+        <form class="" id="leoForm">
+            <div class="mt-8 max-w-md">
+                <div class="grid grid-cols-1 gap-6">
+                    <label class="block">
+                      <span class="text-gray-700">Department</span>
+                      <input name="department" type="text" class=" mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" required />
+                    </label>
+                    <label class="block">
+                      <span class="text-gray-700">Callsign</span>
+                      <input name="callsign" type="text" class=" mt-0 block w-full px-0.5 border-0 border-b-2 border-gray-200 focus:ring-0 focus:border-black" required />
+                    </label>
+                </div>
+            </div>
+            <div class="relative">
+                <br>
+                <button type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-800 dark:border-gray-700">Set LEO</button>
+            </div>
+        </form>
+    </div>
+</body>
+<br>
+
+<script>
+    let profileOpened = false
+    async function openProfilePopup() {
+        if (profileOpened === false) {
+            document.getElementById("popupMenuProfile").style.display = "block";
+            profileOpened = true
+        } else {
+            document.getElementById("popupMenuProfile").style.display = "none";
+            profileOpened = false
+        }
+    }
+
+    let charactersOpened = false
+    async function openCharactersPopup() {
+        if (charactersOpened === false) {
+            document.getElementById("popupMenuCharacters").style.display = "block";
+            charactersOpened = true
+        } else {
+            document.getElementById("popupMenuCharacters").style.display = "none";
+            charactersOpened = false
+        }
+    }
+
+    async function switchCharacter(id) {
+        const res = await fetch(`/dashboard/characters/switch`, {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify({ id: id })
+        });
+        const response = await res.json();
+        if (!response.error) {
+            if (response.success === true) {
+                return location.reload();
+            } else {
+                return location.reload();
+            }
+        } else {
+            if (response.error === "invalidsession") {
+                return window.location.href = "/login";
+            } else {
+                return location.reload();
+            }
+        }
+    }
+
+    async function deleteCharacter() {
+        const res = await fetch(`${window.location.pathname}`, {
+            method: "DELETE",
+            credentials: "same-origin",
+        });
+        const response = await res.json();
+        if (response.success) {
+            if (response.success === true) {
+                return window.location.href = "/dashboard/staff/characters";
+            } else {
+                return window.location.href = "/dashboard/staff/characters";
+            }
+        } else {
+            return window.location.href = "/dashboard/staff/characters";
+        }
+    }
+
+    async function removeLEO() {
+        const res = await fetch(`${window.location.pathname}/removeleo`, {
+            method: "POST",
+            credentials: "same-origin",
+        });
+        const response = await res.json();
+        if (response.success) {
+            if (response.success === true) {
+                location.reload();
+            } else {
+                location.reload();
+            }
+        } else {
+            location.reload();
+        }
+    }
+
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+
+    $('#leoForm').submit(async function (e) {
+        e.preventDefault();
+        const values = $(this).serializeObject();
+        const res = await fetch(`${window.location.pathname}/setleo`, {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify(values)
+        });
+        const response = await res.json();
+        if (response.success) {
+            if (response.success === true) {
+                location.reload();
+            } else {
+                location.reload();
+            }
+        } else {
+            location.reload();
+        }
+    });
+</script>

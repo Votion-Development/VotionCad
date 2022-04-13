@@ -226,13 +226,13 @@
 		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
 
 
-			<table id="searchTable" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+			<table id="usersTable" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
 				<thead>
 					<tr>
-                        <th>Name</th>
-						<th>Date Of Birth</th>
-						<th>Job</th>
-						<th>Address</th>
+                        <th>Username</th>
+						<th>Email</th>
+						<th>Staff</th>
+						<th>Approved</th>
                         <th></th>
 					</tr>
 				</thead>
@@ -286,20 +286,19 @@
         }
     }
 
-    const table = new DataTable('#searchTable', {
-        "ajax": "/dashboard/leo/search/ajax",
+    const table = new DataTable('#usersTable', {
+        "ajax": "/dashboard/staff/users/ajax",
         responsive: true,
         "columns": [
             {"data": "Username"},
             {"data": "Email"},
             {"data": "Staff"},
             {"data": "Approved"},
-            {"data": "dateadded"},
             {"data": "username"},
         ],
         'fnRowCallback': function (row, data, index) {
             $(row).find('td:eq(4)').html(
-                '<button class="h-12 px-6 m-2 text-xs text-green-100 transition-colors duration-150 bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-800" onclick="window.location.href = `/dashboard/staff/user/'+data.username+'`;">View Person</button>'
+                '<button class="h-12 px-6 m-2 text-xs text-green-100 transition-colors duration-150 bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-800" onclick="window.location.href = `/dashboard/staff/users/'+data.username+'`;">View User</button>'
             );
         },
     }).columns.adjust().responsive.recalc();

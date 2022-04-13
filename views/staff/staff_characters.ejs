@@ -4,12 +4,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>
-        <%= settings.name %> - Penal Codes
+        <%= settings.name %> - Users
     </title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="//cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" />
 
     <meta name="description" content="" />
@@ -56,17 +61,17 @@
                     <div class="flex space-x-4">
                         <a href="/dashboard" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</a>
                         <a href="/dashboard/characters" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Characters</a>
-                        <a href="/dashboard/vehicles" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium="page">Vehicles</a>
+                        <a href="/dashboard/vehicles" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Vehicles</a>
                             <% if (!currentCharacter) { %>
                             <% } else if (currentCharacter.leo === true) { %>
                                 <a href="/dashboard/leo" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">LEO</a>
                             <% } %>
     
                             <% if (user.staff === true) { %>
-                                <a href="/dashboard/staff" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Staff</a>
+                                <a href="/dashboard/staff" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Staff</a>
                             <% } %>
 
-                        <a href="/dashboard/penal_code" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Penal Code</a>
+                        <a href="/dashboard/penal_code" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Penal Code</a>
                     </div>
                 </div>
             </div>
@@ -119,50 +124,122 @@
         </div>
     </div>
 </nav>
+
+<style>
+    /*Overrides for Tailwind CSS */
+
+    /*Form fields*/
+    .dataTables_wrapper select,
+    .dataTables_wrapper .dataTables_filter input {
+        color: #4a5568;
+        /*text-gray-700*/
+        padding-left: 1rem;
+        /*pl-4*/
+        padding-right: 1rem;
+        /*pl-4*/
+        padding-top: .5rem;
+        /*pl-2*/
+        padding-bottom: .5rem;
+        /*pl-2*/
+        line-height: 1.25;
+        /*leading-tight*/
+        border-width: 2px;
+        /*border-2*/
+        border-radius: .25rem;
+        border-color: #edf2f7;
+        /*border-gray-200*/
+        background-color: #edf2f7;
+        /*bg-gray-200*/
+    }
+
+    /*Row Hover*/
+    table.dataTable.hover tbody tr:hover,
+    table.dataTable.display tbody tr:hover {
+        background-color: #ebf4ff;
+        /*bg-indigo-100*/
+    }
+
+    /*Pagination Buttons*/
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        font-weight: 700;
+        /*font-bold*/
+        border-radius: .25rem;
+        /*rounded*/
+        border: 1px solid transparent;
+        /*border border-transparent*/
+    }
+
+    /*Pagination Buttons - Current selected */
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        color: #fff !important;
+        /*text-white*/
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+        /*shadow*/
+        font-weight: 700;
+        /*font-bold*/
+        border-radius: .25rem;
+        /*rounded*/
+        background: #667eea !important;
+        /*bg-indigo-500*/
+        border: 1px solid transparent;
+        /*border border-transparent*/
+    }
+
+    /*Pagination Buttons - Hover */
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        color: #fff !important;
+        /*text-white*/
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+        /*shadow*/
+        font-weight: 700;
+        /*font-bold*/
+        border-radius: .25rem;
+        /*rounded*/
+        background: #667eea !important;
+        /*bg-indigo-500*/
+        border: 1px solid transparent;
+        /*border border-transparent*/
+    }
+
+    /*Add padding to bottom border */
+    table.dataTable.no-footer {
+        border-bottom: 1px solid #e2e8f0;
+        /*border-b-1 border-gray-300*/
+        margin-top: 0.75em;
+        margin-bottom: 0.75em;
+    }
+
+    /*Change colour of responsive icon*/
+    table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
+    table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
+        background-color: #667eea !important;
+        /*bg-indigo-500*/
+    }
+</style>
+
 <br>
 
 <body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
 	<!--Container-->
 	<div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div class="px-4 py-5 sm:px-6">
-              <h3 class="text-lg leading-6 font-medium text-gray-900">Penal Code</h3>
-            </div>
-            <div class="border-t border-gray-200">
-              <dl>
-                <div class="flex flex-col">
-                    <div class="overflow-x-auto shadow-md">
-                        <div class="inline-block min-w-full align-middle">
-                            <div class="overflow-hidden ">
-                                <table class="min-w-full divide-y divide-gray-200 table-fixed">
-                                    <thead class="bg-gray-100">
-                                        <tr>
-                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
-                                                Name
-                                            </th>
-                                            <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase">
-                                                Penalty
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        <% for (i = 0; i < penal_codes.length; i++) { %>
-                                            <tr class="">
-                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= penal_codes[i].name %></td>
-                                                <td class="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap"><%= penal_codes[i].penalty %></td>
-                                            </tr>
-                                        <% } %>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+		<!--Card-->
+		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+
+
+			<table id="charactersTable" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+				<thead>
+					<tr>
+                        <th>Name</th>
+						<th>Date Of Birth</th>
+						<th>Job</th>
+						<th>Address</th>
+                        <th></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
 </body>
-<br>
 
 <script>
     let profileOpened = false
@@ -208,4 +285,31 @@
             }
         }
     }
+
+    const table = new DataTable('#charactersTable', {
+        "ajax": "/dashboard/staff/characters/ajax",
+        responsive: true,
+        "columns": [
+            {"data": "Name"},
+            {"data": "Date Of Birth"},
+            {"data": "Job"},
+            {"data": "Address"},
+            {"data": "uuid"},
+        ],
+        'fnRowCallback': function (row, data, index) {
+            $(row).find('td:eq(4)').html(
+                '<button class="h-12 px-6 m-2 text-xs text-green-100 transition-colors duration-150 bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-800" onclick="window.location.href = `/dashboard/staff/characters/'+data.uuid+'`;">View Character</button>'
+            );
+        },
+    }).columns.adjust().responsive.recalc();
+
+    setInterval(function () {
+
+    }, 10000)
+
+    function reloadAjax(){
+        table.ajax.reload(null, false);
+        setTimeout(reloadAjax, 10000);
+    }
+    reloadAjax();
 </script>

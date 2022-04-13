@@ -4,5 +4,5 @@ secret: u/N8qR{Yr\~^w3V~p/"af4nfapqh;_U3~jL9NMwjkeqt\2DJVhMuN.?*mZ$\TJJ]JtDc(`(Q
 environment: production
 
 # For MongoDB
-connection_uri: mongodb+srv://dashactyl:dashactyl@dashactyltesting.axlqa.mongodb.net
-database: votion-cad
+connection_uri: mongodb://root:L3g0br1ck09%2a@personal1.jmgcoding.com:27017
+database: VotionCad

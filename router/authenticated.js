@@ -11,6 +11,7 @@ async function router(app, opts) {
 
             const user = await db.getUser(account.email)
             if (!user) return request.destroySession(() => reply.redirect('/login'));
+            if (user.approved === false) return request.destroySession(() => reply.redirect('/login'));
 
             const characters = await db.getCharacters(user.username);
             
