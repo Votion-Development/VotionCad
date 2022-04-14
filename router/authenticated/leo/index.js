@@ -189,11 +189,16 @@ async function router(app, opts) {
         const character = await db.getCharacter(request.params.id)
         if (!character) return reply.send({ error: "notfound" })
         const addCitation = await db.addCitation(request.params.id, body.penal_code, body.penalty, currentCharacter.name)
-        if (addCitation === true) {
-            reply.send({ success: true })
-        } else {
-            reply.send({ success: false })
-        }
+        reply.send({ success: addCitation })
+    });
+
+    app.post('/staff/setaop', async (request, reply) => {
+        let account = request.session.get('account');
+        const user = await db.getUser(account.email)
+        if (user.staff != true) return reply.send({ "error": 403 })
+        const body = JSON.parse(request.body);
+        db.setAOP(body.aop)
+        reply.send({ "success": true })
     });
 
     wss.on('connection', (ws) => {
@@ -202,13 +207,21 @@ async function router(app, opts) {
                 wss.clients.forEach(function each(client) {
                     client.send(JSON.stringify({ "action": "UPDATE" }));
                 });
-            } else if (JSON.parse(data.toString("utf8")).type === "PANIC") {
+            } else if (data.toString("utf8") === "AOP") {
+                const settings = await db.getSettings()
+                ws.send(JSON.stringify({ "action": "AOP", "aop": settings.aop.toString('utf8') }))
+            } else if (data.toString("utf8") === "UPDATEAOP") {
+                const settings = await db.getSettings()
+                wss.clients.forEach(function each(client) {
+                    client.send(JSON.stringify({ "action": "AOP", "aop": settings.aop.toString('utf8') }));
+                });
+            } else if (JSON.parse(data.toString("utf8")).action === "PANIC") {
                 const json = JSON.parse(data.toString("utf8"))
                 const officer = await db.getCharacter(json.id)
                 if (!officer) ws.close()
                 await db.setPanic(json.id)
                 wss.clients.forEach(function each(client) {
-                    client.send(JSON.stringify({ "type": "PANIC", "officer": officer.name, "location": json.location }));
+                    client.send(JSON.stringify({ "action": "PANIC", "officer": officer.name, "location": json.location }));
                 });
             }
         });

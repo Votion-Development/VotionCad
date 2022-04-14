@@ -27,6 +27,7 @@ async function router(app, opts) {
         const currentCharacter = request.session.get('currentCharacter');
         const user = await db.getUser(account.email);
         const characters = await db.getCharacters(account.username);
+        if (!characters) reply.redirect("/dashboard/characters")
         const vehicles = await db.getCharactersVehicles(currentCharacter.id);
         reply.view("./views/vehicles", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, vehicles: vehicles });
     });
@@ -75,6 +76,7 @@ async function router(app, opts) {
     app.post('/vehicles/new', async (request, reply) => {
         const body = JSON.parse(request.body);
         const currentCharacter = request.session.get('currentCharacter');
+        if (!currentCharacter) reply.send({ "error": "no characters" })
         const vehicle = await db.createVehicle(body, currentCharacter.id).catch(e => {
             reply.send({ "error": "unknown" });
         })
@@ -91,11 +93,16 @@ async function router(app, opts) {
         const currentCharacter = request.session.get('currentCharacter');
         const user = await db.getUser(account.email);
         const characters = await db.getCharacters(account.username);
+        if (!characters) reply.redirect("/dashboard/characters")
         const vehicle = await db.getVehicle(request.params.id);
         reply.view("./views/vehicle_edit", { settings: settings, user: user, currentCharacter: currentCharacter, characters: characters, vehicle: vehicle });
     });
 
     app.delete('/vehicles/:id', async (request, reply) => {
+        const userVehicle = await db.getVehicle(request.params.id)
+        const currentCharacter = request.session.get('currentCharacter');
+        if (!currentCharacter) reply.send({ "error": "no characters" })
+        if (userVehicle.owner != currentCharacter.id) reply.send({ "error": 403 })
         const vehicle = await db.deleteVehicle(request.params.id).catch(e => {
             reply.send({ "error": "unknown" });
         })

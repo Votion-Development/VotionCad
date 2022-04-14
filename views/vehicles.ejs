@@ -8,6 +8,8 @@
     </title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/static/js/sleep.js"></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" />
@@ -197,23 +199,47 @@
     }
 
     async function deleteVehicle(id) {
-        const res = await fetch(`/dashboard/vehicles/${id}`, {
-            method: "DELETE",
-            credentials: "same-origin"
-        });
-        const response = await res.json();
-        if (!response.error) {
-            if (response.success === true) {
-                return location.reload();
-            } else {
-                return location.reload();
+        Swal.fire({
+            title: 'Are you sure you want to do this? It cannot be undone.',
+            showCancelButton: true,
+            confirmButtonText: 'Delete Vehicle',
+        }).then(async (result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                const res = await fetch(`/dashboard/vehicles/${id}`, {
+                    method: "DELETE",
+                    credentials: "same-origin"
+                });
+                const response = await res.json();
+                if (!response.error) {
+                    if (response.success === true) {
+                        Swal.fire('Vehicle deleted!', '', 'success').then(async () => {
+                            return location.reload();
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Unknown Error',
+                            text: 'An unknown error occured when requesting to the backend. Please contact an administrator.',
+                        }).then(() => {
+                            return location.reload();
+                        })
+                    }
+                } else {
+                    if (response.error === "invalidsession") {
+                        return window.location.href = "/login";
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Unknown Error',
+                            text: 'An unknown error occured when requesting to the backend. Please contact an administrator.',
+                        }).then(() => {
+                            return location.reload();
+                        })
+                    }
+                }
+                
             }
-        } else {
-            if (response.error === "invalidsession") {
-                return window.location.href = "/login";
-            } else {
-                return location.reload();
-            }
-        }
+        })
     }
 </script>

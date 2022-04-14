@@ -8,6 +8,7 @@
     </title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" />
@@ -200,6 +201,7 @@
             </a>
         </div>
     </div>
+    <button onclick="resetAllLEO()" type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Set all LEO to 10-42</button>
 </div>
 
 <script>
@@ -245,5 +247,48 @@
                 return location.reload();
             }
         }
+    }
+
+    async function resetAllLEO() {
+        Swal.fire({
+            title: 'Are you sure you want to do this? It cannot be undone.',
+            showCancelButton: true,
+            confirmButtonText: 'Reset',
+        }).then(async (result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                const res = await fetch(`/dashboard/staff/resetallleo`, {
+                    method: "POST",
+                    credentials: "same-origin"
+                });
+                const response = await res.json();
+                if (!response.error) {
+                    if (response.success === true) {
+                        Swal.fire('Reset all LEO!', '', 'success')
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Unknown Error',
+                            text: 'An unknown error occured when requesting to the backend. Please contact an administrator.',
+                        }).then(() => {
+                            return location.reload();
+                        })
+                    }
+                } else {
+                    if (response.error === "invalidsession") {
+                        return window.location.href = "/login";
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Unknown Error',
+                            text: 'An unknown error occured when requesting to the backend. Please contact an administrator.',
+                        }).then(() => {
+                            return location.reload();
+                        })
+                    }
+                }
+                
+            }
+        })
     }
 </script>

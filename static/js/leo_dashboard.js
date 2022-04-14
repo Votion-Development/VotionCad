@@ -31,15 +31,15 @@ async function switchCharacter(id) {
     const response = await res.json();
     if (!response.error) {
         if (response.success === true) {
-            return location.reload();
+            //return location.reload();
         } else {
-            return location.reload();
+            //return location.reload();
         }
     } else {
         if (response.error === "invalidsession") {
             return window.location.href = "/login";
         } else {
-            return location.reload();
+            //return location.reload();
         }
     }
 }
@@ -93,7 +93,7 @@ function reloadAjax() {
 reloadAjax();
 
 socket.onmessage = function (event) {
-    if (JSON.parse(event.data.toString("utf8")).type === "PANIC") {
+    if (JSON.parse(event.data.toString("utf8")).action === "PANIC") {
         const data = JSON.parse(event.data.toString("utf8"))
         Swal.fire(
             `${data.officer} just pressed their panic!`,
@@ -116,8 +116,18 @@ socket.onmessage = function (event) {
         }, 3000);
     } else if (JSON.parse(event.data.toString("utf8")).action === "UPDATE") {
         table.ajax.reload(null, false);
+    } else if (JSON.parse(event.data.toString("utf8")).action === "AOP") {
+        const aop = JSON.parse(event.data.toString("utf8")).aop
+        const aopA = document.getElementById("aop")
+        aopA.className = "text-green-500"
+        aopA.textContent= aop;
+        Swal.fire({
+            icon: 'info',
+            title: 'AOP',
+            text: `The AOP has been set to ${aop}.`
+        })
     } else {
-        location.reload()
+        //location.reload()
     }
 }
 
@@ -154,7 +164,7 @@ async function goOffduty(id) {
     if (response.success === true) {
         socket.send("UPDATE")
     } else {
-        //location.reload()
+        location.reload()
     }
 }
 
@@ -371,7 +381,7 @@ async function panic(id) {
                 return 'You need to put a location!'
             } else {
                 socket.send(JSON.stringify({
-                    "type": "PANIC",
+                    "action": "PANIC",
                     "id": id,
                     "location": value
                 }))
@@ -408,6 +418,7 @@ async function vehicleSearch() {
 }
 
 socket.addEventListener('error', function (event) {
+    console.log(event)
     Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -416,6 +427,7 @@ socket.addEventListener('error', function (event) {
 });
 
 socket.addEventListener('close', (event) => {
+    console.log(event)
     document.getElementById("PANIC").className =
         "h-12 px-6 m-2 text-lg text-red-100 transition-colors duration-150 bg-red-300 rounded-lg";
     document.getElementById("PANIC").disabled = true;

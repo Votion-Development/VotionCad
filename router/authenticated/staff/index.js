@@ -158,6 +158,11 @@ async function router(app, opts) {
         const leo = await db.removeLEO(request.params.id)
         reply.send({ success: leo })
     })
+
+    app.post('/resetallleo', async (request, reply) => {
+        const resetallleo = await db.resetAllLEO()
+        reply.send({ success: resetallleo })
+    })
 }
 
 module.exports = router;

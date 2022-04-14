@@ -56,9 +56,11 @@ if (!webconfig.connection_uri) {
                     }
                     if (coll === 'settings') {
                         await doc.insertOne({
+                            id: 1,
                             name: 'Votion Cad',
                             discord: '',
-                            manualApproval: false
+                            manualApproval: false,
+                            aop: "Sandy Shores"
                         });
                     }
                 });
@@ -74,6 +76,12 @@ module.exports = {
             const res = await collection.find({}).toArray();
             const settings = res[0]
             resolve(settings);
+        });
+    },
+    setAOP: async function (aop) {
+        return new Promise(async (resolve, reject) => {
+            const collection = db.collection("settings");
+            await collection.updateOne({ id: 1 }, { $set: { aop: aop } });
         });
     },
     getUser: async function (email) {
@@ -101,7 +109,7 @@ module.exports = {
                 email: email,
             });
             if (!user) reject(false)
-            bcrypt.compare(password, user.password, function(err, result) {
+            bcrypt.compare(password, user.password, function (err, result) {
                 if (result === true) {
                     resolve(true)
                 } else {
@@ -274,7 +282,7 @@ module.exports = {
             const officers = []
             for (var i = 0; i < filteredDocs.length; i++) {
                 if (filteredDocs[i].status === "10-42") {
-                    
+
                 } else {
                     officers.push({ "Name": filteredDocs[i].name, "Callsign": filteredDocs[i].callsign, "Department": filteredDocs[i].department, "Status": filteredDocs[i].status })
                 }
@@ -551,20 +559,21 @@ module.exports = {
             resolve(true)
         })
     },
-    removeLEO: async function (id, body) {
+    removeLEO: async function (id) {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("characters");
             await collection.updateOne({ id: id }, { $set: { leo: false, department: null, callsign: null, status: null } });
             resolve(true)
         })
     },
-    /*
-    addArrest: async function (id, offense, time) {
+    resetAllLEO: async function () {
         return new Promise(async (resolve, reject) => {
             const collection = db.collection("characters");
-            await collection.updateOne({ id: id }, { $push: { record: {"offense": offense, "time": time} } });
+            const filteredDocs = await collection.find({ leo: true }).toArray();
+            for (let i = 0; i < filteredDocs.length; i++) {
+                await collection.updateOne({ id: filteredDocs[i].id }, { $set: { status: "10-42" } });
+            }
             resolve(true)
         })
-    }
-    */ //For my future refference
+    },
 };

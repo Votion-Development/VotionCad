@@ -21,7 +21,9 @@ if (webconfig.ssl === true) {
     });
 }
 const session = require('@fastify/session');
-const MongoStore = require('connect-mongodb-session')(session);
+const Sqlite = require('better-sqlite3')
+const SqliteStore = require('better-sqlite3-session-store')(session)
+const session_db = new Sqlite('sessions.db')
 
 app.register(require('fastify-cookie'), {
     secret: webconfig.secret, // for cookies signature
@@ -35,9 +37,12 @@ app.register(session, {
     cookie: {
         secure: webconfig.ssl
     },
-    store: new MongoStore({
-        uri: webconfig.connection_uri,
-        collection: 'sessions'
+    store: new SqliteStore({
+        client: session_db,
+        expired: {
+            clear: true,
+            intervalMs: 900000
+        }
     })
 });
 

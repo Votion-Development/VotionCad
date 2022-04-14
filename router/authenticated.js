@@ -6,7 +6,6 @@ async function router(app, opts) {
     app.addHook('preHandler', async (request, reply) => {
         if (request.method == "GET") { 
             const account = request.session.get('account');
-            const currentCharacter = request.session.get('currentCharacter');
             if (!account) return request.destroySession(() => reply.redirect('/login'));
 
             const user = await db.getUser(account.email)
@@ -15,6 +14,8 @@ async function router(app, opts) {
 
             const characters = await db.getCharacters(user.username);
             
+            const currentCharacter = request.session.get('currentCharacter');
+
             if (!characters) {
                 request.session.set('currentCharacter', null);
             } else {
@@ -22,11 +23,15 @@ async function router(app, opts) {
                     request.session.set('currentCharacter', characters[0]);
                 } else {
                     const currentCharacterUpdated = await db.getCharacter(currentCharacter.id);
-                    request.session.set('currentCharacter', currentCharacterUpdated);
+                    if (currentCharacter != currentCharacterUpdated) {
+                        request.session.set('currentCharacter', currentCharacterUpdated);
+                    }
                 }
             }
 
-            request.session.set('account', user); // Refresh the session constantly so no updates get missed
+            if (account != user) {
+                request.session.set('account', user);
+            }
         } else {
             const account = request.session.get('account');
             if (!account) return request.destroySession(() => reply.send('unauthorised'));

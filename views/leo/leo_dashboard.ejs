@@ -30,6 +30,7 @@
         const loader = document.getElementById('loader');
         setTimeout(function () {
             loader.classList.add('fadeOut');
+            socket.send("AOP")
         }, 750);
     });
 </script>
@@ -223,6 +224,13 @@
 <body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
     <!--Container-->
     <div class="container w-full md:w-4/5 xl:w-3/5  mx-auto px-2">
+        <% if (user.staff === true) { %>
+            <button onclick="setAOP()" type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Set AOP</button>
+        <% } %>
+        <h1 class="flex items-center font-sans font-bold break-normal text-indigo-500 px-2 py-8 text-xl md:text-2xl">
+            Current AOP:&nbsp;<a id="aop" class="text-yellow-500">Fetching...</a>
+        </h1>
+
         <button
             class="h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
             onclick="personSearch()">Person Search</button>
@@ -429,3 +437,38 @@
 </body>
 
 <script type="text/javascript" src="/static/js/leo_dashboard.js"></script>
+
+<% if (user.staff === true) { %>
+    <script>
+    async function setAOP() {
+        const {
+            value: location
+        } = await Swal.fire({
+            title: 'Enter the AOP',
+            input: 'text',
+            inputLabel: 'AOP',
+            showCancelButton: true,
+            inputValidator: async (value) => {
+                if (!value) {
+                    return 'You need to put a AOP!'
+                } else {
+                    const res = await fetch(`/dashboard/leo/staff/setaop`, {
+                        method: "POST",
+                        credentials: "same-origin",
+                        body: JSON.stringify({
+                            "aop": value
+                        })
+                    });
+                    const response = await res.json();
+                    if (response.success === true) {
+                        socket.send("UPDATEAOP")
+                    } else {
+                        location.reload()
+                    }
+                    socket.send("UPDATEAOP")
+                }
+            }
+        })
+    }
+    </script>
+<% } %>
