@@ -71,6 +71,10 @@ app.addHook('preHandler', async (request, reply) => {
     log.debug(`${request.method} ${request.url}`)
 })
 
+app.setNotFoundHandler((request, reply) => {
+	reply.view("./views/404")
+});
+
 if (webconfig.environment === 'production') {
     app.listen(webconfig.port, "0.0.0.0").then(() => {
         log.web(`Votion Cad listening on port ${webconfig.port} on 0.0.0.0.`)
