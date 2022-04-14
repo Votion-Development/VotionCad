@@ -67,6 +67,10 @@ app.register(require('./router/authenticated'), {
     prefix: '/dashboard'
 });
 
+app.addHook('preHandler', async (request, reply) => {
+    log.debug(`${request.method} ${request.url}`)
+})
+
 if (webconfig.environment === 'production') {
     app.listen(webconfig.port, "0.0.0.0").then(() => {
         log.web(`Votion Cad listening on port ${webconfig.port} on 0.0.0.0.`)

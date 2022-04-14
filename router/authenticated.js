@@ -1,10 +1,11 @@
 const path = require("path");
 const fs = require('fs')
 const db = require('../functions/db');
+const log = require('../functions/logger')
 
 async function router(app, opts) {
     app.addHook('preHandler', async (request, reply) => {
-        if (request.method == "GET") { 
+        if (request.method == "GET") {
             const account = request.session.get('account');
             if (!account) return request.destroySession(() => reply.redirect('/login'));
 
@@ -13,7 +14,7 @@ async function router(app, opts) {
             if (user.approved === false) return request.destroySession(() => reply.redirect('/login'));
 
             const characters = await db.getCharacters(user.username);
-            
+
             const currentCharacter = request.session.get('currentCharacter');
 
             if (!characters) {
@@ -23,13 +24,17 @@ async function router(app, opts) {
                     request.session.set('currentCharacter', characters[0]);
                 } else {
                     const currentCharacterUpdated = await db.getCharacter(currentCharacter.id);
-                    if (currentCharacter != currentCharacterUpdated) {
+                    currentCharacterUpdated._id = currentCharacterUpdated._id.toString()
+                    if (JSON.stringify(currentCharacter) != JSON.stringify(currentCharacterUpdated)) {
+                        log.debug("The currentCharacter session is different from the one in the db. Setting the new session.")
                         request.session.set('currentCharacter', currentCharacterUpdated);
                     }
                 }
             }
 
-            if (account != user) {
+            user._id = user._id.toString()
+            if (JSON.stringify(account) != JSON.stringify(user)) {
+                log.debug("The account session is different from the one in the db. Setting the new session.")
                 request.session.set('account', user);
             }
         } else {
