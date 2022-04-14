@@ -10,10 +10,14 @@ async function router(app, opts) {
         if (!account) return request.destroySession(() => reply.redirect('/login'));
         const user = await db.getUser(account.email)
         if (!user) return request.destroySession(() => reply.redirect('/login'));
-        request.session.set('account', user); // Refresh the session constantly so no updates get missed
         if (user.staff != true) return reply.redirect("/dashboard")
         const pass = await db.matchPasswords(account.email, account.password).catch(e => { return request.destroySession(() => reply.redirect('/login')); })
         if (pass === false) return request.destroySession(() => reply.redirect('/login'));
+        user._id = user._id.toString()
+        if (JSON.stringify(account) != JSON.stringify(user)) {
+            log.debug("The account session is different from the one in the db. Setting the new session.")
+            request.session.set('account', user);
+        }
     })
 
     app.get('/', async (request, reply) => {
@@ -68,7 +72,7 @@ async function router(app, opts) {
 
     app.get('/penal_code/ajax', async (request, reply) => {
         const penal_codes = await db.getAllPenalCodes()
-        reply.send({ data: penal_codes})
+        reply.send({ data: penal_codes })
     });
 
     app.get('/users', async (request, reply) => {

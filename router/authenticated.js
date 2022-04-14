@@ -26,7 +26,7 @@ async function router(app, opts) {
                     const currentCharacterUpdated = await db.getCharacter(currentCharacter.id);
                     currentCharacterUpdated._id = currentCharacterUpdated._id.toString()
                     if (JSON.stringify(currentCharacter) != JSON.stringify(currentCharacterUpdated)) {
-                        log.debug("The currentCharacter session is different from the one in the db. Setting the new session.")
+                        log.debug("The currentCharacter session is different from the one in the db (They probably switched their LEO status). Setting the new session.")
                         request.session.set('currentCharacter', currentCharacterUpdated);
                     }
                 }

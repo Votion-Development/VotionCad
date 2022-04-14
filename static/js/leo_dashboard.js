@@ -138,6 +138,9 @@ async function goOffduty(id) {
     document.getElementById("1042").className =
         "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
     document.getElementById("1042").disabled = true;
+    document.getElementById("108").className =
+        "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
+    document.getElementById("108").disabled = true;
     document.getElementById("107").className =
         "h-12 px-6 m-2 text-lg text-indigo-100 transition-colors duration-150 bg-indigo-300 rounded-lg";
     document.getElementById("107").disabled = true;

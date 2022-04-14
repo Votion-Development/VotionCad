@@ -41,6 +41,7 @@ async function router(app, opts) {
         } else {
             character = characters[Math.floor(Math.random() * characters.length)]
         }
+        console.log(user)
         request.session.set('account', user);
         request.session.set('currentCharacter', character);
         reply.send({ success: true })
