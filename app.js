@@ -32,8 +32,8 @@ app.register(require('fastify-cookie'), {
 
 app.register(session, {
     secret: webconfig.secret,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
         secure: webconfig.ssl
     },
