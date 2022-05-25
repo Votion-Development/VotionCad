@@ -1,36 +1,25 @@
 {
-  "name": "votion-cad",
+  "name": "votioncad-testing",
   "version": "1.0.0",
-  "main": "app.js",
-  "repository": "https://github.com/Votion-Development/VotionCad.git",
-  "author": "Jamie_ <volcanomonster07@gmail.com>",
+  "main": "server.js",
+  "repository": "https://github.com/Votion-Development/VotionCad",
+  "author": "JamieGrimwood <yovolcanomonster07@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "npm i && node .",
     "start-yarn": "yarn && node ."
   },
   "dependencies": {
-    "@fastify/session": "^6.4.0",
     "bcrypt": "^5.0.1",
-    "better-sqlite3": "^7.5.1",
-    "better-sqlite3-session-store": "^0.0.3",
     "chalk": "4.1.2",
-    "csrf": "^3.1.0",
-    "ejs": "^3.1.6",
-    "fastify": "^3.27.1",
-    "fastify-cookie": "^5.5.0",
-    "fastify-formbody": "^5.2.0",
-    "fastify-static": "^4.5.0",
+    "connect-mongodb-session": "^3.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
-    "mongodb": "^4.5.0",
+    "mongodb": "^4.6.0",
     "path": "^0.12.7",
-    "pino-pretty": "^7.5.1",
-    "point-of-view": "^5.1.0",
     "uuid": "^8.3.2",
-    "ws": "^8.5.0",
-    "yaml": "^1.10.2"
-  },
-  "devDependencies": {
-    "eslint": "^8.13.0"
+    "yaml": "^2.1.0"
   }
 }
